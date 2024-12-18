@@ -14,7 +14,7 @@ get_random_wallpaper() {
 set_wallpaper_swww() {
 	local img="$1"
 	if command -v swww >/dev/null 2>&1; then
-		swww img "$img" --transition-type=random --transition-duration="$TRANSITION_DURATION" &>/dev/null
+		swww img "$img" --transition-type any --transition-duration "$TRANSITION_DURATION" &>/dev/null
 	fi
 }
 
@@ -26,8 +26,9 @@ set_wallpaper_fallback() {
 	elif command -v matugen >/dev/null 2>&1; then
 		matugen image "$img" &>/dev/null
 	elif command -v hyprpaper >/dev/null 2>&1; then
+		get_connected_monitor=$(hyprctl monitors | awk '/^Monitor / {print $2}')
 		hyprctl hyprpaper preload "$img" &>/dev/null
-		hyprctl hyprpaper wallpaper eDP-1,"$img" &>/dev/null # Replace eDP-1 if needed
+		hyprctl hyprpaper wallpaper "$get_connected_monitor","$img" &>/dev/null
 	elif command -v swaybg >/dev/null 2>&1; then
 		swaybg -i "$img" &
 	elif command -v feh >/dev/null 2>&1; then
@@ -50,7 +51,7 @@ if [ -d "$WALLPAPER_DIR" ]; then
 		case "$session" in
 		"wayland")
 			set_wallpaper_swww "$img"
-			if [[ $? -ne 0 ]]; then # Check if swww failed
+			if [[ $? -ne 0 ]]; then
 				set_wallpaper_fallback "$img"
 			fi
 			;;
