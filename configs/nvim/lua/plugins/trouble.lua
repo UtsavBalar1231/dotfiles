@@ -5,6 +5,7 @@ return {
 		win = { position = "top", size = 0.35 },
 	},
 	cmd = "Trouble",
+	event = "CmdlineEnter",
 	keys = {
 		{
 			"<leader>cx",

@@ -5,7 +5,7 @@ return {
 	---@type snacks.Config
 	opts = {
 		animate = {
-			enabled = false,
+			enabled = true,
 		},
 		bigfile = { enabled = true },
 		dashboard = {
@@ -25,24 +25,18 @@ return {
 			},
 		},
 		dim = {
-			enabled = false,
+			enabled = true,
 		},
 		indent = {
 			enabled = true,
-			animate = {
-				enabled = false,
-			},
 			scope = {
 				enabled = true,
-			},
-			chunk = {
-				enabled = false,
 			},
 		},
 		input = { enabled = true },
 		notifier = {
 			enabled = true,
-			timeout = 2000,
+			timeout = 1000,
 		},
 		quickfile = { enabled = true },
 		scroll = { enabled = true },
@@ -53,7 +47,7 @@ return {
 		},
 		styles = {
 			notification = {
-				-- wo = { wrap = true } -- Wrap notifications
+				wo = { wrap = true } -- Wrap notifications
 			},
 		},
 	},

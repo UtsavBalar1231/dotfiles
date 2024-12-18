@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "b91052c7e9fe1b05f51c9597b7fe28f38204ef9f1e8b11d79c7194dda2b28170"
+hash = "ec19c7b682df9f8f5ca0630aba13c3ad97a09b354551e3a095a1c06c93b621f8"
 conf_type = "Dir"
 
 [[configs]]
@@ -22,7 +22,7 @@ conf_type = "Dir"
 [[configs]]
 name = "zsh"
 path = "$HOME/.config/zsh/"
-hash = "d33c932e1fbeba67f4d96c3d0a32f61a86b336a32c46280d3f5078a23cd992f6"
+hash = "87300f2a0431340a6044d81b6ee2965b6749c461f53bc1b4d94f7628d8dc80af"
 conf_type = "Dir"
 
 [[configs]]
@@ -100,7 +100,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "e0df63999a752ae00ec1719cec74b60899cf159bc16966ee9609e54c66ad1c8b"
+hash = "f8d1780bc1e2206fde5569c0a2b4716a5c39cfe9ff658c6f4a2c6f7c5bd9fb72"
 conf_type = "Dir"
 
 [[configs]]
@@ -118,7 +118,7 @@ conf_type = "Dir"
 [[configs]]
 name = "gtk-4.0"
 path = "$HOME/.config/gtk-4.0"
-hash = "4c90ccae13d782a769348c3cf249cddaf059652e92bdc9e82bb859a95a3a83ec"
+hash = "67f6d15cee43e0598a29db9043fc27c19aefb490258f551b32699b4dd967df43"
 conf_type = "Dir"
 
 [[configs]]
@@ -130,7 +130,7 @@ conf_type = "Dir"
 [[configs]]
 name = "waybar"
 path = "$HOME/.config/waybar"
-hash = "e10afd72fd6b683107fb0d62aca4fb95316869eec158166266810346b621795e"
+hash = "0a0f7e0a2f57f49d37e235652279f784fe91daf734c97f6ca07a357ce499d5ea"
 conf_type = "Dir"
 
 [[configs]]

@@ -196,6 +196,9 @@ fi
 # vim like shutdown
 alias :wq='sudo shutdown -h now'
 
+# suspend system
+alias :q='sudo systemctl suspend'
+
 # alias for terminal file manager
 if command -v yazi >/dev/null 2>&1; then
 	alias y='yazi'

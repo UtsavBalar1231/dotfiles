@@ -1,7 +1,9 @@
 return {
-    'nvim-lualine/lualine.nvim',
-    config = function()
-    	local lualine = require('lualine')
+	"nvim-lualine/lualine.nvim",
+	event = "VeryLazy",
+	lazy = true,
+	config = function()
+		local lualine = require("lualine")
 
 		local colors = {
 			bg = "#1d2021",
@@ -59,36 +61,34 @@ return {
 			end,
 		}
 
-
-		
-local branch = {
-	"branch",
-	icons_enabled = false,
-	fmt = function(str)
-		if str == nil or str == "" then
-			local mode = vim.fn.mode()
-			if mode == "n" then
-				return "¯\\_(ツ)_/¯ Normal"
-			elseif mode == "i" then
-				return ">_> Typing..."
-			elseif mode == "v" then
-				return "[!] Sneaky Select"
-			elseif mode == "V" then
-				return "[!!] Big Select"
-			elseif mode == "" then
-				return "[###] Block Party"
-			elseif mode == "R" then
-				return "ಠ_ಠ Rewriting"
-			elseif mode == "t" then
-				return "O_o Terminal?"
-			else
-				return "(╯°□°)╯ What?!"
-			end
-		else
-			return "(git: " .. str .. ")"
-		end
-	end,
-}
+		local branch = {
+			"branch",
+			icons_enabled = false,
+			fmt = function(str)
+				if str == nil or str == "" then
+					local mode = vim.fn.mode()
+					if mode == "n" then
+						return "¯\\_(ツ)_/¯ Normal"
+					elseif mode == "i" then
+						return ">_> Typing..."
+					elseif mode == "v" then
+						return "[!] Sneaky Select"
+					elseif mode == "V" then
+						return "[!!] Big Select"
+					elseif mode == "" then
+						return "[###] Block Party"
+					elseif mode == "R" then
+						return "ಠ_ಠ Rewriting"
+					elseif mode == "t" then
+						return "O_o Terminal?"
+					else
+						return "(╯°□°)╯ What?!"
+					end
+				else
+					return "(git: " .. str .. ")"
+				end
+			end,
+		}
 
 		local filename = {
 			"filename",
@@ -184,5 +184,5 @@ local branch = {
 			tabline = {},
 			extensions = {},
 		})
-	end
+	end,
 }

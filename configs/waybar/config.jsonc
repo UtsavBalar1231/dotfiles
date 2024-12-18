@@ -33,7 +33,7 @@
     "return-type": "json",
     "exec": "~/.config/hypr/scripts/get_updates.sh",
     "interval": 3600,
-    "on-click": "exec kitty --class calendar -e paru -Syu",
+    "on-click": "exec kitty --class update -e paru -Syu",
     "on-click-right": "exec ~/.config/hypr/scripts/get_updates.sh",
     "tooltip": true,
   },
