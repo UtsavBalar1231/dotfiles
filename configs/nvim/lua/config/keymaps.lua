@@ -1,7 +1,39 @@
 local keymap = vim.api.nvim_set_keymap
+local map = vim.keymap.set
+
+-- better up/down
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+
+-- Split windows
+map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
+map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
+
+-- Move to window using the <ctrl> hjkl keys
+map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
+map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
+map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
+map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
+
+-- Resize window using <ctrl> arrow keys
+map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
+map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
 
 -- Map <leader>w to quick save
-keymap("n", "<leader>w", "<cmd>:w<cr><esc>", { noremap = true, silent = true, desc = "Quick Save" })
+map({ "i", "x", "n", "s" }, "<leader>w", "<cmd>:w<cr><esc>", { desc = "Quick Save File" })
+
+-- tabs
+map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
+map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
+map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
+map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
+map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
 -- Map <leader>Q to quick quit all
 keymap("n", "<leader>Q", "<cmd>:qa<cr>", { noremap = true, silent = true, desc = "Quick Quit All" })
@@ -9,22 +41,7 @@ keymap("n", "<leader>Q", "<cmd>:qa<cr>", { noremap = true, silent = true, desc =
 -- Map <leader>sw to save and source
 keymap("n", "<leader>ss", "<cmd>:w<cr>:source %<cr>", { noremap = true, silent = true, desc = "Save and Source" })
 
--- Map <leader>tt to open a new tab
-keymap("n", "<leader>Tt", "<cmd>:tabnew<cr>", { noremap = true, silent = true, desc = "Open New Tab" })
-
--- Map <leader>tn to go to next tab
-keymap("n", "<leader>Tn", "<cmd>:tabnext<cr>", { noremap = true, silent = true, desc = "Next Tab" })
-
--- Map <leader>tp to go to previous tab
-keymap("n", "<leader>Tp", "<cmd>:tabprevious<cr>", { noremap = true, silent = true, desc = "Previous Tab" })
-
--- Map <leader>tw to close current tab
-keymap("n", "<leader>Tw", "<cmd>:tabclose<cr>", { noremap = true, silent = true, desc = "Close Current Tab" })
-
--- Map <leader>to to close all other tabs
-keymap("n", "<leader>To", "<cmd>:tabonly<cr>", { noremap = true, silent = true, desc = "Close Other Tabs" })
-
--- Use Q to quit bang
+-- Use Q to quit
 keymap("n", "Q", "<cmd>:q<cr>", { noremap = true, silent = true, desc = "Quit" })
 
 -- Use W to write bang
@@ -38,7 +55,7 @@ keymap("n", "#", "#zz", { noremap = true, silent = true, desc = "Centered Search
 keymap("n", "g*", "g*zz", { noremap = true, silent = true, desc = "Centered Search g*" })
 keymap("n", "g#", "g#zz", { noremap = true, silent = true, desc = "Centered Search g#" })
 
--- Saner behavior of n and N
+-- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 keymap("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 keymap("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
 keymap("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
@@ -56,18 +73,20 @@ keymap("c", "<C-j>", "<Esc>", { noremap = true, silent = true, desc = "Escape" }
 keymap("o", "<C-j>", "<Esc>", { noremap = true, silent = true, desc = "Escape" })
 keymap("t", "<C-k>", "<Esc>", { noremap = true, silent = true, desc = "Escape" })
 
--- Clear search with <esc>
-keymap("i", "<esc>", "<cmd>noh<cr><esc>", { noremap = true, silent = true, desc = "Clear Search" })
-keymap("n", "<esc>", "<cmd>noh<cr><esc>", { noremap = true, silent = true, desc = "Clear Search" })
+-- Clear search and stop snippet on escape
+map({ "i", "n", "s" }, "<esc>", function()
+	vim.cmd("noh")
+	return "<esc>"
+end, { expr = true, desc = "Escape and Clear hlsearch" })
 
 -- Clear search, diff update and redraw
-keymap(
+-- taken from runtime/lua/_editor.lua
+map(
 	"n",
 	"<leader>ur",
 	"<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-	{ noremap = true, silent = true, desc = "Redraw / Clear Search / Diff Update" }
+	{ desc = "Redraw / Clear hlsearch / Diff Update" }
 )
-
 -- Jump to the end of the line with L
 keymap("n", "L", "$", { noremap = true, silent = true, desc = "Jump to End of Line" })
 

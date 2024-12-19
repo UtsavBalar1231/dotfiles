@@ -1,6 +1,4 @@
--- Create/get autocommand group
 local augroup = vim.api.nvim_create_augroup
--- Create autocommand
 local autocmd = vim.api.nvim_create_autocmd
 
 -- URL Highlighting on startup
@@ -35,24 +33,40 @@ autocmd("FileType", {
 		"dbout",
 		"floaterm",
 		"gitsigns.blame",
+		"grug-far",
 		"help",
 		"lir",
 		"lsp-installer",
 		"lspinfo",
 		"man",
+		"neotest-output",
+		"neotest-output-panel",
+		"neotest-summary",
 		"notify",
 		"null-ls-info",
 		"qf",
+		"spectre_panel",
+		"startuptime",
 		"tsplayground",
 	},
 	callback = function(event)
-		vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, nowait = true })
-		vim.opt_local.buflisted = false
+		vim.bo[event.buf].buflisted = false
+		vim.schedule(function()
+			vim.keymap.set("n", "q", function()
+				vim.cmd("close")
+				pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+			end, {
+				buffer = event.buf,
+				silent = true,
+				desc = "Quit buffer",
+			})
+		end)
 	end,
 })
 
 -- make it easier to close man-files when opened inline
 autocmd("FileType", {
+	desc = "Make q close man-files",
 	group = augroup("man_unlisted", { clear = true }),
 	pattern = { "man" },
 	callback = function(event)
@@ -67,20 +81,31 @@ autocmd("TextYankPost", {
 	group = "YankHighlight",
 	pattern = "*",
 	callback = function()
-		vim.highlight.on_yank({ timeout = "400" })
+		(vim.hl or vim.highlight).on_yank()
 	end,
 })
 
 -- Remove whitespace on save
 -- autocmd("BufWritePre", { pattern = "", command = ":%s/\\s\\+$//e" })
 
--- Set completeopt to have a better completion experience
-autocmd("InsertEnter", { pattern = "", command = "setlocal completeopt=menuone,noselect" })
-
--- Jump to last position when opening files
-autocmd("BufReadPost", {
-	pattern = "",
-	command = [[if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]],
+-- go to last loc when opening a buffer
+vim.api.nvim_create_autocmd("BufReadPost", {
+	desc = "Go to last loc when opening a buffer",
+	group = augroup("last_loc", { clear = true }),
+	pattern = "*",
+	callback = function(event)
+		local exclude = { "gitcommit" }
+		local buf = event.buf
+		if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+			return
+		end
+		vim.b[buf].lazyvim_last_loc = true
+		local mark = vim.api.nvim_buf_get_mark(buf, '"')
+		local lcount = vim.api.nvim_buf_line_count(buf)
+		if mark[1] > 0 and mark[1] <= lcount then
+			pcall(vim.api.nvim_win_set_cursor, 0, mark)
+		end
+	end,
 })
 
 -- Check if we need to reload the file when it changed
@@ -117,22 +142,14 @@ autocmd("FileType", {
 	end,
 })
 
--- Auto create parent directory if needed
-autocmd({ "BufWritePre" }, {
-	group = augroup("auto_create_dirs", { clear = true }),
-	pattern = "*",
-	callback = function(event)
-		vim.fn.mkdir(vim.fn.fnamemodify(vim.loop.fs_realpath(event.match) or event.match, ":p:h"), "p")
-	end,
-})
-
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
-autocmd({ "BufWritePre" }, {
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	group = augroup("auto_create_dir", { clear = true }),
 	callback = function(event)
 		if event.match:match("^%w%w+:[\\/][\\/]") then
 			return
 		end
+		---@diagnostic disable: undefined-field
 		local file = vim.uv.fs_realpath(event.match) or event.match
 		vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
 	end,
@@ -144,31 +161,14 @@ vim.filetype.add({
 		[".*"] = {
 			function(path, buf)
 				return vim.bo[buf]
-					and vim.bo[buf].filetype ~= "bigfile"
-					and path
-					and vim.fn.getfsize(path) > vim.g.bigfile_size
-					and "bigfile"
+						and vim.bo[buf].filetype ~= "bigfile"
+						and path
+						and vim.fn.getfsize(path) > vim.g.bigfile_size
+						and "bigfile"
 					or nil
 			end,
 		},
 	},
-})
-
--- Disable minianimate in bigfiles
-autocmd({ "FileType" }, {
-	group = augroup("bigfile", { clear = true }),
-	pattern = "bigfile",
-	callback = function(event)
-		vim.b[event.buf].minianimate_disable = true
-		vim.b[event.buf].cmp_enabled = false
-		vim.b[event.buf].miniindentscope_disable = true
-		vim.b[event.buf].matchup_matchparen_enabled = 0
-		vim.opt_local.wrap = true
-		vim.opt_local.list = false
-		vim.schedule(function()
-			vim.bo[event.buf].syntax = vim.filetype.match({ buf = event.buf }) or ""
-		end)
-	end,
 })
 
 -- Configure some editor settings for terminal buffer
@@ -184,3 +184,21 @@ autocmd({ "TermOpen" }, {
 	end,
 })
 
+-- wrap and check for spell in text filetypes
+vim.api.nvim_create_autocmd("FileType", {
+	group = augroup("wrap_spell", { clear = true }),
+	pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+	callback = function()
+		vim.opt_local.wrap = true
+		vim.opt_local.spell = true
+	end,
+})
+
+-- Fix conceallevel for json files
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	group = augroup("json_conceal", { clear = true }),
+	pattern = { "json", "jsonc", "json5" },
+	callback = function()
+		vim.opt_local.conceallevel = 0
+	end,
+})

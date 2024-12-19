@@ -97,7 +97,7 @@ bindsym $mod+Return exec kitty
 bindsym $mod+Shift+q kill
 
 # start dmenu
-bindcode $mod+40 exec ~/.config/rofi/launchers/type-2/launcher.sh
+bindcode $mod+40 exec rofi -show drun
 
 # rofi open windows
 # bindcode $mod+Shift+40 exec "rofi -show window"

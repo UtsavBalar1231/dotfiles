@@ -1,36 +1,15 @@
 return {
 	"nvim-lualine/lualine.nvim",
 	event = "VeryLazy",
-	lazy = true,
 	config = function()
 		local lualine = require("lualine")
 
-		local colors = {
-			bg = "#1d2021",
-			fg = "#ebdbb2",
-			aqua = "#8ec07c",
-			darkblue = "#076678",
-			orange = "#fe8019",
-			violet = "#b16286",
-			purple = "#d3869b",
-			red = "#fb4934",
-			green = "#b8bb26",
-			blue = "#83a598",
-			yellow = "#fe8019",
-			grey = "#a89984",
-		}
-
 		local diagnostics = {
 			"diagnostics",
-			sources = { "nvim_diagnostic", "coc" },
+			sources = { "nvim_diagnostic" },
 			sections = { "error", "warn", "info" },
 			symbols = { error = " ", warn = " ", info = " " },
-			diagnostics_color = {
-				error = { fg = colors.red },
-				warn = { fg = colors.orange },
-				info = { fg = colors.blue },
-			},
-			update_in_insert = false,
+			update_in_insert = true,
 			always_visible = false,
 		}
 
@@ -44,23 +23,6 @@ return {
 			},
 		}
 
-		local filetype = {
-			"filetype",
-			icons_enabled = false,
-			icon = nil,
-			fmt = function(str)
-				if not (str == nil or str == "") then
-					if str == "markdown" then
-						return ".md"
-					else
-						return "." .. str
-					end
-				else
-					return 'Open a file with ":e"'
-				end
-			end,
-		}
-
 		local branch = {
 			"branch",
 			icons_enabled = false,
@@ -68,7 +30,7 @@ return {
 				if str == nil or str == "" then
 					local mode = vim.fn.mode()
 					if mode == "n" then
-						return "¯\\_(ツ)_/¯ Normal"
+						return "¯\\_(ツ)_/¯"
 					elseif mode == "i" then
 						return ">_> Typing..."
 					elseif mode == "v" then
@@ -92,8 +54,9 @@ return {
 
 		local filename = {
 			"filename",
-			color = { fg = colors.bg, bg = colors.grey, gui = "bold" },
+			color = { gui = "italic" },
 			file_status = true,
+			shorting_target = 0,
 			symbols = {
 				readonly = "",
 				modified = "",
@@ -128,17 +91,9 @@ return {
 			end,
 		}
 
-		local encoding = {
-			"encoding",
-			color = { gui = "bold" },
-			fmt = function(str)
-				return string.upper(str)
-			end,
-		}
-
 		local codeium = {
 			"codeium",
-			color = { fg = colors.green, gui = "bold" },
+			color = { gui = "bold" },
 			fmt = function(_)
 				local cstr = vim.fn["codeium#GetStatusString"]()
 				if cstr == " ON" or cstr == " 0 " then
@@ -161,27 +116,49 @@ return {
 				always_divide_middle = true,
 			},
 			sections = {
-				lualine_a = { branch, diff },
-				lualine_b = { "mode" },
-				lualine_c = { filename, filesize, filetype, progress },
-				lualine_x = {
+				lualine_a = { "mode" },
+				lualine_b = {
+					diagnostics,
+					{
+						"buffers",
+						buffers_color = {
+							active = { gui = "bold" },
+							inactive = { gui = "italic" },
+						},
+						symbols = {
+							modified = " ●",
+							alternate_file = "",
+							directory = "",
+						},
+						mode = 2,
+					},
+				},
+				lualine_c = {
+					filename,
+					filesize,
+					progress,
+				},
+				lualine_x = { diff, branch },
+				lualine_y = {
+					"searchcount",
+					"selectioncount",
+					"filetype",
+				},
+				lualine_z = {
 					codeium,
 				},
-				lualine_y = {
-					diagnostics,
-					encoding,
-				},
-				lualine_z = { "location" },
 			},
 			inactive_sections = {
-				lualine_a = {},
+				lualine_a = { "mode" },
 				lualine_b = {},
-				lualine_c = {},
-				lualine_x = {},
+				lualine_c = { "filename" },
+				lualine_x = { "location" },
 				lualine_y = {},
 				lualine_z = {},
 			},
 			tabline = {},
+			winbar = {},
+			inactive_winbar = {},
 			extensions = {},
 		})
 	end,

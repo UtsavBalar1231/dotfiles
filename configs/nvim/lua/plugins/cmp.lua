@@ -1,6 +1,6 @@
 return {
 	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
+	event = "VeryLazy",
 
 	dependencies = {
 		"hrsh7th/cmp-buffer",
@@ -99,7 +99,7 @@ return {
 
 			preselect = cmp.PreselectMode.None,
 			experimental = {
-				ghost_text = false,
+				ghost_text = true,
 			},
 			duplicates = {
 				codeium = 1,
@@ -165,7 +165,7 @@ return {
 
 			-- Installed sources
 			sources = {
-				{ name = "codeium", priority = 1000 },
+				{ name = "codeium"},
 				{ name = "nvim_lsp", priority = 850 },
 				{ name = "luasnip", priority = 700 },
 				{ name = "buffer", priority = 650 },

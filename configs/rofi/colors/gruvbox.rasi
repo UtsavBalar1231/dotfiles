@@ -1,33 +1,27 @@
-/**
- *
- * Author : Aditya Shakya (adi1090x)
- * Github : @adi1090x
- * 
- * Colors
- **/
-
 * {
-    background:     #1d2021FF;
-    background-alt: #141617FF;
-    foreground:     #EBDBB2FF;
-    selected:       #83A598FF;
-    active:         #B8BB26FF;
-    urgent:         #FB4934FF;
+  bg0:      #141617b6;
+  bg1:      #3c3836e6;
+  bg2:      #504945e6;
+  bg3:      #665c54e6;
+  bg4:      #7c6f64e6;
 
-	color0:			#1d2021;
-	color1: 		#cc241d;
-	color2: 		#98971a;
-	color3: 		#d79921;
-	color4: 		#458588;
-	color5: 		#b16286;
-	color6: 		#689d6a;
-	color7: 		#a89984;
-	color8: 		#928374;
-	color9: 		#fb4934;
-	color10:		#b8bb26;
-	color11: 		#fabd2f;
-	color12: 		#83a598;
-	color13: 		#d3869b;
-	color14: 		#8ec07c;
-	color15: 		#ebdbb2;
+  fg0:      #fbf1c7;
+  fg1:      #ebdbb2;
+  fg2:      #d5c4a1;
+  fg3:      #bdae93;
+  fg4:      #a89984;
+
+  red:      #cc241d;
+  green:    #98971a;
+  yellow:   #d79921;
+  blue:     #458588;
+  purple:   #b16286;
+  aqua:     #689d6a;
+  orange:   #d65d0e;
+  gray:     #928374;
+ 
+  accent:   #ebdbb2e6;
+
+  background-color: transparent;
+  text-color:       @fg0;
 }

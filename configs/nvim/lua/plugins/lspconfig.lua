@@ -3,12 +3,14 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
+		-- "saghen/blink.cmp",
 		"j-hui/fidget.nvim",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		-- local blink_cmp = require("blink.cmp")
 
 		local keymap = vim.keymap
 		local opts = { noremap = true, silent = true }
@@ -69,6 +71,7 @@ return {
 		end
 
 		-- used to enable autocompletion (assign to every lsp server config)
+		-- local capabilities = blink_cmp.get_lsp_capabilities()
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
 		-- Change the Diagnostic symbols in the sign column (gutter)

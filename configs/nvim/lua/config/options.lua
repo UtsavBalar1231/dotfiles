@@ -12,7 +12,6 @@ g.mapleader = " "
 ---@diagnostic disable-next-line: inject-field
 g.maplocalleader = ","
 
-
 -- Set bigfile size
 ---@diagnostic disable-next-line: inject-field
 g.bigfile_size = 1024 * 256
@@ -85,6 +84,17 @@ opt.jumpoptions = "view"
 opt.updatetime = 250
 -- Do not save backup
 opt.writebackup = false
+-- Set fillchars
+opt.fillchars = {
+	foldopen = "",
+	foldclose = "",
+	fold = " ",
+	foldsep = " ",
+	diff = "╱",
+	eob = " ",
+}
+-- Set foldlevel
+opt.foldlevel = 99
 
 -------------------------------
 --- General editor UI setup ---
@@ -93,6 +103,9 @@ opt.writebackup = false
 opt.number = true
 -- Enable relative line numbers
 opt.relativenumber = true
+-- Disable the default ruler
+opt.ruler = false
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 -- Highlight matching parenthesis
 opt.showmatch = true
 -- Enable folding (default 'foldmarker')
@@ -118,7 +131,7 @@ opt.termguicolors = true
 -- Set global statusline
 opt.laststatus = 3
 -- allow backspace on indent, end of line or insert mode start position
-opt.backspace = "indent,eol,start" 
+opt.backspace = "indent,eol,start"
 -- Enable ttyfast
 opt.ttyfast = true
 -- Show (partial) command in status line
@@ -153,12 +166,6 @@ opt.swapfile = false
 --- Format options setup ---
 ----------------------------
 opt.formatoptions = "jcroqlnt" -- tcqj
--- opt.formatoptions:append("n") -- Auto indent new lines
--- opt.formatoptions:append("q") -- Allow formatting comments w/ gq
--- opt.formatoptions:append("r") -- Auto indent after paste
--- opt.formatoptions:append("t") -- Auto indent after <C-t>
--- opt.formatoptions:append("c") -- Auto indent comment lines
--- opt.formatoptions:append("b") -- Auto indent after <C-o>
 
 --- Make diffing better: https://vimways.org/2018/the-power-of-diff/
 opt.diffopt:append("iwhite")
@@ -184,7 +191,6 @@ else
 end
 
 -- Fix markdown indentation settings
----@diagnostic disable-next-line: inject-field
 g.markdown_recommended_style = 0
 
 -- disable some default providers

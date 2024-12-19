@@ -1,7 +1,7 @@
-@define-color foreground #ebdbb2;
-@define-color background #141517;
-@define-color cursor #ebdbb2;
-@define-color color0 #1d2021;
+@define-color foreground rgba(235, 219, 178, 0.71);
+@define-color background rgba(20, 21, 23, 0.80);
+@define-color cursor rgba(235, 219, 178, 1);
+@define-color color0 rgba(29, 32, 33, 0.80);
 @define-color color1 #cc241d;
 @define-color color2 #98971a;
 @define-color color3 #d79921;

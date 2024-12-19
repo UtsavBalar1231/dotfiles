@@ -36,7 +36,7 @@ return {
 		input = { enabled = true },
 		notifier = {
 			enabled = true,
-			timeout = 1000,
+			timeout = 3000,
 		},
 		quickfile = { enabled = true },
 		scroll = { enabled = true },
@@ -47,7 +47,7 @@ return {
 		},
 		styles = {
 			notification = {
-				wo = { wrap = true } -- Wrap notifications
+				wo = { wrap = true }, -- Wrap notifications
 			},
 		},
 	},
@@ -144,16 +144,16 @@ return {
 			desc = "Dismiss All Notifications",
 		},
 		{
-			"<c-/>",
+			"<leader>ft",
 			function()
 				Snacks.terminal()
 			end,
-			desc = "Toggle Terminal",
+			desc = "Open Terminal",
 		},
 		{
 			"<c-`>",
 			function()
-				Snacks.terminal()
+				Snacks.terminal.toggle()
 			end,
 			desc = "Toggle Terminal",
 		},

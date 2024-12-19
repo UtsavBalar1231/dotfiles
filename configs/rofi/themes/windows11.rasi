@@ -1,0 +1,114 @@
+* {
+  font: "Roboto 10";
+
+  bg0    : #1f1f1f80;
+  bg1    : #202020e6;
+  bg2    : #2c2c2c;
+  bg3    : #393939e6;
+  fg0    : #ffffff;
+  fg1    : #cecece;
+  accent : #0078D4;
+  urgent : #ff9800;
+
+  background-color : transparent;
+  text-color       : @fg0;
+
+  margin  : 0;
+  padding : 0;
+  spacing : 0;
+}
+
+element-icon, element-text, scrollbar {
+  cursor: pointer;
+}
+
+window {
+  location : center;
+  width    : 640px;
+  height   : 600px;
+  y-offset : 0px;   
+
+  background-color : @bg1;
+  border-radius    : 10px;
+}
+
+mainbox {
+  padding : 24px;
+  spacing : 16px;
+}
+
+inputbar {
+  padding          : 12px;
+  spacing          : 12px;
+  children         : [ icon-search, entry ];
+  border           : 1px solid;
+  border-color     : @bg3;
+  border-radius    : 6px;
+  background-color : @bg2;
+}
+
+icon-search, entry, element-icon, element-text {
+  vertical-align: 0.5;
+}
+
+icon-search {
+  expand   : false;
+  filename : "search-symbolic";
+  size     : 18px;
+}
+
+entry {
+  font              : "JetBrainsMono Nerd Font 12";
+  placeholder       : "Type here to search";
+  placeholder-color : @fg1;
+  text-color        : @fg0;
+}
+
+textbox {
+  padding          : 4px 8px;
+  background-color : @bg2;
+}
+
+listview {
+  columns        : 6;
+  spacing        : 16px;
+  fixed-height   : true;
+  fixed-columns  : true;
+  dynamic        : true;
+  scrollbar      : false;
+}
+
+element {
+  orientation   : vertical;
+  spacing       : 8px;
+  padding       : 12px;
+  border-radius : 6px;
+}
+
+element normal urgent {
+  text-color: @urgent;
+}
+
+element normal active {
+  text-color: @accent;
+}
+
+element selected {
+  background-color : @bg3;
+  text-color       : @fg0;
+}
+
+element selected urgent {
+  background-color : @urgent;
+  text-color       : @fg0;
+}
+
+element-icon {
+  size : 3em;
+}
+
+element-text {
+  text-color       : inherit;
+  horizontal-align : 0.5;
+  font             : "JetBrainsMono Nerd Font 10";
+}

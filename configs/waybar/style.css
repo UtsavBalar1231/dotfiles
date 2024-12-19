@@ -54,7 +54,7 @@ tooltip * {
 
 #window {
 	color: @foreground;
-	background-color: @background;
+	/* background-color: @background; */
 }
 
 /* make window module transparent when no windows present */
@@ -88,20 +88,26 @@ window#waybar.empty #window {
 #workspaces button.active {
 	color: @background;
 	background-color: @color3;
-	text-shadow: 0 0 5px rgba(20, 21, 24, 0.7);
+	text-shadow: 0 0 5px @background;
 	transition: all 0.1s ease-in-out;
 	border-radius: 20px;
 }
 
-#clock,
-#custom-weather,
 #custom-swaync,
-#custom-hyprshade,
-#custom-updates, 
+#custom-updates,
 #power-profiles-daemon {
 	font-family: "Iosevka Nerd Font";
 	font-weight: bolder;
-	text-shadow: 0 0 5px rgb(20, 21, 24);
+	text-shadow: 0 0 5px @background;
+	color: @color15;
+}
+
+#clock,
+#custom-weather,
+#custom-hyprshade {
+	font-family: "Iosevka Nerd Font";
+	font-weight: bolder;
+	text-shadow: 0 0 5px @background;
 	color: @color15;
 	background-color: @background;
 }
@@ -175,7 +181,7 @@ window#waybar.empty #window {
 	color: @foreground;
 	margin-left: 0rem;
 	margin-right: 1rem;
-	text-shadow: 0 0 5px rgba(20, 21, 24, 0.8);
+	/* text-shadow: 0 0 5px @background; */
 	transition: all 0.1s ease-in-out;
 	border-radius: 0px;
 	font-size: 16px;

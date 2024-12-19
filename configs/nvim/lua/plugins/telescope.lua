@@ -1,98 +1,150 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	event = { "CmdlineEnter" },
+	event = { "BufReadPre", "BufNewFile" },
+	cmd = "Telescope",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"nvim-telescope/telescope.nvim",
 		"nvim-telescope/telescope-file-browser.nvim",
 		"nvim-telescope/telescope-ui-select.nvim",
-		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		"nvim-telescope/telescope-frecency.nvim",
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true },
 		"folke/trouble.nvim",
 	},
 	config = function()
 		local telescope = require("telescope")
-		-- local actions = require("telescope.actions")
 		local builtin = require("telescope.builtin")
 
-		-- Grep in current directory
-		local function telescope_buffer_dir()
-			return vim.fn.expand("%:p:h")
+		local function map(mode, key, action, desc)
+			vim.keymap.set(mode, key, action, desc)
 		end
 
-		vim.keymap.set("n", "<leader>fi", builtin.find_files, { desc = "Telescope find files" })
-		vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
+		local function set_colorscheme(colorscheme)
+			vim.cmd("colorscheme " .. colorscheme)
+			local config_path = vim.fn.stdpath("config") .. "/colorscheme.lua"
+			local file = io.open(config_path, "w")
+			if file then
+				file:write(string.format("vim.cmd('colorscheme %s')\n", colorscheme))
+				file:close()
+			else
+				vim.notify("Failed to save colorscheme!", vim.log.levels.ERROR)
+			end
+			vim.notify("Colorscheme set to " .. colorscheme, vim.log.levels.INFO)
+		end
+
+		local function pick_colorscheme()
+			local colorschemes = vim.fn.getcompletion("", "color")
+			require("telescope.pickers")
+				.new({}, {
+					prompt_title = "Select Colorscheme",
+					finder = require("telescope.finders").new_table({
+						results = colorschemes,
+					}),
+					sorter = require("telescope.config").values.generic_sorter({}),
+					attach_mappings = function(_, keymap)
+						local actions = require("telescope.actions")
+						local state = require("telescope.actions.state")
+
+						-- Live preview of the colorscheme
+						keymap("i", "<CR>", function(prompt_bufnr)
+							local selection = state.get_selected_entry()
+							actions.close(prompt_bufnr)
+							set_colorscheme(selection.value)
+						end)
+
+						-- Preview the colorscheme while navigating
+						keymap("i", "<C-p>", function()
+							local selection = state.get_selected_entry()
+							if selection then
+								vim.cmd("colorscheme " .. selection.value)
+							end
+						end)
+
+						keymap("n", "<CR>", function(prompt_bufnr)
+							local selection = state.get_selected_entry()
+							actions.close(prompt_bufnr)
+							set_colorscheme(selection.value)
+						end)
+
+						-- Preview the colorscheme while navigating in normal mode
+						keymap("n", "<C-p>", function()
+							local selection = state.get_selected_entry()
+							if selection then
+								vim.cmd("colorscheme " .. selection.value)
+							end
+						end)
+
+						return true
+					end,
+
+					-- Use `on_display` to preview colorscheme as you scroll
+					on_display = function()
+						local selection = require("telescope.actions.state").get_selected_entry()
+						if selection then
+							vim.cmd("colorscheme " .. selection.value)
+						end
+					end,
+				})
+				:find()
+		end
+
+		-- Keymap to invoke the picker
+		vim.keymap.set("n", "<leader>cs", pick_colorscheme, { desc = "Pick and set colorscheme with preview" })
+		-- Grep in current directory
+		map("n", "<leader>fi", builtin.find_files, { desc = "Telescope find files" })
+		map("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
+
+		local function live_grep_pwd()
+			builtin.live_grep({
+				prompt_title = "Live grep in parent directory",
+				cwd = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":h"),
+				hidden = true,
+			})
+		end
 
 		-- Live Grep in parent directory of the current buffer
-		local function parent_directory_of_current_file()
-			-- Get the full path of the current file
-			local current_file = vim.fn.expand("%:p")
-			-- Get the parent directory of the current file
-			return vim.fn.fnamemodify(current_file, ":h")
-		end
-
-		vim.keymap.set("n", "<leader>fG", function()
-			builtin.live_grep({
-				cwd = parent_directory_of_current_file(),
-				desc = "Telescope live grep in parent directory",
-			})
-		end, {})
-
-		vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
-		vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
-		vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "Telescope commands" })
-		vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "Telescope old files" })
-		vim.keymap.set("n", "<leader>ft", builtin.tags, { desc = "Telescope tags" })
-		vim.keymap.set(
-			"n",
-			"<leader>f/",
-			builtin.current_buffer_fuzzy_find,
-			{ desc = "Telescope current buffer fuzzy find" }
-		)
-		vim.keymap.set("n", "<leader>f?", builtin.current_buffer_tags, { desc = "Telescope current buffer tags" })
-		vim.keymap.set("n", "<leader>fe", builtin.diagnostics, { desc = "Telescope diagnostics" })
-		vim.keymap.set("n", "<leader>fq", builtin.quickfix, { desc = "Telescope quickfix list" })
+		map("n", "<leader>fG", live_grep_pwd, { desc = "Telescope live grep in parent directory" })
+		map("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
+		map("n", "<leader>fo", builtin.oldfiles, { desc = "Telescope old files" })
+		map("n", "<leader>f/", builtin.current_buffer_fuzzy_find, { desc = "Telescope current buffer fuzzy find" })
+		map("n", "<leader>fe", builtin.diagnostics, { desc = "Telescope diagnostics" })
+		map("n", "<leader>fq", builtin.quickfix, { desc = "Telescope quickfix list" })
+		map("n", "<leader>fl", builtin.loclist, { desc = "Telescope loc list" })
 
 		-- Map <leader>f[ to goto previous diagnostic
-		vim.keymap.set("n", "<leader>f[", function()
+		map("n", "<leader>f[", function()
 			vim.diagnostic.goto_prev({ popup_opts = { border = "rounded" }, desc = "Telescope diagnostics previous" })
 		end, {})
 
 		-- Map <leader>f] to goto next diagnostic
-		vim.keymap.set("n", "<leader>f]", function()
+		map("n", "<leader>f]", function()
 			vim.diagnostic.goto_next({ popup_opts = { border = "rounded" }, desc = "Telescope diagnostics next" })
 		end, {})
 
-		vim.keymap.set("n", "<leader>fd", builtin.lsp_definitions, { desc = "Telescope lsp definitions" })
-		vim.keymap.set(
-			"n",
-			"<leader>fw",
-			builtin.lsp_dynamic_workspace_symbols,
-			{ desc = "Telescope lsp dynamic workspace symbols" }
-		)
-		vim.keymap.set("n", "<leader>fr", builtin.lsp_references, { desc = "Telescope lsp references" })
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function()
+				map("n", "<leader>fd", builtin.lsp_definitions, { desc = "Telescope lsp definitions" })
+				map("n", "<leader>fr", builtin.lsp_references, { desc = "Telescope lsp references" })
+				map(
+					"n",
+					"<leader>fw",
+					builtin.lsp_dynamic_workspace_symbols,
+					{ desc = "Telescope lsp dynamic workspace symbols" }
+				)
+			end,
+		})
 
 		-- git commands
-		vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "Telescope git status" })
-		vim.keymap.set("n", "<leader>tb", builtin.git_branches, { desc = "Telescope git branches" })
-		vim.keymap.set("n", "<leader>tc", builtin.git_commits, { desc = "Telescope git commits" })
-		vim.keymap.set("n", "<leader>gC", builtin.git_bcommits, { desc = "Telescope git buffer commits" })
-		vim.keymap.set("n", "<leader>gf", builtin.git_files, { desc = "Telescope git files" })
-		vim.keymap.set("n", "<leader>gS", builtin.git_stash, { desc = "Telescope git stash files" })
+		map("n", "<leader>gs", builtin.git_status, { desc = "Telescope git status" })
+		map("n", "<leader>tb", builtin.git_branches, { desc = "Telescope git branches" })
+		map("n", "<leader>tc", builtin.git_commits, { desc = "Telescope git commits" })
+		map("n", "<leader>gC", builtin.git_bcommits, { desc = "Telescope git buffer commits" })
+		map("n", "<leader>gf", builtin.git_files, { desc = "Telescope git files" })
+		map("n", "<leader>gS", builtin.git_stash, { desc = "Telescope git stash files" })
 
-		vim.keymap.set("n", "<leader>fm", "<cmd>Telescope man_pages<cr>", { desc = "Telescope Man Pages" })
-		vim.keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Telescope Keymaps" })
+		map("n", "<leader>fm", "<cmd>Telescope man_pages<cr>", { desc = "Telescope Man Pages" })
+		map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Telescope Keymaps" })
 
-		vim.keymap.set("n", "ff", function()
-			telescope.extensions.file_browser.file_browser({
-				path = "%:p:h",
-				cwd = telescope_buffer_dir(),
-				respect_gitignore = false,
-				hidden = true,
-				grouped = true,
-				previewer = true,
-				initial_mode = "normal",
-			})
-		end)
+		map("n", "<leader>ff", ":Telescope file_browser hidden=true respect_gitignore=true path=%:p:h select_buffer=true<CR>")
 
 		local fb_actions = require("telescope").extensions.file_browser.actions
 		local open_with_trouble = require("trouble.sources.telescope")
@@ -109,10 +161,16 @@ return {
 				layout_config = {
 					horizontal = {
 						prompt_position = "top",
-						preview_width = 0.55,
+						preview_width = function(_, cols, _)
+							return math.floor(cols * 0.6)
+						end,
 					},
-					width = 0.87,
-					height = 0.80,
+					width = function(_, cols, _)
+						return math.floor(cols * 0.9)
+					end,
+					height = function(_, _, rows)
+						return math.floor(rows * 0.85)
+					end,
 				},
 				mappings = {
 					i = {
@@ -132,41 +190,48 @@ return {
 					"--column",
 					"--smart-case",
 				},
+				selection_caret = " ➤ ",
 				prompt_prefix = "   ",
-				selection_caret = "  ",
 				entry_prefix = "  ",
 				initial_mode = "insert",
 				selection_strategy = "reset",
 				sorting_strategy = "ascending",
 				file_sorter = require("telescope.sorters").get_fuzzy_file,
-				file_ignore_patterns = { "node_modules" },
+				file_ignore_patterns = { "node_modules", "%.git/", "dist/", "build/", "%.lock" },
 				generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-				path_display = { "truncate" },
+				path_display = { "smart" },
 				winblend = 0,
 				border = {},
 				-- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 				color_devicons = true,
 				use_less = true,
-				set_env = { ["COLORTERM"] = "truecolor" },
-				file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-				grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-				qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+				set_env = { ["COLORTERM"] = "truecolor", ["BAT_THEME"] = "TwoDark" },
+				file_previewer = require("telescope.previewers").cat.new,
+				grep_previewer = require("telescope.previewers").vimgrep.new,
+				qflist_previewer = require("telescope.previewers").qflist.new,
 				-- Developer configurations: Not meant for general override
 				buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
 			},
 			extensions = {
 				wrap_results = true,
-				fzf = {},
+				fzf = {
+					fuzzy = true,
+					override_generic_sorter = true,
+					override_file_sorter = true,
+					case_mode = "smart_case",
+				},
 				["ui-select"] = {
-					require("telescope.themes").get_dropdown({}),
+					require("telescope.themes").get_cursor({}),
 				},
 				file_browser = {
+					theme = "ivy",
 					hijack_netrw = true,
 					mappings = {
 						["i"] = {
 							["<C-w>"] = function()
 								vim.cmd("normal vbd")
 							end,
+							["<C-h>"] = "which_key",
 						},
 						["n"] = {
 							-- your custom normal mode mappings
@@ -180,7 +245,13 @@ return {
 					hide_dotfiles = false,
 					show_hidden = true,
 					file_sorter = require("telescope.sorters").get_fzy_sorter,
-					file_ignore_patterns = {},
+					file_ignore_patterns = {
+						"node_modules",
+						"dist",
+						"build",
+						"%.lock",
+						"target",
+					},
 				},
 			},
 		})
@@ -188,5 +259,6 @@ return {
 		telescope.load_extension("fzf")
 		telescope.load_extension("file_browser")
 		telescope.load_extension("ui-select")
+		telescope.load_extension("frecency")
 	end,
 }
