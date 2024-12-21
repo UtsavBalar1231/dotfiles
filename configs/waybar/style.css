@@ -1,226 +1,151 @@
 @import "/home/utsav/.config/waybar/themes/gruvbox.css";
 
 * {
-	font-family: "JetBrainsMono Nerd Font";
-	font-size: 16px;
-	/* font-weight: bold; */
-	border-radius: 0px;
-	margin: 0px;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 1.25rem;
+  border-radius: 0;
+  margin: 0;
 }
 
 window#waybar {
-	background-color: transparent;
-	border-radius: 8px;
-	padding-top: 0px;
-	margin-top: 0px;
-}
-
-.modules-right {
-	font-size: 12px;
-	background-color: @background;
-	border-radius: 12px;
-	padding: 0px;
-	margin: 5px 0 5px 0px;
-}
-
-.modules-left {
-	margin-left: 0.1rem;
-	background-color: @background;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding: 1px 0px;
-	border-radius: 12px;
-}
-
-.modules-center {
-	padding: 0px;
-	margin: 5px 0 5px 0px;
-}
-
-tooltip {
-	background: @background;
-	border-radius: 12px;
-}
-
-tooltip label {
-	color: @foreground;
-	background-color: @background;
-	border-radius: 12px;
-}
-
-tooltip * {
-	border-radius: 12px;
-}
-
-#window {
-	color: @foreground;
-	/* background-color: @background; */
-}
-
-/* make window module transparent when no windows present */
-window#waybar.empty #window {
-	background-color: transparent;
-}
-
-#workspaces {
-	margin: 1px;
-	margin-right: 0.3rem;
-	margin-left: 0.3rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
 }
 
 #workspaces button {
-	margin: 0px;
-	color: @color15;
-	font-weight: bolder;
-	font-style: normal;
-	margin: 0.2em 0.1rem;
-	border-radius: 20px;
+  box-shadow: none;
+  text-shadow: none;
+  margin: 0.6125rem;
+  padding: 0.3125rem 0.6125rem;
+  border-radius: 1.25rem;
+  color: @foreground;
+  font-weight: bold;
+  font-style: normal;
+  animation: ws_normal 20s ease-in-out 1;
 }
 
 #workspaces button:hover {
-	box-shadow: inherit;
-	text-shadow: inherit;
-	background-color: @color15;
-	color: @background;
-	border-radius: 12px;
+  background-color: @foreground;
+  color: @bg0;
 }
 
 #workspaces button.active {
-	color: @background;
-	background-color: @color3;
-	text-shadow: 0 0 5px @background;
-	transition: all 0.1s ease-in-out;
-	border-radius: 20px;
+  color: @bg0;
+  background-color: @color3;
+  transition: all 0.1s ease-in-out;
+  animation: ws_active 20s ease-in-out 1;
+}
+
+#workspaces button.active:hover {
+  color: @foreground;
+}
+
+#workspaces button:not(.active):not(.empty):not(:hover) {
+  color: @bg2;
+}
+
+.modules-left,
+.modules-right,
+.modules-center {
+  background-color: @bg0;
+  border-radius: 0.75rem;
+  margin: 0.125rem;
+  padding: 0 0.6125rem;
+}
+
+tooltip {
+  background: @bg0;
+  border-radius: 0.75rem;
+}
+
+#memory,
+#backlight,
+#pulseaudio,
+#cpu,
+#disk,
+#battery {
+  margin: 0;
+  padding: 0 0.75rem;
+}
+
+#memory {
+  color: @color2;
+  padding-left: 0.75rem;
+}
+
+#backlight {
+  color: @color3;
+}
+
+#pulseaudio {
+  color: @color1;
+}
+
+#cpu,
+#disk {
+  color: @color5;
+}
+
+#battery,
+#tray {
+  color: @color6;
+}
+
+#hyprland-window,
+#custom-updates,
+#clock,
+#custom-weather,
+#custom-swaync,
+#tray {
+  padding: 0 0.75rem 0 0.75rem;
+}
+
+#network {
+  padding: 0 1.25rem 0 1rem;
+}
+
+#custom-hyprsunset {
+  color: @color2;
+}
+
+#custom-hyprsunset,
+#bluetooth,
+#power-profiles-daemon {
+  padding: 0 1rem 0 1rem;
+}
+
+#memory,
+#clock {
+  border-radius: 0.75rem 0 0 0.75rem;
 }
 
 #custom-swaync,
 #custom-updates,
-#power-profiles-daemon {
-	font-family: "Iosevka Nerd Font";
-	font-weight: bolder;
-	text-shadow: 0 0 5px @background;
-	color: @color15;
+#custom-weather {
+  border-radius: 0 0.75rem 0.75rem 0;
 }
 
-#clock,
-#custom-weather,
-#custom-hyprshade {
-	font-family: "Iosevka Nerd Font";
-	font-weight: bolder;
-	text-shadow: 0 0 5px @background;
-	color: @color15;
-	background-color: @background;
+#custom-swaync {
+  padding-right: 1.25rem;
 }
 
-#clock {
-	padding: 0 1rem 0 1.5rem;
-	border-radius: 12px 0 0 12px;
-}
-
-#hyprland-window,
-#custom-weather,
-#custom-swaync,
-#custom-updates {
-	padding-right: 1.5rem;
-	border-radius: 0 12px 12px 0px;
-}
-
-#custom-hyprshade {
-	padding: 0 0.8em 0 0.1rem;
-}
-
-#memory {
-	color: @color2;
-	padding: 0 0.4em 0 0.5rem;
-	padding-left: 1.5rem;
-	border-radius: 12px 0 0 12px;
-}
-
-#backlight {
-	color: @color3;
-}
-
-#pulseaudio {
-	color: @color1;
-}
-
-#backlight,
-#pulseaudio {
-	margin: 0px;
-	padding: 0 0.4em 0 0.5rem;
-}
-
-#cpu {
-	margin: 0px;
-	padding: 0 0.4em 0 0.5rem;
-	color: @color5;
-}
-
-#tray {
-	margin: 0px;
-	padding-right: 1.5rem;
-	color: @color6;
-	border-radius: 0 12px 12px 0px;
-}
-
-#disk {
-	color: @color5;
-}
-
-#battery {
-	color: @color6;
-}
-
-#disk,
-#battery {
-	margin: 0px;
-	padding: 0 0.4em 0 0.5rem;
-}
-
-#window {
-	color: @foreground;
-	margin-left: 0rem;
-	margin-right: 1rem;
-	/* text-shadow: 0 0 5px @background; */
-	transition: all 0.1s ease-in-out;
-	border-radius: 0px;
-	font-size: 16px;
-}
-
-#bluetooth {
-	margin: 0px;
-	padding: 0 0 0 0.5rem;
-	color: @color12;
+#bluetooth,
+#power-profiles-daemon.balanced {
+  color: @color12;
 }
 
 #bluetooth.disabled,
-#bluetooth.offline {
-	color: @foreground;
-}
-
-#network {
-	margin: 0px;
-	padding: 0 1.5rem 0 0.5rem;
-	color: @color14;
-}
-
+#bluetooth.offline,
 #network.disabled,
 #network.offline {
-	color: @foreground;
+  color: @bg2;
 }
 
-#power-profiles-daemon {
-	padding-right: 1.5rem;
+#network,
+#power-profiles-daemon.power-saver {
+  color: @color14;
 }
 
 #power-profiles-daemon.performance {
-	color: @color9;
-}
-
-#power-profiles-daemon.balanced {
-	color: @color12;
-}
-
-#power-profiles-daemon.power-saver {
-	color: @color14;
+  color: @color9;
 }

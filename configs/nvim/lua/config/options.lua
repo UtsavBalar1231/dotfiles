@@ -20,6 +20,9 @@ g.bigfile_size = 1024 * 256
 opt.undodir = vim.fn.stdpath("config") .. "/../../.vimdid"
 opt.undofile = true
 
+-- Enable lazy redraw
+opt.lazyredraw = true
+
 -----------------------
 --- Sane tabs setup ---
 -----------------------
@@ -146,7 +149,7 @@ opt.cmdheight = 1
 -- Show cursor line
 opt.cursorline = true
 -- Popup blend
-opt.pumblend = 10
+opt.pumblend = 0
 -- Maximum number of entries in a popup
 opt.pumheight = 10
 -- Round indent

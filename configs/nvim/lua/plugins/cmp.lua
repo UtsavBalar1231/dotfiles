@@ -1,20 +1,20 @@
 return {
 	"hrsh7th/nvim-cmp",
-	event = "VeryLazy",
+	event = "InsertEnter",
 
 	dependencies = {
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-nvim-lua",
-		"hrsh7th/cmp-nvim-lsp-signature-help",
+		{ "hrsh7th/cmp-buffer", lazy = true },
+		{ "hrsh7th/cmp-path", lazy = true },
+		{ "hrsh7th/cmp-nvim-lsp", lazy = true },
+		{ "hrsh7th/cmp-nvim-lua", lazy = true },
+		{ "hrsh7th/cmp-nvim-lsp-signature-help", lazy = true },
 
 		"saadparwaiz1/cmp_luasnip",
 		"L3MON4D3/LuaSnip",
 		"rafamadriz/friendly-snippets",
 		"onsails/lspkind.nvim",
 
-		"Exafunction/codeium.vim",
+		"Exafunction/codeium.nvim",
 		"Saecki/crates.nvim",
 		"brenoprata10/nvim-highlight-colors",
 	},
@@ -24,10 +24,11 @@ return {
 		local luasnip = require("luasnip")
 		local lspkind = require("lspkind")
 
-		local check_backspace = function()
-			local col = vim.fn.col(".") - 1
-			return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
-		end
+		lspkind.init({
+			symbol_map = {
+				Codeium = "{…}",
+			},
+		})
 
 		-- vscode format
 		require("luasnip.loaders.from_vscode").lazy_load({ exclude = vim.g.vscode_snippets_exclude or {} })
@@ -55,6 +56,13 @@ return {
 		require("luasnip.loaders.from_vscode").lazy_load()
 
 		vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+		local has_words_before = function()
+			if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then
+				return false
+			end
+			local line, col = (unpack or table.unpack)(vim.api.nvim_win_get_cursor(0))
+			return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+		end
 
 		cmp.setup({
 			enabled = function()
@@ -81,25 +89,13 @@ return {
 			formatting = {
 				fields = { "kind", "abbr", "menu" },
 				format = function(entry, vim_item)
-					local color_item = require("nvim-highlight-colors").format(entry, { kind = vim_item.kind })
-					local kind = lspkind.cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
-					local strings = vim.split(kind.kind, "%s", { trimempty = true })
-					if color_item.abbr_hl_group then
-						vim_item.kind_hl_group = color_item.abbr_hl_group
-						vim_item.kind = color_item.abbr
-					else
-						kind.kind = " " .. (strings[1] or "") .. " "
-					end
-
-					kind.menu = "    (" .. (strings[2] or "") .. ")"
-
-					return kind
+					return lspkind.cmp_format()(entry, vim_item)
 				end,
 			},
 
 			preselect = cmp.PreselectMode.None,
 			experimental = {
-				ghost_text = true,
+				ghost_text = false,
 			},
 			duplicates = {
 				codeium = 1,
@@ -116,12 +112,12 @@ return {
 				highlight_hovered_item = true,
 				highlight_selected_item = true,
 				completion = {
-					border = "rounded",
+					-- border = "rounded",
 					winhighlight = "Normal:Normal,FloatBorder:CmpBorder,CursorLine:Visual,Search:None",
 					scrollbar = false,
 				},
 				documentation = {
-					border = "rounded",
+					-- border = "rounded",
 					winhighlight = "Normal:Normal,FloatBorder:CmpBorder,CursorLine:Visual,Search:None",
 					scrollbar = false,
 				},
@@ -129,8 +125,8 @@ return {
 			mapping = cmp.mapping.preset.insert({
 				-- snippet movement with luasnip
 				["<Tab>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_next_item()
+					if cmp.visible() and has_words_before() then
+						cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 					elseif luasnip.expand_or_jumpable() then
 						luasnip.expand_or_jump()
 					elseif check_backspace() then
@@ -140,8 +136,8 @@ return {
 					end
 				end, { "i", "s" }),
 				["<S-Tab>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_prev_item()
+					if cmp.visible() and has_words_before() then
+						cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
 					elseif luasnip.jumpable(-1) then
 						luasnip.jump(-1)
 					else
@@ -165,11 +161,11 @@ return {
 
 			-- Installed sources
 			sources = {
-				{ name = "codeium"},
-				{ name = "nvim_lsp", priority = 850 },
-				{ name = "luasnip", priority = 700 },
-				{ name = "buffer", priority = 650 },
-				{ name = "nvim_lua", priority = 600 },
+				{ name = "codeium", group_index = 2 },
+				{ name = "nvim_lsp", priority = 1000 },
+				{ name = "luasnip" },
+				{ name = "buffer", group_index = 2 },
+				{ name = "nvim_lua" },
 				{ name = "path" },
 				{ name = "crates" },
 				{ name = "nvim_lsp_signature_help" },

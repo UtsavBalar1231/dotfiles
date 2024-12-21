@@ -2,7 +2,7 @@
 
 # Configuration
 WALLPAPER_DIR="${HOME}/Pictures/wallpapers/"
-CHANGE_INTERVAL=240       # seconds (4 minutes)
+CHANGE_INTERVAL=540       # seconds
 TRANSITION_DURATION=0.069 # seconds (approximately 1 frame at 144Hz)
 
 # Function to get a random wallpaper

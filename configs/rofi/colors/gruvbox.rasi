@@ -1,9 +1,9 @@
 * {
-  bg0:      #141617b6;
-  bg1:      #3c3836e6;
-  bg2:      #504945e6;
-  bg3:      #665c54e6;
-  bg4:      #7c6f64e6;
+  bg0:      #141617;
+  bg1:      #1d2021;
+  bg2:      #282828;
+  bg3:      #3c3836;
+  bg4:      #7c6f64;
 
   fg0:      #fbf1c7;
   fg1:      #ebdbb2;
@@ -20,7 +20,7 @@
   orange:   #d65d0e;
   gray:     #928374;
  
-  accent:   #ebdbb2e6;
+  accent:   #ebdbb2;
 
   background-color: transparent;
   text-color:       @fg0;

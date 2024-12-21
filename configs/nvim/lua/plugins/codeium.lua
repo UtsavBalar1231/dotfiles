@@ -1,15 +1,27 @@
 return {
-	"Exafunction/codeium.vim",
+	"Exafunction/codeium.nvim",
+	event = "BufEnter",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"hrsh7th/nvim-cmp",
 	},
-	event = 'BufEnter',
-	config = function()
 
-		vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true, desc = "Codeium Accept Completion" })
-		vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true, desc = "Codeium Cycle Completion right" })
-		vim.keymap.set('i', '<C-.>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true, desc = "Codeium Cycle Completion left" })
-		vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true, desc = "Codeium clear" })
-	end
+	config = function()
+		require("codeium").setup({
+			enable_cmp_source = true,
+			virtual_text = {
+				enabled = true,
+				manual = false,
+				map_keys = true,
+				key_bindings = {
+					accept = "<Tab>",
+					accept_word = "<C-y>",
+					accept_line = "<C-g>",
+					clear = "<C-x>",
+					next = "<M-]>",
+					prev = "<M-[>",
+				},
+			},
+		})
+	end,
 }

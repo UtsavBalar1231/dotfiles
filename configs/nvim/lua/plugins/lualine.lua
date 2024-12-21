@@ -95,19 +95,20 @@ return {
 			"codeium",
 			color = { gui = "bold" },
 			fmt = function(_)
-				local cstr = vim.fn["codeium#GetStatusString"]()
+				local cstr = require('codeium.virtual_text').status_string()
 				if cstr == " ON" or cstr == " 0 " then
 					return "{…}"
 				elseif cstr == " * " then
 					return "{…} 󰔟 "
 				else
-					return "{…} " .. cstr
+					return "" .. cstr
 				end
 			end,
 		}
 
 		lualine.setup({
 			options = {
+				globalstatus = true,
 				icons_enabled = true,
 				theme = "auto",
 				component_separators = { left = "", right = "" },

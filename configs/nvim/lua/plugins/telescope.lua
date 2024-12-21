@@ -112,12 +112,12 @@ return {
 
 		-- Map <leader>f[ to goto previous diagnostic
 		map("n", "<leader>f[", function()
-			vim.diagnostic.goto_prev({ popup_opts = { border = "rounded" }, desc = "Telescope diagnostics previous" })
+			vim.diagnostic.goto_prev({ desc = "Telescope diagnostics previous" })
 		end, {})
 
 		-- Map <leader>f] to goto next diagnostic
 		map("n", "<leader>f]", function()
-			vim.diagnostic.goto_next({ popup_opts = { border = "rounded" }, desc = "Telescope diagnostics next" })
+			vim.diagnostic.goto_next({ desc = "Telescope diagnostics next" })
 		end, {})
 
 		vim.api.nvim_create_autocmd("LspAttach", {
@@ -144,7 +144,11 @@ return {
 		map("n", "<leader>fm", "<cmd>Telescope man_pages<cr>", { desc = "Telescope Man Pages" })
 		map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Telescope Keymaps" })
 
-		map("n", "<leader>ff", ":Telescope file_browser hidden=true respect_gitignore=true path=%:p:h select_buffer=true<CR>")
+		map(
+			"n",
+			"<leader>ff",
+			":Telescope file_browser hidden=true respect_gitignore=true path=%:p:h select_buffer=true<CR>"
+		)
 
 		local fb_actions = require("telescope").extensions.file_browser.actions
 		local open_with_trouble = require("trouble.sources.telescope")
@@ -201,7 +205,7 @@ return {
 				generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
 				path_display = { "smart" },
 				winblend = 0,
-				border = {},
+				border = rounded,
 				-- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 				color_devicons = true,
 				use_less = true,

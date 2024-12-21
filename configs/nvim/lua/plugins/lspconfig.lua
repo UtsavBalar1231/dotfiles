@@ -230,7 +230,7 @@ return {
 			float = {
 				focusable = false,
 				style = "minimal",
-				border = "rounded",
+				-- border = "rounded",
 				header = "",
 				prefix = "",
 			},
