@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "29bde6669d8262fd4a240af4847f097709e8b3c8c6c62ac6354a09a9fde7837c"
+hash = "a6f627edf0ceae9b9c77b43319a7be981d1453ecd75d3ccdb5b97ec00867d033"
 conf_type = "Dir"
 
 [[configs]]
@@ -16,7 +16,7 @@ conf_type = "Dir"
 [[configs]]
 name = "rofi"
 path = "$HOME/.config/rofi/"
-hash = "cc6245cd96c28d3aefb76d8af7a82d4d2915ac6a7e15818645ef1880fc21599e"
+hash = "752cfe25485311b8cbe8c553c626a11d884fe45a92d7d09b07a2b41e911906f5"
 conf_type = "Dir"
 
 [[configs]]
@@ -28,7 +28,7 @@ conf_type = "Dir"
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "a6e88865362f5efc4b8f315cfda57a2f8c54d050ffa167c7df06ec9fda8883a5"
+hash = "df839b2a178aea565966149114db267057170a8b35d36931b4a03cb9b7209950"
 conf_type = "Dir"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "a42c7159820993c2141b1c20da6ef1bf53bc1e13fecc9f8feb4dff5c9ea2d312"
+hash = "ede7f0e779b440bfeb35ffe2cbc124e219c4969365c9c9bdac6bbc8c17cde1f4"
 conf_type = "Dir"
 
 [[configs]]
@@ -118,11 +118,11 @@ conf_type = "Dir"
 [[configs]]
 name = "waybar"
 path = "$HOME/.config/waybar"
-hash = "14ce27caaccbf2d1adfbe25ffb05752ca61090f00d2ce9c05b5a4c1033e73f4e"
+hash = "27ee268259531cdaff3e538054d015aa2a5121e74fc0f4e23ad4dc67ae07c333"
 conf_type = "Dir"
 
 [[configs]]
 name = "wallpapers"
 path = "$HOME/Pictures/wallpapers"
-hash = "04523c548cffe2c95c62b4cf02202b01a3d52999dd4625262a03376b86a234a7"
+hash = "1177c83a8597e9a54fa120ac9a352a4f56fe9ec3fcf2541b69bbe7f750e5dc2f"
 conf_type = "Dir"

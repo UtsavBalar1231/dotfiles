@@ -184,21 +184,38 @@ autocmd({ "TermOpen" }, {
 	end,
 })
 
--- wrap and check for spell in text filetypes
-vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("wrap_spell", { clear = true }),
-	pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+autocmd({ "BufEnter", "CursorMoved", "CursorHoldI" }, {
 	callback = function()
-		vim.opt_local.wrap = true
-		vim.opt_local.spell = true
+		local win_h = vim.api.nvim_win_get_height(0) -- height of window
+		local off = math.min(vim.o.scrolloff, math.floor(win_h / 2)) -- scroll offset
+		local dist = vim.fn.line("$") - vim.fn.line(".") -- distance from current line to last line
+		local rem = vim.fn.line("w$") - vim.fn.line("w0") + 1 -- num visible lines in current window
+
+		if dist < off and win_h - rem + dist < off then
+			local view = vim.fn.winsaveview()
+			view.topline = view.topline + off - (win_h - rem + dist)
+			vim.fn.winrestview(view)
+		end
 	end,
+	desc = "When at eob, bring the current line towards center screen",
 })
 
--- Fix conceallevel for json files
-vim.api.nvim_create_autocmd({ "FileType" }, {
-	group = augroup("json_conceal", { clear = true }),
-	pattern = { "json", "jsonc", "json5" },
+autocmd({ "InsertLeave", "WinEnter" }, {
 	callback = function()
-		vim.opt_local.conceallevel = 0
+		if vim.w.auto_cursorline then
+			vim.wo.cursorline = true
+			vim.w.auto_cursorline = nil
+		end
 	end,
+	desc = "Enable cursorline when entering window",
+})
+
+autocmd({ "InsertEnter", "WinLeave" }, {
+	callback = function()
+		if vim.wo.cursorline then
+			vim.w.auto_cursorline = true
+			vim.wo.cursorline = false
+		end
+	end,
+	desc = "Disable cursorline when leaving window",
 })

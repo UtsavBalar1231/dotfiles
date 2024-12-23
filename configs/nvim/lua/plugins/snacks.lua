@@ -10,19 +10,6 @@ return {
 		bigfile = { enabled = true },
 		dashboard = {
 			enabled = true,
-			sections = {
-				{
-					section = "terminal",
-					cmd = "chafa ~/Pictures/wallpapers/ghibli-japanese-walled-garden.png --format symbols --symbols vhalf --size 60x16 --stretch; sleep .1",
-					height = 16,
-					padding = 1,
-				},
-				{
-					pane = 2,
-					{ section = "startup" },
-					{ section = "keys", gap = 1, padding = 1 },
-				},
-			},
 		},
 		dim = {
 			enabled = true,
@@ -30,7 +17,9 @@ return {
 		indent = {
 			enabled = true,
 			scope = {
-				enabled = true,
+				treesitter = {
+					enabled = true,
+				},
 			},
 		},
 		input = { enabled = true },
@@ -144,6 +133,13 @@ return {
 			desc = "Dismiss All Notifications",
 		},
 		{
+			"<leader>T",
+			function()
+				Snacks.scratch({ icon = " ", name = "Todo", ft = "markdown", file = "~/dev/TODO.md" })
+			end,
+			desc = "Todo List",
+		},
+		{
 			"<leader>ft",
 			function()
 				Snacks.terminal()
@@ -172,24 +168,6 @@ return {
 			end,
 			desc = "Prev Reference",
 			mode = { "n", "t" },
-		},
-		{
-			"<leader>N",
-			desc = "Neovim News",
-			function()
-				Snacks.win({
-					file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1],
-					width = 0.6,
-					height = 0.6,
-					wo = {
-						spell = false,
-						wrap = false,
-						signcolumn = "yes",
-						statuscolumn = " ",
-						conceallevel = 3,
-					},
-				})
-			end,
 		},
 	},
 	init = function()

@@ -62,6 +62,14 @@ opt.grepprg = "rg --vimgrep"
 -- infer cases in keyword completion
 opt.infercase = true
 
+opt.guicursor = {
+	"n-sm:block",
+	"v:hor50",
+	"c-ci-cr-i-ve:ver10",
+	"o-r:hor10",
+	"a:Cursor/Cursor-blinkwait1-blinkon1-blinkoff1",
+}
+
 -------------------------------
 --- General editor settings ---
 -------------------------------
@@ -89,15 +97,32 @@ opt.updatetime = 250
 opt.writebackup = false
 -- Set fillchars
 opt.fillchars = {
-	foldopen = "",
-	foldclose = "",
-	fold = " ",
-	foldsep = " ",
 	diff = "╱",
 	eob = " ",
+	fold = " ",
+	foldclose = "",
+	foldopen = "",
+	foldsep = " ",
+	horiz = "━",
+	horizdown = "┳",
+	horizup = "┻",
+	msgsep = "━",
+	vert = "┃",
+	verthoriz = "╋",
+	vertleft = "┫",
+	vertright = "┣",
 }
--- Set foldlevel
+
+-- Fold settings
+opt.foldcolumn = "1"
 opt.foldlevel = 99
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldmethod = "expr"
+
+--opt.cmdwinheight = 30
+--opt.colorcolumn = "+0"
+--opt.confirm = true
+--opt.fileignorecase = true
 
 -------------------------------
 --- General editor UI setup ---
@@ -111,8 +136,6 @@ opt.ruler = false
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 -- Highlight matching parenthesis
 opt.showmatch = true
--- Enable folding (default 'foldmarker')
-opt.foldmethod = "marker"
 -- Line length marker at 120 columns
 opt.colorcolumn = "80"
 -- Vertical split to the right
@@ -121,6 +144,8 @@ opt.splitright = true
 opt.splitbelow = true
 -- Keep same window when splitting
 opt.splitkeep = "screen"
+-- Keep windows equal when splitting
+opt.equalalways = true
 -- Put new windows right of current
 opt.splitright = true
 -- Ignore case letters when search
@@ -164,22 +189,27 @@ opt.virtualedit = "block"
 opt.wrap = true
 -- turn off swapfile
 opt.swapfile = false
-
+-- Emoji support
+opt.emoji = true
+-- Disable modeline
+opt.modeline = false
+opt.modelines = 0
 ----------------------------
 --- Format options setup ---
 ----------------------------
 opt.formatoptions = "jcroqlnt" -- tcqj
-
---- Make diffing better: https://vimways.org/2018/the-power-of-diff/
-opt.diffopt:append("iwhite")
-opt.diffopt:append("algorithm:patience")
-opt.diffopt:append("indent-heuristic")
+opt.diffopt = {
+	"filler",
+	"indent-heuristic",
+	"linematch:60",
+	"vertical",
+}
 
 --- Incremental live completion
 opt.inccommand = "nosplit"
 
 -- Show short messages
-opt.shortmess:append({ W = true, I = true, c = true, C = true })
+opt.shortmess = "acstFOSW"
 
 -- Enable spell checking
 opt.spelllang = { "en" }
@@ -201,3 +231,27 @@ g.loaded_node_provider = 0
 g.loaded_python3_provider = 0
 g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
+
+opt.viewoptions = {
+	"cursor",
+	"folds",
+}
+
+opt.wildignore = {
+	".git/*",
+	".hg/*",
+	".svn/*",
+	".DS_Store",
+	"*.pyc",
+	"*.pyo",
+	"*.rbc",
+	"*.rbo",
+	"*.class",
+	"*.o",
+	"*.so",
+	"*.cache",
+	"*~",
+	"*.swp",
+}
+opt.wildmode = "longest:full"
+opt.wildoptions = "pum"

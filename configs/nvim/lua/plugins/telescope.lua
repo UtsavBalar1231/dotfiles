@@ -144,11 +144,15 @@ return {
 		map("n", "<leader>fm", "<cmd>Telescope man_pages<cr>", { desc = "Telescope Man Pages" })
 		map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Telescope Keymaps" })
 
-		map(
-			"n",
-			"<leader>ff",
-			":Telescope file_browser hidden=true respect_gitignore=true path=%:p:h select_buffer=true<CR>"
-		)
+		map("n", "<leader>ff", function()
+			require("telescope").extensions.file_browser.file_browser()
+		end)
+
+		map("n", "<leader>fF", function()
+			require("telescope").extensions.file_browser.file_browser({
+				cwd = vim.fn.expand("%:p:h"),
+			})
+		end)
 
 		local fb_actions = require("telescope").extensions.file_browser.actions
 		local open_with_trouble = require("trouble.sources.telescope")
@@ -197,19 +201,23 @@ return {
 				selection_caret = " ➤ ",
 				prompt_prefix = "   ",
 				entry_prefix = "  ",
-				initial_mode = "insert",
+				initial_mode = "normal",
 				selection_strategy = "reset",
 				sorting_strategy = "ascending",
 				file_sorter = require("telescope.sorters").get_fuzzy_file,
 				file_ignore_patterns = { "node_modules", "%.git/", "dist/", "build/", "%.lock" },
 				generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-				path_display = { "smart" },
+				path_display = {
+					filename_first = {
+						reverse_directories = true,
+					},
+				},
 				winblend = 0,
-				border = rounded,
+				border = true,
 				-- borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 				color_devicons = true,
 				use_less = true,
-				set_env = { ["COLORTERM"] = "truecolor", ["BAT_THEME"] = "TwoDark" },
+				set_env = { ["COLORTERM"] = "truecolor", ["BAT_THEME"] = "gruvbox-dark" },
 				file_previewer = require("telescope.previewers").cat.new,
 				grep_previewer = require("telescope.previewers").vimgrep.new,
 				qflist_previewer = require("telescope.previewers").qflist.new,

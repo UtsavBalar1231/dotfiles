@@ -8,8 +8,8 @@
 }
 
 window#waybar {
-  background-color: transparent;
-  border-radius: 0.5rem;
+  background-color: @bg0;
+  /* border-radius: 0.5rem; */
 }
 
 #workspaces button {
@@ -48,7 +48,7 @@ window#waybar {
 .modules-right,
 .modules-center {
   background-color: @bg0;
-  border-radius: 0.75rem;
+  /* border-radius: 0.75rem; */
   margin: 0.125rem;
   padding: 0 0.6125rem;
 }
@@ -116,13 +116,13 @@ tooltip {
 
 #memory,
 #clock {
-  border-radius: 0.75rem 0 0 0.75rem;
+  /* border-radius: 0.75rem 0 0 0.75rem; */
 }
 
 #custom-swaync,
 #custom-updates,
 #custom-weather {
-  border-radius: 0 0.75rem 0.75rem 0;
+  /* border-radius: 0 0.75rem 0.75rem 0; */
 }
 
 #custom-swaync {

@@ -2,23 +2,23 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
-		-- "saghen/blink.cmp",
+		-- "hrsh7th/cmp-nvim-lsp",
+		"saghen/blink.cmp",
 		"j-hui/fidget.nvim",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		-- local blink_cmp = require("blink.cmp")
+		-- local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local blink_cmp = require("blink.cmp")
 
 		local keymap = vim.keymap
 		local opts = { noremap = true, silent = true }
 
 		local on_attach = function(_, bufnr)
-			if vim.lsp.inlay_hint then
-				vim.lsp.inlay_hint.enable(true, { 0 })
-			end
+			-- if vim.lsp.inlay_hint then
+			-- 	vim.lsp.inlay_hint.enable(true, { 0 })
+			-- end
 			opts.buffer = bufnr
 
 			-- set keybinds
@@ -62,7 +62,7 @@ return {
 			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
 			opts.desc = "LSP Format buffer"
-			keymap.set("n", "F", function()
+			keymap.set("n", "<leader>F", function()
 				vim.lsp.buf.format({ async = true })
 			end, opts)
 
@@ -71,8 +71,8 @@ return {
 		end
 
 		-- used to enable autocompletion (assign to every lsp server config)
-		-- local capabilities = blink_cmp.get_lsp_capabilities()
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+		local capabilities = blink_cmp.get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
+		-- local capabilities = cmp_nvim_lsp.default_capabilities()
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -120,10 +120,19 @@ return {
 			on_attach = on_attach,
 			cmd = {
 				"clangd",
-				"--offset-encoding=utf-16",
-				-- this causes a dot symbol next to completion and Neovim does not handle
-				-- this well.
+				"--all-scopes-completion",
+				"--background-index", -- should include a compile_commands.json or .txt
+				"--clang-tidy",
+				"--cross-file-rename",
+				"--completion-style=detailed",
+				"--fallback-style=Microsoft",
+				"--function-arg-placeholders",
+				"--header-insertion-decorators",
 				"--header-insertion=never",
+				"--limit-results=10",
+				"--pch-storage=memory",
+				"--query-driver=/usr/include/*",
+				"--suggest-missing-includes",
 			},
 		})
 
@@ -212,7 +221,7 @@ return {
 				default_config = {
 					name = "c3_lsp",
 					cmd = {
-						"/usr/local/bin/c3-lsp",
+						"/usr/local/bin/c3lsp",
 					},
 					filetypes = { "c3" },
 					root_dir = require("lspconfig.util").root_pattern(".git", "CMakeLists.txt"),

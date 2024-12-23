@@ -91,20 +91,20 @@ return {
 			end,
 		}
 
-		local codeium = {
-			"codeium",
-			color = { gui = "bold" },
-			fmt = function(_)
-				local cstr = require('codeium.virtual_text').status_string()
-				if cstr == " ON" or cstr == " 0 " then
-					return "{…}"
-				elseif cstr == " * " then
-					return "{…} 󰔟 "
-				else
-					return "" .. cstr
-				end
-			end,
-		}
+		-- local codeium = {
+		-- 	"codeium",
+		-- 	color = { gui = "bold" },
+		-- 	fmt = function(_)
+		-- 		local cstr = require('codeium.virtual_text').status_string()
+		-- 		if cstr == " ON" or cstr == " 0 " then
+		-- 			return "{…}"
+		-- 		elseif cstr == " * " then
+		-- 			return "{…} 󰔟 "
+		-- 		else
+		-- 			return "" .. cstr
+		-- 		end
+		-- 	end,
+		-- }
 
 		lualine.setup({
 			options = {
@@ -146,7 +146,7 @@ return {
 					"filetype",
 				},
 				lualine_z = {
-					codeium,
+					-- codeium,
 				},
 			},
 			inactive_sections = {
