@@ -39,7 +39,10 @@ end
 
 return {
 	"saghen/blink.cmp",
-
+	version = "*",
+	event = "InsertEnter",
+	build = "cargo build --release",
+	lazy = false,
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
@@ -47,68 +50,6 @@ return {
 		"onsails/lspkind.nvim",
 	},
 	opts = {
-		sources = {
-			default = { "lsp", "path", "snippets", "luasnip", "buffer", "copilot" },
-			providers = {
-				copilot = {
-					name = "copilot",
-					enabled = true,
-					module = "blink-cmp-copilot",
-					score_offset = -100,
-					async = true,
-					transform_items = function(_, items)
-						local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-						local kind_idx = #CompletionItemKind + 1
-						CompletionItemKind[kind_idx] = "Copilot"
-						for _, item in ipairs(items) do
-							item.kind = kind_idx
-						end
-						return items
-					end,
-				},
-				buffer = {
-					name = "buffer",
-					enabled = true,
-					max_items = 4,
-					score_offset = 900,
-				},
-				luasnip = {
-					name = "luasnip",
-					enabled = true,
-					module = "blink.cmp.sources.luasnip",
-					score_offset = 950,
-				},
-				lsp = {
-					name = "LSP",
-					enabled = true,
-					module = "blink.cmp.sources.lsp",
-					fallbacks = { "snippets", "luasnip", "buffer" },
-					score_offset = 1000,
-				},
-				path = {
-					name = "Path",
-					module = "blink.cmp.sources.path",
-					enabled = true,
-					score_offset = 800,
-					fallbacks = { "snippets", "luasnip", "buffer" },
-					opts = {
-						trailing_slash = false,
-						label_trailing_slash = true,
-						get_cwd = function(context)
-							return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
-						end,
-						show_hidden_files_by_default = true,
-					},
-				},
-				snippets = {
-					name = "snippets",
-					enabled = true,
-					module = "blink.cmp.sources.snippets",
-					score_offset = 950,
-				},
-				cmdline = {},
-			},
-		},
 		snippets = {
 			expand = function(snippet)
 				require("luasnip").lsp_expand(snippet)
@@ -123,6 +64,63 @@ return {
 				require("luasnip").jump(direction)
 			end,
 		},
+		sources = {
+			default = { "lsp", "path", "snippets", "luasnip", "buffer", "copilot" },
+			providers = {
+				copilot = {
+					name = "copilot",
+					enabled = true,
+					module = "blink-cmp-copilot",
+					score_offset = 800,
+					async = true,
+					max_items = 1,
+				},
+				buffer = {
+					name = "buffer",
+					enabled = true,
+					max_items = 4,
+					score_offset = 700,
+				},
+				luasnip = {
+					name = "luasnip",
+					enabled = true,
+					module = "blink.cmp.sources.luasnip",
+					score_offset = 900,
+					max_items = 5,
+				},
+				lsp = {
+					name = "LSP",
+					enabled = true,
+					module = "blink.cmp.sources.lsp",
+					fallbacks = { "luasnip", "snippets", "buffer" },
+					score_offset = 1000,
+				},
+				path = {
+					name = "Path",
+					module = "blink.cmp.sources.path",
+					enabled = true,
+					score_offset = 650,
+					fallbacks = { "luasnip", "snippets", "buffer" },
+					opts = {
+						trailing_slash = false,
+						label_trailing_slash = true,
+						get_cwd = function(context)
+							return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
+						end,
+						show_hidden_files_by_default = true,
+					},
+					max_items = 3,
+				},
+				snippets = {
+					name = "snippets",
+					enabled = false,
+					module = "blink.cmp.sources.snippets",
+					score_offset = 850,
+					max_items = 5,
+				},
+				cmdline = {},
+			},
+		},
 		keymap = {
 			preset = "enter",
 			["<C-up>"] = { "scroll_documentation_up", "fallback" },
@@ -132,7 +130,9 @@ return {
 		completion = {
 			accept = { auto_brackets = { enabled = true } },
 			list = {
-				selection = "auto_insert",
+				selection = function(ctx)
+					return ctx.mode == "cmdline" and "auto_insert" or "preselect"
+				end,
 				cycle = { from_top = false },
 				max_items = 50,
 			},
@@ -147,6 +147,9 @@ return {
 			},
 			ghost_text = { enabled = true },
 			menu = {
+				auto_show = function(ctx)
+					return ctx.mode ~= "cmdline"
+				end,
 				draw = {
 					treesitter = { "lsp" },
 					columns = {
@@ -183,10 +186,11 @@ return {
 									},
 								}
 								if ctx.label_detail then
-									table.insert(
-										highlights,
-										{ #ctx.label, #ctx.label + #ctx.label_detail, group = "BlinkCmpLabelDetail" }
-									)
+									table.insert(highlights, {
+										#ctx.label,
+										#ctx.label + #ctx.label_detail,
+										group = "BlinkCmpLabelDetail",
+									})
 								end
 
 								for _, idx in ipairs(ctx.label_matched_indices) do
@@ -207,12 +211,7 @@ return {
 				},
 			},
 		},
-		appearance = {
-			nerd_font_variant = "mono",
-			kind_icons = {
-				Copilot = "",
-			},
-		},
+		appearance = { nerd_font_variant = "mono" },
 	},
 	opts_extend = { "sources.default" },
 }

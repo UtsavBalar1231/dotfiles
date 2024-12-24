@@ -1,6 +1,49 @@
 ---@diagnostic disable: inject-field, undefined-field, unused-local
 return {
 	{
+		"ellisonleao/gruvbox.nvim",
+		priority = 1000,
+		lazy = false,
+		config = function()
+			local gruvbox = require("gruvbox")
+
+			gruvbox.setup({
+				terminal_colors = true,
+				undercurl = true,
+				underline = true,
+				bold = true,
+				italic = {
+					strings = true,
+					emphasis = true,
+					comments = true,
+					operators = false,
+					folds = true,
+				},
+				strikethrough = true,
+				invert_selection = false,
+				invert_signs = false,
+				invert_tabline = false,
+				invert_intend_guides = false,
+				inverse = true,
+				contrast = "hard",
+				palette_overrides = {
+					dark0_hard = "#000000",
+					dark0 = "#141617",
+					dark0_soft = "#1d2021",
+					dark1 = "#141617",
+					dark2 = "#1d2021",
+					dark3 = "#282828",
+					dark4 = "#3c3836",
+					gray = "#504945",
+				},
+				overrides = {},
+				dim_inactive = false,
+				transparent_mode = false,
+			})
+			vim.cmd([[colorscheme gruvbox]])
+		end,
+	},
+	{
 		"rose-pine/neovim",
 		name = "rose-pine",
 		lazy = false,
@@ -57,7 +100,9 @@ return {
 			palette = {
 				-- Override the builtin palette per variant
 				main = {
-					base = "#10101a",
+					_nc = "#000000",
+					base = "#000000",
+					surface = "#16141f",
 				},
 			},
 
@@ -83,6 +128,7 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
+		lazy = false,
 		opts = {
 			no_italic = true,
 			term_colors = true,
@@ -102,7 +148,7 @@ return {
 			},
 			color_overrides = {
 				mocha = {
-					base = "#141617",
+					base = "#000000",
 					mantle = "#000000",
 					crust = "#000000",
 				},
@@ -155,7 +201,7 @@ return {
 		lazy = false,
 		priority = 1000,
 		opts = {
-			compile = true,
+			compile = false,
 			undercurl = true,
 			commentStyle = { italic = true },
 			functionStyle = {},
@@ -166,12 +212,18 @@ return {
 			dimInactive = false,
 			terminalColors = true,
 			colors = {
-				palette = {},
+				palette = {
+					dragonBlack3 = "#000000",
+					dragonBlack4 = "#12120f",
+
+					sumiInk3 = "#000000",
+					sumiInk4 = "#14161D",
+
+					waveBlue1 = "#0e151f",
+    				waveBlue2 = "#0d181f",
+				},
 				theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
 			},
-			overrides = function(colors) -- add/modify highlights
-				return {}
-			end,
 			theme = "dragon", -- wave, lotus, dragon
 			background = {
 				dark = "dragos",
@@ -187,35 +239,19 @@ return {
 		config = function()
 			require("everforest").setup({
 				background = "hard", -- hard, medium, soft
-				---How much of the background should be transparent. 2 will have more UI
-				---components be transparent (e.g. status line background)
-				transparent_background_level = 0,
 				italics = true,
-				disable_italic_comments = false,
-				sign_column_background = "none",
-				---The contrast of line numbers, indent lines, etc. Options are `"high"` or
-				---`"low"` (default).
-				ui_contrast = "low",
-				dim_inactive_windows = false,
-				diagnostic_text_highlight = true,
 				diagnostic_virtual_text = "coloured",
-				diagnostic_line_highlight = true,
-				spell_foreground = false,
 				show_eob = true,
 				float_style = "dim",
 				inlay_hints_background = "dimmed",
-				---You can override specific highlights to use other groups or a hex colour.
-				---This function will be called with the highlights and colour palette tables.
-				---@param highlight_groups Highlights
-				---@param palette Palette
-				on_highlights = function(highlight_groups, palette) end,
-				---You can override colours in the palette to use different hex colours.
-				---This function will be called once the base and background colours have
-				---been mixed on the palette.
-				---@param palette Palette
 				colours_override = function(palette)
-					palette.bg0 = "#141617"
-					palette.bg_dim = "#000000"
+					palette.bg0 = "#000000"
+					palette.bg1 = "#070604"
+					palette.bg2 = "#171614"
+					palette.bg3 = "#272e33"
+					palette.bg4 = "#2e383c"
+					palette.bg5 = "#374145"
+					palette.bg_dim = "#141617"
 				end,
 			})
 		end,

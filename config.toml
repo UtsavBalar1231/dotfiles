@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "a6f627edf0ceae9b9c77b43319a7be981d1453ecd75d3ccdb5b97ec00867d033"
+hash = "94cce671b6d4e3153314447f9f4161dfcafd48a79dfd27e80beecba5b60a3a54"
 conf_type = "Dir"
 
 [[configs]]
@@ -16,7 +16,7 @@ conf_type = "Dir"
 [[configs]]
 name = "rofi"
 path = "$HOME/.config/rofi/"
-hash = "752cfe25485311b8cbe8c553c626a11d884fe45a92d7d09b07a2b41e911906f5"
+hash = "59c014320120516f45a6acebf8be04c0805d97575d48a255e5eb91d50715dbb4"
 conf_type = "Dir"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "ede7f0e779b440bfeb35ffe2cbc124e219c4969365c9c9bdac6bbc8c17cde1f4"
+hash = "bb9e9bf3e2454f374cd958c00da7ef800bba454b4c94c6b1eeed5739f0066119"
 conf_type = "Dir"
 
 [[configs]]
@@ -100,7 +100,7 @@ conf_type = "Dir"
 [[configs]]
 name = "gtk-3.0"
 path = "$HOME/.config/gtk-3.0"
-hash = "b76ab61c0af5b98f1357744da20488922810f738a9cc0a0e03690f1cb4d67509"
+hash = "7114a2a7d8adce2339de36e990ea8f3c411af61e8245bd32a0a450d7ce08ec9b"
 conf_type = "Dir"
 
 [[configs]]

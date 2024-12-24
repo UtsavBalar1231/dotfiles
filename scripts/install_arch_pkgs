@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+# Author: UtsavBalar1231 <utsavbalar1231@gmail.com>
+# LICENCE: MIT
+# Description:
+#       Parse a list of package names and categorize them as 
+#       default, AUR, group, or not found. The script uses the Arch Linux
+#       package repository, AUR package list, and package groups to categorize the packages.
+#
+#       Usage: ./parse_arch_pkgs <file>
+#               `<file>`: A file containing a list of package names
+#                          separated by newlines.
+
+CACHE_DIR="$HOME/.cache/pkg_check"
+DEFAULT_CACHE="$CACHE_DIR/default_pkgs.cache"
+AUR_CACHE="$CACHE_DIR/aur_pkgs.cache"
+GROUP_CACHE="$CACHE_DIR/pkg_groups.cache"
+# 1 hr expiry
+CACHE_EXPIRY=3600 
+
+FILE_NAME=$1
+if [[ -z "$FILE_NAME" ]]; then
+    echo "Usage: $0 <file>"
+    exit 1
+fi
+
+# Check if the input file exists
+if [[ ! -f "$FILE_NAME" ]]; then
+    echo "Error: File '$FILE_NAME' not found!"
+    exit 1
+fi
+
+if [ ! -d "$CACHE_DIR" ]; then
+    mkdir -p "$CACHE_DIR"
+fi
+
+# Fetch or load default Arch Linux repository packages
+fetch_default_pkgs() {
+    if [[ -f "$DEFAULT_CACHE" && $(($(date +%s) - $(stat -c %Y "$DEFAULT_CACHE"))) -lt $CACHE_EXPIRY ]]; then
+        echo "Using cached default packages."
+        cat "$DEFAULT_CACHE"
+    else
+        echo "Fetching default packages..."
+        pacman -Ssq >"$DEFAULT_CACHE"
+        cat "$DEFAULT_CACHE"
+    fi
+}
+
+# Fetch or load AUR package list
+fetch_aur_pkgs() {
+    if [[ -f "$AUR_CACHE" && $(($(date +%s) - $(stat -c %Y "$AUR_CACHE"))) -lt $CACHE_EXPIRY ]]; then
+        echo "Using cached AUR packages."
+        cat "$AUR_CACHE"
+    else
+        echo "Fetching AUR packages..."
+        curl -s "https://aur.archlinux.org/packages.gz" | gunzip >"$AUR_CACHE"
+        cat "$AUR_CACHE"
+    fi
+}
+
+# Fetch or load Arch Linux package groups
+fetch_pkg_groups() {
+    if [[ -f "$GROUP_CACHE" && $(($(date +%s) - $(stat -c %Y "$GROUP_CACHE"))) -lt $CACHE_EXPIRY ]]; then
+        echo "Using cached package groups."
+        cat "$GROUP_CACHE"
+    else
+        echo "Fetching package groups..."
+        pacman -Sg | awk '{print $1}' | sort -u >"$GROUP_CACHE"
+        cat "$GROUP_CACHE"
+    fi
+}
+
+# Load package lists
+default_pkgs=$(fetch_default_pkgs)
+aur_pkgs=$(fetch_aur_pkgs)
+pkg_groups=$(fetch_pkg_groups)
+
+# Read the package list into an array
+mapfile -t packages <"$FILE_NAME"
+
+# Categorize packages
+default_found=()
+aur_found=()
+group_found=()
+not_found=()
+
+for package in "${packages[@]}"; do
+    [[ -z "$package" ]] && continue
+
+    if grep -q "^${package}$" <<<"$default_pkgs"; then
+        default_found+=("$package")
+    elif grep -q "^${package}$" <<<"$aur_pkgs"; then
+        aur_found+=("$package")
+    elif grep -q "^${package}$" <<<"$pkg_groups"; then
+        group_found+=("$package")
+    else
+        not_found+=("$package")
+    fi
+done
+
+# Print results
+echo "---------- Results: ----------------------------------------"
+for pkg in "${default_found[@]}"; do
+    echo "Default: $pkg"
+done
+
+for pkg in "${aur_found[@]}"; do
+    echo "AUR: $pkg"
+done
+
+for pkg in "${group_found[@]}"; do
+    echo "Group: $pkg"
+done
+
+for pkg in "${not_found[@]}"; do
+    echo "Not Found: $pkg"
+done
+echo "-------------------------------------------------------------"

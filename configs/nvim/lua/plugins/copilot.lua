@@ -18,8 +18,8 @@ return {
 			end,
 		}),
 		panel = {
-			enabled = true,
-			auto_refresh = true,
+			enabled = false,
+			auto_refresh = false,
 			keymap = {
 				jump_prev = "[[",
 				jump_next = "]]",

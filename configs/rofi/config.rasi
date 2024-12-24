@@ -24,4 +24,4 @@ configuration {
     }
 }
 
-@theme "windows11"
+@theme "macos"
