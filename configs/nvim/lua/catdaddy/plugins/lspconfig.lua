@@ -178,10 +178,10 @@ return {
 		})
 
 		-- rust (called from rustaceanvim)
-		-- lspconfig.rust_analyzer.setup({
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- })
+		lspconfig.rust_analyzer.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 
 		-- SystemVerilog
 		lspconfig.svls.setup({

@@ -143,8 +143,3 @@ else
 fi
 
 exec $(which zsh)
-
-gsettings set org.gnome.desktop.interface font-name "JetBrainsMono Nerd Font 12"
-gsettings set org.gnome.desktop.interface monospace-font-name "FiraCode Nerd Font 10"
-gsettings set org.gnome.desktop.interface icon-theme "Gruvbox Plus Dark"
-gsettings set org.gnome.desktop.interface document-font-name "FiraCode Nerd Font 12"

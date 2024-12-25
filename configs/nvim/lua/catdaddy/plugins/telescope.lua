@@ -18,77 +18,46 @@ return {
 			vim.keymap.set(mode, key, action, desc)
 		end
 
-		local function set_colorscheme(colorscheme)
-			vim.cmd("colorscheme " .. colorscheme)
-			local config_path = vim.fn.stdpath("config") .. "/colorscheme.lua"
-			local file = io.open(config_path, "w")
-			if file then
-				file:write(string.format("vim.cmd('colorscheme %s')\n", colorscheme))
-				file:close()
-			else
-				vim.notify("Failed to save colorscheme!", vim.log.levels.ERROR)
+		--- [[ Telescope Custom Colorscheme
+		local util = require("catdaddy.util")
+		local function handle_colorscheme_selection(prompt_bufnr)
+			local entry = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
+			require("telescope.actions").close(prompt_bufnr)
+			if entry and entry.value then
+				local colorscheme = entry.value
+				vim.cmd("colorscheme " .. colorscheme)
+				util.colorscheme.set_colorscheme(colorscheme)
 			end
-			vim.notify("Colorscheme set to " .. colorscheme, vim.log.levels.INFO)
 		end
 
-		local function pick_colorscheme()
-			local colorschemes = vim.fn.getcompletion("", "color")
-			require("telescope.pickers")
-				.new({}, {
-					prompt_title = "Select Colorscheme",
-					finder = require("telescope.finders").new_table({
-						results = colorschemes,
-					}),
-					sorter = require("telescope.config").values.generic_sorter({}),
-					attach_mappings = function(_, keymap)
-						local actions = require("telescope.actions")
-						local state = require("telescope.actions.state")
-
-						-- Live preview of the colorscheme
-						keymap("i", "<CR>", function(prompt_bufnr)
-							local selection = state.get_selected_entry()
-							actions.close(prompt_bufnr)
-							set_colorscheme(selection.value)
-						end)
-
-						-- Preview the colorscheme while navigating
-						keymap("i", "<C-p>", function()
-							local selection = state.get_selected_entry()
-							if selection then
-								vim.cmd("colorscheme " .. selection.value)
-							end
-						end)
-
-						keymap("n", "<CR>", function(prompt_bufnr)
-							local selection = state.get_selected_entry()
-							actions.close(prompt_bufnr)
-							set_colorscheme(selection.value)
-						end)
-
-						-- Preview the colorscheme while navigating in normal mode
-						keymap("n", "<C-p>", function()
-							local selection = state.get_selected_entry()
-							if selection then
-								vim.cmd("colorscheme " .. selection.value)
-							end
-						end)
-
-						return true
-					end,
-
-					-- Use `on_display` to preview colorscheme as you scroll
-					on_display = function()
-						local selection = require("telescope.actions.state").get_selected_entry()
-						if selection then
-							vim.cmd("colorscheme " .. selection.value)
-						end
-					end,
-				})
-				:find()
+		local function select_colorscheme()
+			builtin.colorscheme({
+				enable_preview = true,
+				attach_mappings = function(_, keymap)
+					keymap("i", "<CR>", function(prompt_bufnr)
+						handle_colorscheme_selection(prompt_bufnr)
+					end)
+					keymap("n", "<CR>", function(prompt_bufnr)
+						handle_colorscheme_selection(prompt_bufnr)
+					end)
+					return true
+				end,
+			})
 		end
+		--- ]]
+
+		-- Command to select a colorscheme
+		vim.api.nvim_create_user_command("SelectColorscheme", function()
+			select_colorscheme()
+		end, {})
 
 		-- Keymap to invoke the picker
-		vim.keymap.set("n", "<leader>cs", pick_colorscheme, { desc = "Pick and set colorscheme with preview" })
+		vim.keymap.set(
+			"n",
+			"<leader>cs",
+			"<cmd>SelectColorscheme<cr>",
+			{ desc = "Pick and set colorscheme with preview" }
+		)
 		-- Grep in current directory
 		map("n", "<leader>fi", builtin.find_files, { desc = "Telescope find files" })
 		map("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })

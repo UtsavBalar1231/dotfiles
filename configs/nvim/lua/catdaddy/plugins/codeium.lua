@@ -1,17 +1,15 @@
 return {
-	"Exafunction/codeium.nvim",
+	"aliaksandr-trush/codeium.nvim",
+	branch = "blink",
 	event = "BufEnter",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"hrsh7th/nvim-cmp",
-	},
+	build = ":Codeium Auth",
 
 	config = function()
 		require("codeium").setup({
 			enable_cmp_source = true,
 			virtual_text = {
 				enabled = true,
-				manual = false,
+				manual = true,
 				map_keys = true,
 				key_bindings = {
 					accept = "<C-space>",

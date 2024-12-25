@@ -84,7 +84,7 @@
     },
     "return-type": "json",
     "exec": "while true; do enabled=$(pgrep hyprsunset || echo 0); if [ $enabled -eq 0 ]; then echo '{\"alt\": \"off\"}'; else echo '{\"alt\" :\"on\"}'; fi; sleep 0.1; done;",
-    "on-click": "pgrep hyprsunset && killall hyprsunset || hyprsunset -t 4000",
+    "on-click": "pgrep hyprsunset && killall hyprsunset || hyprsunset -t 5400",
   },
   "custom/weather": {
     "format": "{}",

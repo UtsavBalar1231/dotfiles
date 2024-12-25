@@ -30,17 +30,16 @@ return {
 					dark0_hard = "#000000",
 					dark0 = "#141617",
 					dark0_soft = "#1d2021",
-					dark1 = "#141617",
-					dark2 = "#1d2021",
-					dark3 = "#282828",
-					dark4 = "#3c3836",
+					dark1 = "#1d2021",
+					dark2 = "#282828",
+					dark3 = "#3c3836",
+					dark4 = "#504945",
 					gray = "#504945",
 				},
 				overrides = {},
 				dim_inactive = false,
 				transparent_mode = false,
 			})
-			vim.cmd([[colorscheme gruvbox]])
 		end,
 	},
 	{
@@ -220,13 +219,13 @@ return {
 					sumiInk4 = "#14161D",
 
 					waveBlue1 = "#0e151f",
-    				waveBlue2 = "#0d181f",
+					waveBlue2 = "#0d181f",
 				},
 				theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
 			},
 			theme = "dragon", -- wave, lotus, dragon
 			background = {
-				dark = "dragos",
+				dark = "dragon",
 				light = "lotus",
 			},
 		},
@@ -256,4 +255,7 @@ return {
 			})
 		end,
 	},
+	-- {
+	-- 	require("catdaddy.util").load_colorscheme(),
+	-- },
 }

@@ -237,21 +237,21 @@ opt.viewoptions = {
 	"folds",
 }
 
-opt.wildignore = {
-	".git/*",
-	".hg/*",
-	".svn/*",
-	".DS_Store",
-	"*.pyc",
-	"*.pyo",
-	"*.rbc",
-	"*.rbo",
-	"*.class",
-	"*.o",
-	"*.so",
-	"*.cache",
-	"*~",
-	"*.swp",
-}
-opt.wildmode = "longest:full"
-opt.wildoptions = "pum"
+-- opt.wildignore = {
+-- 	".git/*",
+-- 	".hg/*",
+-- 	".svn/*",
+-- 	".DS_Store",
+-- 	"*.pyc",
+-- 	"*.pyo",
+-- 	"*.rbc",
+-- 	"*.rbo",
+-- 	"*.class",
+-- 	"*.o",
+-- 	"*.so",
+-- 	"*.cache",
+-- 	"*~",
+-- 	"*.swp",
+-- }
+-- opt.wildmode = "longest:full"
+-- opt.wildoptions = "pum"
