@@ -1,5 +1,4 @@
 alacritty-git
-aosp-devel
 apg
 aquamarine-git
 arduino-ide-bin
@@ -34,10 +33,8 @@ hyprsunset-git
 hyprutils-git
 hyprwayland-scanner-git
 latexrun-git
-lib32-ncurses5-compat-libs
 libinput-gestures
 light
-lineageos-devel
 ncurses5-compat-libs
 otf-apple-fonts
 pyenv-virtualenv
@@ -57,4 +54,4 @@ wttrbar
 xdg-desktop-portal-hyprland-git
 xml2
 yay-bin
-zen-twilight-avx2-bin
+zen-twilight-bin

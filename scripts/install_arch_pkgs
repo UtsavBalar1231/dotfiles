@@ -114,7 +114,10 @@ install_packages() {
 	# Install AUR packages
 	if [[ ${#aur_found[@]} -gt 0 ]]; then
 		echo "Installing AUR packages..."
-		"$AUR_HELPER" -S --noconfirm "${aur_found[@]}"
+		for aur_pkg in ${aur_found[@]}
+		do
+			"$AUR_HELPER" -S --noconfirm "$aur_pkg"
+		done
 	fi
 
 	# Handle not found packages

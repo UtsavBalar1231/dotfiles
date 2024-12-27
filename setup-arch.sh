@@ -36,7 +36,10 @@ fi
 
 echo "Installing packages..."
 
-"$ARCH_PKG_INSTALLER" "$pkgs_list_files"
+for pkg_file in $pkgs_list_files
+do
+	"$ARCH_PKG_INSTALLER" "$pkg_file"
+done
 
 if command -v gsettings &>/dev/null; then
 	gsettings set org.gnome.desktop.interface font-name "JetBrainsMono Nerd Font 12"
