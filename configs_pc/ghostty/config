@@ -1,0 +1,31 @@
+font-size = 24
+font-thicken = true
+font-feature = -aalt -calt -case -ccmp -cv01 -cv02 -cv03 -cv04 -cv05 -cv06 -cv07 -cv08 -cv09 -cv10 -cv11 -cv12 -cv13 -cv14 -cv15 -cv16 -cv17 -cv18 -cv19 -cv20 -cv99 -frac -locl -ordn -sinf -ss01 -ss02 -ss19 -ss20 -subs -sups -zero -mark -mkmk
+font-family = JetBrainsMono Nerd Font Mono
+
+custom-shader-animation = true
+
+window-colorspace = display-p3
+window-theme = system
+window-decoration = false
+window-padding-x = 4
+window-padding-y = 4
+window-padding-balance = true
+window-padding-color = background
+window-step-resize = true
+
+theme = gruvbox-custom
+bold-is-bright = true
+background-opacity = 0.94
+background-blur-radius = 24
+
+unfocused-split-opacity = 0.90
+
+cursor-style-blink = false
+mouse-hide-while-typing = true
+copy-on-select = true
+
+gtk-tabs-location = bottom
+gtk-adwaita = true
+
+scrollback-limit = 67108864

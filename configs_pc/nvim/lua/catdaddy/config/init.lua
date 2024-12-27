@@ -1,0 +1,5 @@
+require("catdaddy.config.lazy")
+require("catdaddy.config.options")
+require("catdaddy.config.autocmds")
+require("catdaddy.config.keymaps")
+require("catdaddy.config.cmd")
