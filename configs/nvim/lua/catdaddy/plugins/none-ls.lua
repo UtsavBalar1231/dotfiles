@@ -30,7 +30,6 @@ return {
 				"pyright",
 				"rust_analyzer",
 				"stylua",
-				"svls",
 				"vimls",
 				"yamllint",
 				"yamlls",
@@ -42,7 +41,7 @@ return {
 		null_ls.setup({
 			sources = {
 				-- Completions
-				-- null_ls.builtins.completion.luasnip,
+				null_ls.builtins.completion.luasnip,
 				-- null_ls.builtins.completion.spell,
 				-- null_ls.builtins.completion.tags,
 
@@ -55,7 +54,7 @@ return {
 				-- null_ls.builtins.diagnostics.markdownlint,
 				-- null_ls.builtins.diagnostics.pylint,
 				-- null_ls.builtins.diagnostics.rstcheck,
-				-- null_ls.builtins.diagnostics.todo_comments,
+				null_ls.builtins.diagnostics.todo_comments,
 				-- null_ls.builtins.diagnostics.trail_space,
 				-- null_ls.builtins.diagnostics.zsh,
 

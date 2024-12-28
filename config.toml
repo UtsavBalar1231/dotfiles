@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "1eca5b1afda440533c7598ca55d1a41468858a9a67514ba015592b979641f739"
+hash = "9c45ba8d8548c5db56d80b9c3fac4aafd3332a849b32288ac037573c959e37ea"
 conf_type = "Dir"
 
 [[configs]]
@@ -46,7 +46,7 @@ conf_type = "File"
 [[configs]]
 name = "zshrc"
 path = "$HOME/.zshrc"
-hash = "d4f319c223be1f61b46ca7d8db7e5b0935346685e77158d9a5952dc8e09b6530"
+hash = "c6a1f755046254944a2b17729efd557ae203651cd12d1de8354d866980627f76"
 conf_type = "File"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "2f107dda3a33c22a4cf4a2abce213981f9190c10ae4617b40b147c015d43a3d6"
+hash = "60036745b5c78f40178219358a94e6dccf42a0fb9e0e6da4c6178a8f0822a62a"
 conf_type = "Dir"
 
 [[configs]]
@@ -125,4 +125,10 @@ conf_type = "Dir"
 name = "wallpapers"
 path = "$HOME/Pictures/wallpapers"
 hash = "1177c83a8597e9a54fa120ac9a352a4f56fe9ec3fcf2541b69bbe7f750e5dc2f"
+conf_type = "Dir"
+
+[[configs]]
+name = "bat"
+path = "$HOME/.config/bat"
+hash = "f4ef815cfac39d02b9e10ecc24820a70ca16ab642492caf4f2230337d2fa5a97"
 conf_type = "Dir"

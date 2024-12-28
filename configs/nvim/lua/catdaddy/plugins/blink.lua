@@ -45,7 +45,7 @@ return {
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
-		-- "giuxtaposition/blink-cmp-copilot",
+		"giuxtaposition/blink-cmp-copilot",
 		"onsails/lspkind.nvim",
 	},
 
@@ -65,34 +65,34 @@ return {
 			end,
 		},
 		sources = {
-			-- default = { "lsp", "path", "snippets", "luasnip", "buffer", "copilot" },
-			default = { "lsp", "path", "snippets", "luasnip", "buffer", "codeium" },
+			default = { "lsp", "path", "snippets", "luasnip", "buffer", "copilot" },
+			-- default = { "lsp", "path", "snippets", "luasnip", "buffer", "codeium" },
 			providers = {
-				-- copilot = {
-				-- 	name = "copilot",
-				-- 	enabled = true,
-				-- 	module = "blink-cmp-copilot",
-				-- 	score_offset = 800,
-				-- 	async = true,
-				-- 	max_items = 1,
-				-- 	transform_items = function(_, items)
-				-- 		local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-				-- 		local kind_idx = #CompletionItemKind + 1
-				-- 		CompletionItemKind[kind_idx] = "Copilot"
-				-- 		for _, item in ipairs(items) do
-				-- 			item.kind = kind_idx
-				-- 		end
-				-- 		return items
-				-- 	end,
-				-- },
-				codeium = {
-					name = "Codeium",
-					module = "codeium.blink",
-					async = true,
+				copilot = {
+					name = "copilot",
 					enabled = true,
-					score_offset = 1200,
+					module = "blink-cmp-copilot",
+					score_offset = 800,
+					async = true,
 					max_items = 1,
+					transform_items = function(_, items)
+						local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+						local kind_idx = #CompletionItemKind + 1
+						CompletionItemKind[kind_idx] = "Copilot"
+						for _, item in ipairs(items) do
+							item.kind = kind_idx
+						end
+						return items
+					end,
 				},
+				-- codeium = {
+				-- 	name = "Codeium",
+				-- 	module = "codeium.blink",
+				-- 	async = true,
+				-- 	enabled = true,
+				-- 	score_offset = 1200,
+				-- 	max_items = 1,
+				-- },
 				buffer = {
 					name = "buffer",
 					enabled = true,

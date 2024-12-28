@@ -1,11 +1,9 @@
 return {
 	"williamboman/mason.nvim",
 	lazy = true,
-	event = "VeryLazy",
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		"jay-babu/mason-null-ls.nvim",
 	},
 
 	config = function()
@@ -32,15 +30,12 @@ return {
 				"bashls",
 				"clangd",
 				"cssls",
-				"efm",
 				"esbonio",
 				"html",
 				"jsonls",
 				"lua_ls",
-				"marksman",
 				"pyright",
 				"rust_analyzer",
-				"svls",
 				"vimls",
 				"yamlls",
 			},
@@ -52,7 +47,6 @@ return {
 				"black",
 				"clang-format",
 				"clangd",
-				"efm",
 				"esbonio",
 				"eslint",
 				"eslint_d",

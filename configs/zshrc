@@ -74,7 +74,6 @@ if command -v zoxide >/dev/null; then
 	eval "$(zoxide init zsh)"
 fi
 
-
 # List of plugins with optional third parameter for specific source file
 declare -g plugins=(
     "z-shell/F-Sy-H:main"
@@ -182,7 +181,7 @@ fi
 
 # Rust
 if ! command -v rustc >/dev/null; then
-	curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
+	curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
 fi
 
 # Python binaries
@@ -201,14 +200,6 @@ if [ -f ${HOME}/.gitlint ]; then
 	export GITLINT_CONFIG
 fi
 
-# custom Golang
-if [ -d "/usr/local/go" ]; then
-	export GOARCH=amd64
-	export GOOS=linux
-	export GOROOT=/usr/local/go
-	export PATH=$GOROOT/bin:$PATH
-fi
-
 # Edit command line
 autoload -Uz edit-command-line
 zle -N edit-command-line
@@ -218,11 +209,6 @@ fpath+=${ZDOTDIR:-${HOME}}/.zsh_functions
 # Set default editor
 if command -v nvim >/dev/null 2>&1; then
 	export EDITOR=nvim
-fi
-
-# Broot
-if command -v broot >/dev/null 2>&1; then
-	source ${HOME}/.config/broot/launcher/bash/br
 fi
 
 # ZSH plugins
@@ -263,24 +249,35 @@ fi
 [ -s "/home/utsav/.bun/_bun" ] && source "/home/utsav/.bun/_bun"
 
 # bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+if [ -d "$HOME/.bun" ]; then
+	export BUN_INSTALL="$HOME/.bun"
+	export PATH="$BUN_INSTALL/bin:$PATH"
+fi
 
 # rofi
-export PATH=$HOME/.config/rofi/scripts:$PATH
+if [ -d $HOME/.config/rofi/scripts ]; then
+	export PATH=$HOME/.config/rofi/scripts:$PATH
+fi
 
 # Local binaries
 if [ -d $HOME/.local/bin ]; then
 	export PATH=$HOME/.local/bin:$PATH
 fi
 
-#zprof
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Set QT theme
-export QT_QPA_PLATFORMTHEME="qt6ct"
+if command -v qt6ct >/dev/null; then
+	export QT_QPA_PLATFORMTHEME="qt6ct"
+fi
 
 # if command -v wal >/dev/null; then
 # 	(cat ~/.cache/wal/sequences &)
 # fi
+
+if [ -f $HOME/.newt-colors ]; then
+	export NEWT_COLORS_FILE=~/.newt-colors
+fi
+
+#zprof

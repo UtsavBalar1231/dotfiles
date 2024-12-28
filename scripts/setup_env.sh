@@ -26,7 +26,6 @@ python3
 rsync
 shellcheck
 stow
-svls
 tmux
 unzip
 wget

@@ -183,12 +183,6 @@ return {
 			on_attach = on_attach,
 		})
 
-		-- SystemVerilog
-		lspconfig.svls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
 		-- typescript
 		lspconfig.ts_ls.setup({
 			capabilities = capabilities,
@@ -209,6 +203,12 @@ return {
 
 		-- yaml
 		lspconfig.yamlls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		-- hyprls
+		lspconfig.hyprls.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})

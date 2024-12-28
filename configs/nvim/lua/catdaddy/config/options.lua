@@ -119,10 +119,10 @@ opt.foldlevel = 99
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldmethod = "expr"
 
---opt.cmdwinheight = 30
---opt.colorcolumn = "+0"
---opt.confirm = true
---opt.fileignorecase = true
+opt.cmdwinheight = 30
+opt.colorcolumn = "+0"
+opt.confirm = true
+opt.fileignorecase = true
 
 -------------------------------
 --- General editor UI setup ---
@@ -142,8 +142,6 @@ opt.colorcolumn = "80"
 opt.splitright = true
 -- Horizontal split to the bottom
 opt.splitbelow = true
--- Keep same window when splitting
-opt.splitkeep = "screen"
 -- Keep windows equal when splitting
 opt.equalalways = true
 -- Put new windows right of current
@@ -237,21 +235,21 @@ opt.viewoptions = {
 	"folds",
 }
 
--- opt.wildignore = {
--- 	".git/*",
--- 	".hg/*",
--- 	".svn/*",
--- 	".DS_Store",
--- 	"*.pyc",
--- 	"*.pyo",
--- 	"*.rbc",
--- 	"*.rbo",
--- 	"*.class",
--- 	"*.o",
--- 	"*.so",
--- 	"*.cache",
--- 	"*~",
--- 	"*.swp",
--- }
--- opt.wildmode = "longest:full"
--- opt.wildoptions = "pum"
+opt.wildignore = {
+	".git/*",
+	".hg/*",
+	".svn/*",
+	".DS_Store",
+	"*.pyc",
+	"*.pyo",
+	"*.rbc",
+	"*.rbo",
+	"*.class",
+	"*.o",
+	"*.so",
+	"*.cache",
+	"*~",
+	"*.swp",
+}
+opt.wildmode = "longest:full"
+opt.wildoptions = "pum"

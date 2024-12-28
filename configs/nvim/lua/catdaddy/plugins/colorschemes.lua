@@ -1,6 +1,32 @@
 ---@diagnostic disable: inject-field, undefined-field, unused-local
 return {
 	{
+		"sainnhe/gruvbox-material",
+		priority = 1000,
+		lazy = false,
+		config = function()
+			vim.g.gruvbox_material_better_performance = 1
+			vim.g.gruvbox_material_foreground = "material"
+			vim.g.gruvbox_material_background = "hard"
+			vim.g.gruvbox_material_ui_contrast = "high"
+			vim.g.gruvbox_material_float_style = "dim"
+			vim.g.gruvbox_material_enable_italic = 1
+			vim.g.gruvbox_material_enable_bold = 1
+			vim.g.gruvbox_material_visual = "green background"
+			vim.g.gruvbox_material_show_eob = 1
+			vim.g.gruvbox_material_diagnostic_text_highlight = 1
+			vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
+			vim.g.gruvbox_material_inlay_hints_background = "dimmed"
+
+			local configuration = vim.fn["gruvbox_material#get_configuration"]()
+			local palette = vim.fn["gruvbox_material#get_palette"](
+				configuration.background,
+				configuration.foreground,
+				configuration.colors_override
+			)
+		end,
+	},
+	{
 		"ellisonleao/gruvbox.nvim",
 		priority = 1000,
 		lazy = false,
@@ -27,16 +53,50 @@ return {
 				inverse = true,
 				contrast = "hard",
 				palette_overrides = {
-					dark0_hard = "#000000",
-					dark0 = "#141617",
-					dark0_soft = "#1d2021",
-					dark1 = "#1d2021",
-					dark2 = "#282828",
-					dark3 = "#3c3836",
-					dark4 = "#504945",
-					gray = "#504945",
+					dark0_hard = "#0e1010", -- Darken by 50%
+					dark0_soft = "#191817", -- Darken by 50%
+					dark0 = "#141414", -- Darken by 50%
+					dark1 = "#181615", -- Darken by 60%
+					dark2 = "#201d1b", -- Darken by 60%
+					dark3 = "#332e2a", -- Darken by 50%
+					dark4 = "#3e3732", -- Darken by 50%
+					gray = "#49413a", -- Darken by 50%
+					bright_red = "#ea6962",
+					bright_green = "#a9b665",
+					bright_yellow = "#d8a657",
+					bright_blue = "#7daea3",
+					bright_purple = "#d3869b",
+					bright_aqua = "#89b482",
+					bright_orange = "#e78a4e",
+					neutral_red = "#ae5858",
+					neutral_green = "#6c782e",
+					neutral_yellow = "#b39c09", -- Slightly modified
+					neutral_blue = "#45707a",
+					neutral_purple = "#945e80",
+					neutral_aqua = "#4c7a5d",
+					neutral_orange = "#c35e0a",
+					faded_red = "#9d0006",
+					faded_green = "#79740e",
+					faded_yellow = "#b57614",
+					faded_blue = "#076678",
+					faded_purple = "#8f3f71",
+					faded_aqua = "#427b58",
+					faded_orange = "#af3a03",
+					dark_red_hard = "#3c1f1e",
+					dark_red = "#402120",
+					dark_red_soft = "#472322",
+					dark_green_hard = "#32361a",
+					dark_green = "#34381b",
+					dark_green_soft = "#3d4220",
+					dark_aqua_hard = "#333e34",
+					dark_aqua = "#3b4439",
+					dark_aqua_soft = "#414a3e",
 				},
-				overrides = {},
+				overrides = {
+					NonText = {
+						fg = "#332e2a",
+					},
+				},
 				dim_inactive = false,
 				transparent_mode = false,
 			})
@@ -147,9 +207,16 @@ return {
 			},
 			color_overrides = {
 				mocha = {
-					base = "#000000",
-					mantle = "#000000",
-					crust = "#000000",
+					subtext1 = "#4a4d58",
+					subtext0 = "#424550",
+					overlay1 = "#32343e",
+					overlay0 = "#2b2c35",
+					surface2 = "#23242c",
+					surface1 = "#1b1c24",
+					surface0 = "#13141b",
+					base = "#0c0c12",
+					mantle = "#09090e",
+					crust = "#06060a",
 				},
 			},
 			integrations = {
@@ -232,7 +299,6 @@ return {
 	},
 	{
 		"neanias/everforest-nvim",
-		version = false,
 		lazy = false,
 		priority = 1000,
 		config = function()
@@ -244,18 +310,72 @@ return {
 				float_style = "dim",
 				inlay_hints_background = "dimmed",
 				colours_override = function(palette)
-					palette.bg0 = "#000000"
-					palette.bg1 = "#070604"
-					palette.bg2 = "#171614"
-					palette.bg3 = "#272e33"
-					palette.bg4 = "#2e383c"
-					palette.bg5 = "#374145"
-					palette.bg_dim = "#141617"
+					palette.bg_dim = "#0c0e0f"
+					palette.bg0 = "#0f1214"
+					palette.bg1 = "#121618"
+					palette.bg2 = "#161a1b"
+					palette.bg3 = "#1a1e20"
+					palette.bg4 = "#1d2022"
+					palette.bg5 = "#2f3634"
+				end,
+				on_highlights = function(hl, palette)
+					hl.NonText = { fg = palette.bg5 }
 				end,
 			})
 		end,
 	},
-	-- {
-	-- 	require("catdaddy.util").load_colorscheme(),
-	-- },
+	{
+		"AlexvZyl/nordic.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("nordic").setup({
+				-- This callback can be used to override the colors used in the base palette.
+				on_palette = function(palette)
+					palette.black0 = "#1b1e26" -- 20% more dark of black2
+					palette.black1 = "#0f1115" -- 50% more dark of black1
+					palette.black2 = "#0c0e12" -- 50% more dark of black0
+					palette.gray0 = "#121419" -- 50% more dark of gray0
+					palette.gray1 = "#171a20" -- 50% more dark of gray1
+					palette.gray2 = "#292e39" -- 30% more dark of gray2
+					palette.gray3 = "#2e3541" -- 30% more dark of gray3
+					palette.gray4 = "#444d5f" -- 10% more dark of gray4
+					palette.gray5 = "#4c5b6e" -- 20% more dark of gray5
+				end,
+				-- This callback can be used to override the colors used in the extended palette.
+				after_palette = function(palette)
+					local U = require("nordic.utils")
+					palette.bg_visual = U.blend(palette.orange.base, palette.bg, 0.15)
+				end,
+				on_highlight = function(highlights, palette) end,
+				bold_keywords = true,
+				italic_comments = true,
+				transparent = {
+					bg = false,
+					float = false,
+				},
+				bright_border = true,
+				reduced_blue = true,
+				swap_backgrounds = false,
+				cursorline = {
+					bold = true,
+					bold_number = true,
+					theme = "dark",
+					blend = 0.95,
+				},
+				noice = {
+					style = "classic",
+				},
+				telescope = {
+					style = "flat",
+				},
+				leap = {
+					dim_backdrop = true,
+				},
+				ts_context = {
+					dark_background = true,
+				},
+			})
+		end,
+	},
 }
