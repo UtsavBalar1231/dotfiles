@@ -1,4 +1,4 @@
----@class util.colorscheme
+---@class catdaddy.util.colorscheme
 local M = {}
 
 local cs_config_file = vim.fn.stdpath("config") .. "/lua/catdaddy/util/colorscheme.json"
@@ -67,12 +67,6 @@ function M.get_colorscheme()
 		write_default_colorscheme()
 		return "default"
 	end
-end
-
--- Utility function to disable specified colorschemes
----@param colorschemes string[] List of colorschemes to disable
-function M.disable_colorschemes(colorschemes)
-	vim.opt.wildignore:append(colorschemes)
 end
 
 return M

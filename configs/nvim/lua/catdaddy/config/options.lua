@@ -235,7 +235,9 @@ opt.viewoptions = {
 	"folds",
 }
 
-opt.wildignore = {
+opt.wildmode = "longest:full"
+opt.wildoptions = "pum"
+opt.wildignore:append({
 	".git/*",
 	".hg/*",
 	".svn/*",
@@ -250,6 +252,37 @@ opt.wildignore = {
 	"*.cache",
 	"*~",
 	"*.swp",
-}
-opt.wildmode = "longest:full"
-opt.wildoptions = "pum"
+	"blue.vim",
+	"darkblue.vim",
+	"delek.vim",
+	"desert.vim",
+	"elflord.vim",
+	"evening.vim",
+	"habamax.vim",
+	"industry.vim",
+	"koehler.vim",
+	"lunaperche.vim",
+	"morning.vim",
+	"murphy.vim",
+	"pablo.vim",
+	"peachpuff.vim",
+	"quiet.vim",
+	"retrobox.vim",
+	"ron.vim",
+	"shine.vim",
+	"slate.vim",
+	"sorbet.vim",
+	"torte.vim",
+	"wildcharm.vim",
+	"zaibatsu.vim",
+	"zellner.vim",
+}, ",")
+
+
+-- Show the current document symbols location from Trouble in lualine
+-- You can disable this for a buffer by setting `vim.b.trouble_lualine = false`
+vim.g.trouble_lualine = true
+
+-- if the completion engine supports the AI source,
+-- use that instead of inline suggestions
+vim.g.ai_cmp = true

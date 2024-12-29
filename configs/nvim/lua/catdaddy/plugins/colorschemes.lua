@@ -2,8 +2,7 @@
 return {
 	{
 		"sainnhe/gruvbox-material",
-		priority = 1000,
-		lazy = false,
+		lazy = true,
 		config = function()
 			vim.g.gruvbox_material_better_performance = 1
 			vim.g.gruvbox_material_foreground = "material"
@@ -24,12 +23,48 @@ return {
 				configuration.foreground,
 				configuration.colors_override
 			)
+			local highlights_groups = {
+				FoldColumn = { bg = "none", fg = palette.grey0[1] },
+				SignColumn = { bg = "none" },
+				EndOfBuffer = { bg = "none", fg = palette.grey0[1] },
+				Normal = { bg = "none", fg = palette.fg0[1] },
+				NormalFloat = { bg = "none", fg = palette.fg0[1] },
+				FloatBorder = { bg = "none" },
+				FloatTitle = { bg = "none", fg = palette.orange[1] },
+				TelescopeTitle = { bg = "none", fg = palette.fg0[1] },
+				TelescopeBorder = { bg = "none", fg = palette.fg0[1] },
+				TelescopeNormal = { fg = "none" },
+				TelescopePromptNormal = { bg = "none", fg = palette.fg0[1] },
+				TelescopeResultsNormal = { bg = "none", fg = palette.fg0[1] },
+				TelescopeResultsDiffUntracked = { bg = "none", fg = palette.orange[1] },
+				TelescopeSelection = { bg = palette.bg5[1], fg = palette.fg0[1] },
+				TelescopePreviewDirectory = { fg = palette.red[1] },
+				TelescopePromptCounter = { bg = "none", fg = palette.fg0[1] },
+				TelescopeMatching = { bold = false, bg = "none", fg = palette.green[1] },
+				Visual = { bg = palette.bg_visual_red[1] },
+				ColorColumn = { bg = palette.bg_visual_blue[1] },
+				CursorLine = { bg = palette.bg3[1], blend = 25 },
+				GitSignsAdd = { bg = "none", fg = palette.green[1] },
+				GitSignsChange = { bg = "none", fg = palette.yellow[1] },
+				GitSignsDelete = { bg = "none", fg = palette.red[1] },
+				DiffAdd = { bg = "none", fg = palette.green[1] },
+				DiffChange = { bg = "none", fg = palette.yellow[1] },
+				DiffDelete = { bg = "none", fg = palette.red[1] },
+				DiffText = { bg = "none", fg = palette.blue[1] },
+				LspInfoBorder = { bg = "none", fg = palette.fg0[1] },
+				MatchParen = { bg = palette.grey2[1], fg = palette.bg0[1] },
+				DiagnosticSignWarn = { bg = "none", fg = palette.yellow[1] },
+				ErrorMsg = { fg = palette.red[1] },
+			}
+
+			for group, styles in pairs(highlights_groups) do
+				vim.api.nvim_set_hl(0, group, styles)
+			end
 		end,
 	},
 	{
 		"ellisonleao/gruvbox.nvim",
-		priority = 1000,
-		lazy = false,
+		lazy = true,
 		config = function()
 			local gruvbox = require("gruvbox")
 
@@ -105,8 +140,7 @@ return {
 	{
 		"rose-pine/neovim",
 		name = "rose-pine",
-		lazy = false,
-		priority = 1000,
+		lazy = true,
 		opts = {
 			variant = "main", -- auto, main, moon, or dawn
 			dark_variant = "main", -- main, moon, or dawn
@@ -186,8 +220,7 @@ return {
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
-		priority = 1000,
-		lazy = false,
+		lazy = true,
 		opts = {
 			no_italic = true,
 			term_colors = true,
@@ -220,52 +253,48 @@ return {
 				},
 			},
 			integrations = {
-				telescope = {
+				aerial = true,
+				alpha = true,
+				cmp = true,
+				dashboard = true,
+				flash = true,
+				fzf = true,
+				grug_far = true,
+				gitsigns = true,
+				headlines = true,
+				illuminate = true,
+				indent_blankline = { enabled = true },
+				leap = true,
+				lsp_trouble = true,
+				mason = true,
+				markdown = true,
+				mini = true,
+				native_lsp = {
 					enabled = true,
-					style = "nvchad",
+					underlines = {
+						errors = { "undercurl" },
+						hints = { "undercurl" },
+						warnings = { "undercurl" },
+						information = { "undercurl" },
+					},
 				},
-				dropbar = {
-					enabled = true,
-					color_mode = true,
-				},
+				navic = { enabled = true, custom_bg = "lualine" },
+				neotest = true,
+				neotree = true,
+				noice = true,
+				notify = true,
+				semantic_tokens = true,
+				snacks = true,
+				telescope = true,
+				treesitter = true,
+				treesitter_context = true,
+				which_key = true,
 			},
-		},
-	},
-	{
-		"miikanissi/modus-themes.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {
-			style = "modus_vivendi", -- `auto`, ``modus_operandi` and `modus_vivendi`
-			variant = "default", -- `default`, `tinted`, `deuteranopia`, and `tritanopia`
-			transparent = false,
-			dim_inactive = false,
-			hide_inactive_statusline = true, -- Hide statuslines on inactive windows. Works with the standard **StatusLine**, **LuaLine** and **mini.statusline**
-			styles = {
-				-- Style to be applied to different syntax groups
-				-- Value is any valid attr-list value for `:help nvim_set_hl`
-				comments = { italic = true },
-				keywords = { italic = true },
-				functions = {},
-				variables = {},
-			},
-
-			---@param colors ColorScheme
-			on_colors = function(colors)
-				colors.error = colors.red_faint
-			end,
-
-			---@param highlights Highlights
-			---@param colors ColorScheme
-			on_highlights = function(highlights, colors)
-				highlights.Boolean = { fg = colors.green }
-			end,
 		},
 	},
 	{
 		"rebelot/kanagawa.nvim",
-		lazy = false,
-		priority = 1000,
+		lazy = true,
 		opts = {
 			compile = false,
 			undercurl = true,
@@ -299,8 +328,7 @@ return {
 	},
 	{
 		"neanias/everforest-nvim",
-		lazy = false,
-		priority = 1000,
+		lazy = true,
 		config = function()
 			require("everforest").setup({
 				background = "hard", -- hard, medium, soft
@@ -326,8 +354,7 @@ return {
 	},
 	{
 		"AlexvZyl/nordic.nvim",
-		lazy = false,
-		priority = 1000,
+		lazy = true,
 		config = function()
 			require("nordic").setup({
 				-- This callback can be used to override the colors used in the base palette.
@@ -345,7 +372,7 @@ return {
 				-- This callback can be used to override the colors used in the extended palette.
 				after_palette = function(palette)
 					local U = require("nordic.utils")
-					palette.bg_visual = U.blend(palette.orange.base, palette.bg, 0.15)
+					palette.bg_visual = U.blend(palette.orange.base, palette.bg, 0.20)
 				end,
 				on_highlight = function(highlights, palette) end,
 				bold_keywords = true,

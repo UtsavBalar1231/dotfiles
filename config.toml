@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "9c45ba8d8548c5db56d80b9c3fac4aafd3332a849b32288ac037573c959e37ea"
+hash = "be3a944756224acf0dcc575a0934be60b7a02f5347862c06b456d04cc1420453"
 conf_type = "Dir"
 
 [[configs]]

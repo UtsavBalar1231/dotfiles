@@ -1,5 +1,9 @@
----@class util
----@field colorscheme util.colorscheme
+---@class catdaddy.util
+---@field config Config
+---@field colorscheme catdaddy.util.colorscheme
+---@field root catdaddy.util.root
+---@field health catdaddy.util.health
+---@field lualine catdaddy.util.lualine
 local M = {}
 
 setmetatable(M, {
@@ -13,6 +17,11 @@ setmetatable(M, {
 	end,
 })
 
+function M.is_win()
+	---@diagnostic disable-next-line: undefined-field
+	return vim.uv.os_uname().sysname:find("Windows") ~= nil
+end
+
 --- Merge extended options with a default table of options
 --- @param default? table The default table that you want to merge into
 --- @param opts? table The new options that should be merged with the default table
@@ -20,6 +29,29 @@ setmetatable(M, {
 function M.extend_tbl(default, opts)
 	opts = opts or {}
 	return default and vim.tbl_deep_extend("force", default, opts) or opts
+end
+
+function M.is_loaded(name)
+	local Config = require("lazy.core.config")
+	return Config.plugins[name] and Config.plugins[name]._.loaded
+end
+
+---@param name string
+---@param fn fun(name:string)
+function M.on_load(name, fn)
+	if M.is_loaded(name) then
+		fn(name)
+	else
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "LazyLoad",
+			callback = function(event)
+				if event.data == name then
+					fn(name)
+					return true
+				end
+			end,
+		})
+	end
 end
 
 return M

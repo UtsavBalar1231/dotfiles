@@ -1,47 +1,8 @@
-local function get_lsp_completion_context(completion)
-	local ok, source_name = pcall(function()
-		return vim.lsp.get_client_by_id(completion.client_id).name
-	end)
-
-	if not ok then
-		return nil
-	end
-
-	if source_name == "ts_ls" then
-		return completion.detail
-	elseif source_name == "pyright" and completion.labelDetails ~= nil then
-		return completion.labelDetails.description
-	elseif source_name == "texlab" then
-		return completion.detail
-	elseif source_name == "clangd" then
-		local doc = completion.documentation
-		if doc == nil then
-			return
-		end
-		local import_str = doc.value
-		import_str = import_str:gsub("[\n]+", "")
-
-		local str
-		str = import_str:match("<(.-)>")
-		if str then
-			return "<" .. str .. ">"
-		end
-
-		str = import_str:match("[\"'](.-)[\"']")
-		if str then
-			return '"' .. str .. '"'
-		end
-
-		return nil
-	end
-end
-
 return {
 	"saghen/blink.cmp",
 	version = "*",
 	event = "InsertEnter",
 	build = "cargo build --release",
-	lazy = false,
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
@@ -65,34 +26,8 @@ return {
 			end,
 		},
 		sources = {
-			default = { "lsp", "path", "snippets", "luasnip", "buffer", "copilot" },
-			-- default = { "lsp", "path", "snippets", "luasnip", "buffer", "codeium" },
+			default = { "lsp", "path", "snippets", "luasnip", "buffer" },
 			providers = {
-				copilot = {
-					name = "copilot",
-					enabled = true,
-					module = "blink-cmp-copilot",
-					score_offset = 800,
-					async = true,
-					max_items = 1,
-					transform_items = function(_, items)
-						local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-						local kind_idx = #CompletionItemKind + 1
-						CompletionItemKind[kind_idx] = "Copilot"
-						for _, item in ipairs(items) do
-							item.kind = kind_idx
-						end
-						return items
-					end,
-				},
-				-- codeium = {
-				-- 	name = "Codeium",
-				-- 	module = "codeium.blink",
-				-- 	async = true,
-				-- 	enabled = true,
-				-- 	score_offset = 1200,
-				-- 	max_items = 1,
-				-- },
 				buffer = {
 					name = "buffer",
 					enabled = true,
@@ -110,7 +45,6 @@ return {
 					name = "LSP",
 					enabled = true,
 					module = "blink.cmp.sources.lsp",
-					fallbacks = { "luasnip", "snippets", "buffer" },
 					score_offset = 1000,
 				},
 				path = {
@@ -118,7 +52,6 @@ return {
 					module = "blink.cmp.sources.path",
 					enabled = true,
 					score_offset = 650,
-					fallbacks = { "luasnip", "snippets", "buffer" },
 					opts = {
 						trailing_slash = false,
 						label_trailing_slash = true,
@@ -190,9 +123,6 @@ return {
 			},
 			ghost_text = { enabled = true },
 			menu = {
-				-- auto_show = function(ctx)
-				-- 	return ctx.mode ~= "cmdline"
-				-- end,
 				draw = {
 					align_to_component = "label",
 					treesitter = { "lsp" },
@@ -246,9 +176,6 @@ return {
 						},
 						label_description = {
 							width = { fill = true },
-							text = function(ctx)
-								return get_lsp_completion_context(ctx.item)
-							end,
 							highlight = "BlinkCmpLabelDescription",
 						},
 					},

@@ -3,12 +3,6 @@ return {
 	opts = {
 		focus = true,
 		win = { position = "top", size = 0.35 },
-
-		vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-			callback = function()
-				vim.cmd([[Trouble qflist open]])
-			end,
-		}),
 	},
 	cmd = "Trouble",
 	event = "CmdlineEnter",
@@ -44,4 +38,11 @@ return {
 			desc = "Quickfix List (Trouble)",
 		},
 	},
+	config = function()
+		vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+			callback = function()
+				vim.cmd([[Trouble qflist open]])
+			end,
+		})
+	end,
 }

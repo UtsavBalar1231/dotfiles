@@ -1,9 +1,8 @@
 return {
 	"lewis6991/gitsigns.nvim",
+	event = { "BufRead", "BufNewFile" },
 	config = function()
-		local gitsigns = require("gitsigns")
-
-		gitsigns.setup({
+		require("gitsigns").setup({
 			signs = {
 				add = { text = "▎" },
 				change = { text = "▎" },
@@ -58,7 +57,7 @@ return {
 				map("n", "<leader>bl", function()
 					gs.blame_line({ full = true })
 				end)
-				--[[ 
+				--[[
 				-- Actions
     			map('n', '<leader>hs', gs.stage_hunk)
     			map('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)

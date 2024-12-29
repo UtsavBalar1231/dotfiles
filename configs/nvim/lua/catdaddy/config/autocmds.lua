@@ -89,7 +89,7 @@ autocmd("TextYankPost", {
 -- autocmd("BufWritePre", { pattern = "", command = ":%s/\\s\\+$//e" })
 
 -- go to last loc when opening a buffer
-vim.api.nvim_create_autocmd("BufReadPost", {
+autocmd("BufReadPost", {
 	desc = "Go to last loc when opening a buffer",
 	group = augroup("last_loc", { clear = true }),
 	pattern = "*",
@@ -143,7 +143,7 @@ autocmd("FileType", {
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+autocmd({ "BufWritePre" }, {
 	group = augroup("auto_create_dir", { clear = true }),
 	callback = function(event)
 		if event.match:match("^%w%w+:[\\/][\\/]") then
@@ -219,3 +219,38 @@ autocmd({ "InsertEnter", "WinLeave" }, {
 	end,
 	desc = "Disable cursorline when leaving window",
 })
+
+-- https://github.com/chrisgrieser/.config/blob/88eb71f88528f1b5a20b66fd3dfc1f7bd42b408a/nvim/lua/config/keybindings.lua#L288
+autocmd("FileType", {
+	pattern = "qf",
+	callback = function(event)
+		vim.keymap.set("n", "dd", function()
+			local qf_items = vim.fn.getqflist()
+			local lnum = vim.api.nvim_win_get_cursor(0)[1]
+			table.remove(qf_items, lnum)
+			vim.fn.setqflist(qf_items, "r")
+			vim.api.nvim_win_set_cursor(0, { lnum, 0 })
+		end, { buffer = event.buf, silent = true, desc = "Remove quickfix entry" })
+	end,
+})
+
+-- work-around for zsh-vi-mode/fish_vi_key_bindings auto insert
+if vim.o.shell:find("zsh") or vim.o.shell:find("fish") then
+	autocmd("TermEnter", {
+		group = vim.api.nvim_create_augroup("shell_vi_mode", {}),
+		pattern = "term://*" .. vim.o.shell,
+		desc = "Enter insert mode of zsh-vi-mode or fish_vi_key_bindings",
+		callback = function(event)
+			if vim.bo[event.buf].filetype ~= "snacks_terminal" then
+				return
+			end
+			vim.schedule(function()
+				-- powerlevel10k for zsh-vi-mode or starship for fish_vi_key_bindings
+				if vim.api.nvim_get_current_line():match("^❮ .*") then
+					-- use `a` instead of `i` to restore cursor position
+					vim.api.nvim_feedkeys(vim.keycode("a"), "n", false)
+				end
+			end)
+		end,
+	})
+end

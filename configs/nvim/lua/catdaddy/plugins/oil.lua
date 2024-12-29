@@ -1,10 +1,22 @@
 return {
 	"stevearc/oil.nvim",
-	event = "VeryLazy",
+	event = "InsertEnter",
 	---@module 'oil'
 	---@type oil.SetupOpts
 	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 	config = function()
+		-- Declare a global function to retrieve the current directory
+		function _G.get_oil_winbar()
+			local dir = require("oil").get_current_dir()
+			if dir then
+				return vim.fn.fnamemodify(dir, ":~")
+			else
+				-- If there is no current directory (e.g. over ssh), just show the buffer name
+				return vim.api.nvim_buf_get_name(0)
+			end
+		end
+
+		local detail = false
 		require("oil").setup({
 			default_file_explorer = true,
 			columns = {
@@ -20,6 +32,7 @@ return {
 			},
 			-- Window-local options to use for oil buffers
 			win_options = {
+				winbar = "%!v:lua.get_oil_winbar()",
 				wrap = false,
 				signcolumn = "no",
 				cursorcolumn = false,
@@ -77,6 +90,17 @@ return {
 				["gx"] = "actions.open_external",
 				["g."] = { "actions.toggle_hidden", mode = "n" },
 				["g\\"] = { "actions.toggle_trash", mode = "n" },
+				["gd"] = {
+					desc = "Toggle file detail view",
+					callback = function()
+						detail = not detail
+						if detail then
+							require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+						else
+							require("oil").set_columns({ "icon" })
+						end
+					end,
+				},
 			},
 			-- Set to false to disable all of the above keymaps
 			use_default_keymaps = true,
@@ -202,5 +226,10 @@ return {
 				border = "rounded",
 			},
 		})
+
+		vim.keymap.set("n", "<BS>", function()
+			require("oil").toggle_float()
+			-- require("oil").open()
+		end, { noremap = true, desc = "Toggle Oil" })
 	end,
 }

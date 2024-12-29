@@ -1,8 +1,23 @@
 return {
 	"nvim-lualine/lualine.nvim",
 	event = "VeryLazy",
-	config = function()
-		local lualine = require("lualine")
+	dependencies = {
+		{ "AndreM222/copilot-lualine" },
+	},
+	init = function()
+		vim.g.lualine_laststatus = vim.o.laststatus
+		if vim.fn.argc(-1) > 0 then
+			-- set an empty statusline till lualine loads
+			vim.o.statusline = " "
+		else
+			-- hide the statusline on the starter page
+			vim.o.laststatus = 0
+		end
+	end,
+	opts = function()
+		-- PERF: we don't need this lualine require madness 🤷
+		local lualine_require = require("lualine_require")
+		lualine_require.require = require
 
 		local diagnostics = {
 			"diagnostics",
@@ -21,6 +36,16 @@ return {
 				added = " ",
 				removed = " ",
 			},
+			source = function()
+				local gitsigns = vim.b.gitsigns_status_dict
+				if gitsigns then
+					return {
+						added = gitsigns.added,
+						modified = gitsigns.changed,
+						removed = gitsigns.removed,
+					}
+				end
+			end,
 		}
 
 		local branch = {
@@ -47,32 +72,8 @@ return {
 						return "(╯°□°)╯ What?!"
 					end
 				else
-					return "(git: " .. str .. ")"
+					return str
 				end
-			end,
-		}
-
-		local filename = {
-			"filename",
-			color = { gui = "italic" },
-			file_status = true,
-			shorting_target = 0,
-			symbols = {
-				readonly = "",
-				modified = "",
-				unreadable = "",
-				new = "",
-			},
-			path = 3,
-		}
-
-		local filesize = {
-			"filesize",
-			cond = function()
-				return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-			end,
-			fmt = function(str)
-				return string.format("%sb", str)
 			end,
 		}
 
@@ -85,35 +86,20 @@ return {
 					if str == "Bot" then
 						return "EOF"
 					elseif str == "Top" then
-						return "TOF"
+						return "SOF"
 					end
 				end
 			end,
 		}
 
-		-- local codeium = {
-		-- 	"codeium",
-		-- 	color = { gui = "bold" },
-		-- 	fmt = function(_)
-		-- 		local cstr = require('codeium.virtual_text').status_string()
-		-- 		if cstr == " ON" or cstr == " 0 " then
-		-- 			return "{…}"
-		-- 		elseif cstr == " * " then
-		-- 			return "{…} 󰔟 "
-		-- 		else
-		-- 			return "" .. cstr
-		-- 		end
-		-- 	end,
-		-- }
-
-		lualine.setup({
+		local opts = {
 			options = {
-				globalstatus = true,
+				globalstatus = vim.o.laststatus == 3,
 				icons_enabled = true,
 				theme = "auto",
 				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
-				disabled_filetypes = { "alpha", "dashboard", "NvimTree", "Outline" },
+				disabled_filetypes = { "alpha", "dashboard", "snacks_dashboard" },
 				always_divide_middle = true,
 			},
 			sections = {
@@ -135,18 +121,29 @@ return {
 					},
 				},
 				lualine_c = {
-					filename,
-					filesize,
-					progress,
+					Util.lualine.root_dir(),
+					-- "filesize",
+
+					{
+						"filetype",
+						icon_only = true,
+						separator = "",
+						padding = { left = 1, right = 0 },
+					},
+					{ Util.lualine.pretty_path() },
 				},
-				lualine_x = { diff, branch },
+				lualine_x = {
+					diff,
+					branch,
+				},
 				lualine_y = {
 					"searchcount",
 					"selectioncount",
-					"filetype",
+					progress,
 				},
 				lualine_z = {
-					-- codeium,
+					Snacks.profiler.status(),
+					"copilot",
 				},
 			},
 			inactive_sections = {
@@ -157,10 +154,29 @@ return {
 				lualine_y = {},
 				lualine_z = {},
 			},
-			tabline = {},
-			winbar = {},
-			inactive_winbar = {},
-			extensions = {},
-		})
+			extensions = { "neo-tree", "lazy", "fzf" },
+		}
+
+		-- do not add trouble symbols if aerial is enabled
+		-- And allow it to be overriden for some buffer types (see autocmds)
+		local status_trouble, trouble = pcall(require, "trouble")
+		if vim.g.trouble_lualine and status_trouble then
+			local symbols = trouble.statusline({
+				mode = "symbols",
+				groups = {},
+				title = false,
+				filter = { range = true },
+				format = "{kind_icon}{symbol.name:Normal}",
+				hl_group = "lualine_c_normal",
+			})
+			table.insert(opts.sections.lualine_c, {
+				symbols and symbols.get,
+				cond = function()
+					return vim.b.trouble_lualine ~= false and symbols.has()
+				end,
+			})
+		end
+
+		return opts
 	end,
 }
