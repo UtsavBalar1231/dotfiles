@@ -1,7 +1,7 @@
 return {
 	{
 		"stevearc/aerial.nvim",
-		event = "VeryLazy",
+		event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 		opts = function()
 			local opts = {
 				backends = { "lsp", "treesitter" },

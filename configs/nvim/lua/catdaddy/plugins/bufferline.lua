@@ -1,6 +1,6 @@
 return {
 	"akinsho/bufferline.nvim",
-	event = "UIEnter",
+	event = "VeryLazy",
 	dependencies = "nvim-tree/nvim-web-devicons",
 	keys = {
 		{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
@@ -32,11 +32,11 @@ return {
 			},
 		},
 	},
-	-- config = function(_, opts)
-	-- 	if (vim.g.colors_name or ""):find("catppuccin") then
-	-- 		opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
-	-- 	end
-	--
-	-- 	require("bufferline").setup(opts)
-	-- end,
+	config = function(_, opts)
+		if (vim.g.colors_name or ""):find("catppuccin") then
+			opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
+		end
+
+		require("bufferline").setup(opts)
+	end,
 }
