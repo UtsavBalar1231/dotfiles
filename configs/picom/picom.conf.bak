@@ -1,0 +1,189 @@
+#################################
+#             Shadows           #
+#################################
+
+# Enable shadows
+shadow = true;
+
+# Shadow settings
+shadow-radius = 20;          # Softer shadow
+shadow-offset-x = -12;       # Adjusted for subtle macOS-style shadow
+shadow-offset-y = -12;
+shadow-opacity = 0.6;        # Slightly more opaque
+shadow-color = "#1a1c1e";    # Darker shadow for a macOS-like effect
+
+#################################
+#           Fading              #
+#################################
+
+# Enable fading
+fading = true;
+fade-in-step = 0.05;         # Smoother fade-in
+fade-out-step = 0.06;
+
+#################################
+#            Blur               #
+#################################
+
+# Enable background blur
+# blur-method = "dual_kawase"; # Use dual_kawase for macOS-style blur
+blur-strength = 10;          # Increase strength for a frosted glass effect
+blur-background = true;
+blur-background-frame = true;
+blur-background-fixed = true;
+
+# Gaussian kernel for smoother blur
+kern = "15x15gaussian";      # Larger kernel for macOS-style diffusion
+
+#################################
+#           Corners             #
+#################################
+
+# Enable rounded corners
+corner-radius = 12;          # Subtle rounding for a clean look
+
+#################################
+#       General Settings        #
+#################################
+
+# Backend renderer
+backend = "glx";
+
+# Enable VSync
+vsync = true;
+
+# Detect client opacity
+detect-client-opacity = true;
+
+# Enable damage tracking for performance
+use-damage = true;
+
+#################################
+#           Rules               #
+#################################
+
+
+# Define per-window rules
+# Define per-window rules
+rules = ({
+  # Tooltips
+  match = "window_type = 'tooltip'";
+  fade = false;
+  shadow = true;
+  opacity = 0.75;
+  full-shadow = false;
+}, {
+  # Docks and desktop
+  match = "window_type = 'dock' || window_type = 'desktop'";
+  blur-background = true;
+  shadow = false;
+  opacity = 0.7;
+}, {
+  # Notifications and Conky
+  match = "name = 'Notification' || class_g = 'Conky'";
+  shadow = true;
+  blur-background = true;
+  opacity = 0.7;
+}, {
+  # Kitty Terminal
+  match = "class_g = 'kitty'";
+  shadow = true;
+  blur-background = true;
+  opacity = 0.95;             # Transparent but readable
+}, {
+  # Rofi
+  match = "class_g = 'rofi'";
+  shadow = true;
+  blur-background = true;
+  opacity = 0.65;            # Slight transparency for menus
+}, {
+  # Telegram Desktop
+  match = "class_g = 'telegram-desktop'";
+  shadow = true;
+  blur-background = true;
+  opacity = 0.9;             # Transparent but visible
+}, {
+  # Zen-Twilight
+  match = "class_g = 'zen-twilight'";
+  shadow = true;
+  blur-background = true;
+  opacity = 0.9;             # Subtle transparency for Zen apps
+}, {
+  # neovim
+  match = "class_g = 'nvim'";
+  shadow = true;
+  blur-background = true;
+  opacity = 0.9;
+});
+
+# rules = ({
+#   # Tooltips
+#   match = "window_type = 'tooltip'";
+#   fade = false;
+#   shadow = false;
+#   blur-background = true;
+#   opacity = 1;
+#   focus = true;
+#   full-shadow = false;
+# }, {
+#   # Docks and desktop
+#   match = "window_type = 'dock' || window_type = 'desktop'";
+#   blur-background = true;
+#   shadow = false;
+#   fade = false;
+#   clip-shadow-above = true;
+#   opacity = 0.7;
+# }, {
+#   match = "window_type = 'dnd'";
+#   shadow = true;
+# }, {
+#   match = "name = 'popup_menu' || name = 'dropdown_menu'"; 
+#   blur-background = true; 
+#   shadow = false;
+#   fade = false;
+#   opacity = 1;
+# }, {
+#   # Notifications and Conky
+#   match = "name = 'Notification' || class_g = 'Conky' || class_g = 'Notify-osd' || class_g = 'Cairo-clock'";
+#   shadow = true;
+#   blur-background = true;
+#   # opacity = 0.7;
+# }, {
+#   # Kitty Terminal
+#   match = "class_g = 'kitty'";
+#   shadow = true;
+#   blur-background = true;
+#   opacity = 0.95;             # Transparent but readable
+# }, {
+#   # Rofi
+#   match = "class_g = 'rofi'";
+#   shadow = true;
+#   blur-background = true;
+#   # opacity = 0.65;            # Slight transparency for menus
+# }, {
+#   # Telegram Desktop
+#   match = "class_g = 'telegram-desktop'";
+#   shadow = true;
+#   blur-background = true;
+#   opacity = 0.9;             # Transparent but visible
+# }, {
+#   # Zen-Twilight
+#   match = "class_g = 'zen-twilight'";
+#   shadow = true;
+#   blur-background = true;
+#   opacity = 0.9;             # Subtle transparency for Zen apps
+# }, {
+#   # neovim
+#   match = "class_g = 'nvim'";
+#   shadow = true;
+#   blur-background = true;
+#   opacity = 0.9;             
+# });
+
+
+#################################
+#        Include Extra          #
+#################################
+
+# Uncomment to include additional configuration
+# @include "extra.conf"

@@ -82,6 +82,10 @@ get_whoami() {
 
 # Function to get the current playing song
 get_which_song() {
+	if ! command -v mpc &> /dev/null; then
+		echo ""
+		return
+	fi
 	local icon_playing="󰎈 "
 	local icon_paused="󰏤 "
 	local icon_resumed="󰐊 "

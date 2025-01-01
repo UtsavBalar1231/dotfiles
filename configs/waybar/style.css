@@ -1,61 +1,58 @@
 @import "/home/utsav/.config/waybar/themes/gruvbox.css";
 
 * {
-  font-family: "JetBrainsMono Nerd Font";
-  font-size: 1.25rem;
-  border-radius: 0;
-  margin: 0;
+	font-family: "JetBrainsMono Nerd Font";
+	font-size: 1rem;
 }
 
 window#waybar {
-  background-color: @bg0;
-  /* border-radius: 0.5rem; */
+	background-color: @bg0;
+	/* border-radius: 0.3125rem; */
 }
 
 #workspaces button {
-  box-shadow: none;
-  text-shadow: none;
-  margin: 0.6125rem;
-  padding: 0.3125rem 0.6125rem;
-  border-radius: 1.25rem;
-  color: @foreground;
-  font-weight: bold;
-  font-style: normal;
-  animation: ws_normal 20s ease-in-out 1;
+	box-shadow: none;
+	text-shadow: none;
+	margin: 0.5rem;
+	border-radius: 1rem;
+	color: @foreground;
+	font-weight: bold;
+	font-style: normal;
+	animation: ws_normal 20s ease-in-out 1;
 }
 
 #workspaces button:hover {
-  background-color: @foreground;
-  color: @bg0;
+	background-color: @foreground;
+	color: @bg0;
 }
 
 #workspaces button.active {
-  color: @bg0;
-  background-color: @color3;
-  transition: all 0.1s ease-in-out;
-  animation: ws_active 20s ease-in-out 1;
+	color: @bg0;
+	background-color: @color3;
+	transition: all 0.1s ease-in-out;
+	animation: ws_active 20s ease-in-out 1;
 }
 
 #workspaces button.active:hover {
-  color: @foreground;
+	color: @foreground;
 }
 
 #workspaces button:not(.active):not(.empty):not(:hover) {
-  color: @bg2;
+	color: @bg2;
 }
 
 .modules-left,
 .modules-right,
 .modules-center {
-  background-color: @bg0;
-  /* border-radius: 0.75rem; */
-  margin: 0.125rem;
-  padding: 0 0.6125rem;
+	background-color: @bg0;
+	/* border-radius: 0.6125rem; */
+	/*margin: 0.125rem;*/
+	/*padding: 0 0.5rem;*/
 }
 
 tooltip {
-  background: @bg0;
-  border-radius: 0.75rem;
+	background: @bg0;
+	border-radius: 0.6125rem;
 }
 
 #memory,
@@ -64,88 +61,76 @@ tooltip {
 #cpu,
 #disk,
 #battery {
-  margin: 0;
-  padding: 0 0.75rem;
+	margin: 0;
+	padding: 0 0.6125rem;
 }
 
 #memory {
-  color: @color2;
-  padding-left: 0.75rem;
+	color: @color2;
+	padding-left: 0.6125rem;
 }
 
 #backlight {
-  color: @color3;
+	color: @color3;
 }
 
 #pulseaudio {
-  color: @color1;
+	color: @color1;
 }
 
 #cpu,
 #disk {
-  color: @color5;
+	color: @color5;
 }
 
 #battery,
 #tray {
-  color: @color6;
+	color: @color6;
 }
 
 #hyprland-window,
 #custom-updates,
 #clock,
 #custom-weather,
-#custom-swaync,
 #tray {
-  padding: 0 0.75rem 0 0.75rem;
+	padding: 0 0.6125rem 0 0.6125rem;
 }
 
-#network {
-  padding: 0 1.25rem 0 1rem;
+#network,
+#custom-swaync {
+	padding: 0 1.0rem 0 1.0rem;
 }
 
 #custom-hyprsunset {
-  color: @color2;
+	font-size: 1.25rem;
+	padding-right: 1.0rem;
 }
 
-#custom-hyprsunset,
-#bluetooth,
+#bluetooth {
+	padding: 0 0.75rem 0 1.0rem;
+}
+
 #power-profiles-daemon {
-  padding: 0 1rem 0 1rem;
-}
-
-#memory,
-#clock {
-  /* border-radius: 0.75rem 0 0 0.75rem; */
-}
-
-#custom-swaync,
-#custom-updates,
-#custom-weather {
-  /* border-radius: 0 0.75rem 0.75rem 0; */
-}
-
-#custom-swaync {
-  padding-right: 1.25rem;
+	padding: 0 1rem 0 0.75rem;
 }
 
 #bluetooth,
 #power-profiles-daemon.balanced {
-  color: @color12;
+	color: @color12;
 }
 
 #bluetooth.disabled,
 #bluetooth.offline,
 #network.disabled,
 #network.offline {
-  color: @bg2;
+	color: @bg2;
 }
 
 #network,
 #power-profiles-daemon.power-saver {
-  color: @color14;
+	color: @color14;
 }
 
 #power-profiles-daemon.performance {
-  color: @color9;
+	color: @color9;
 }

@@ -94,26 +94,27 @@ return {
 					name = "buffer",
 					enabled = true,
 					max_items = 4,
-					score_offset = 700,
+					score_offset = 85,
+					min_keyword_length = 3,
 				},
 				luasnip = {
 					name = "luasnip",
 					enabled = true,
 					module = "blink.cmp.sources.luasnip",
-					score_offset = 900,
-					max_items = 5,
+					score_offset = 90,
+					max_items = 6,
 				},
 				lsp = {
-					name = "LSP",
+					name = "lsp",
 					enabled = true,
 					module = "blink.cmp.sources.lsp",
-					score_offset = 1000,
+					score_offset = 95,
 				},
 				path = {
-					name = "Path",
+					name = "path",
 					module = "blink.cmp.sources.path",
 					enabled = true,
-					score_offset = 650,
+					score_offset = 100,
 					opts = {
 						trailing_slash = false,
 						label_trailing_slash = true,
@@ -122,7 +123,8 @@ return {
 						end,
 						show_hidden_files_by_default = true,
 					},
-					max_items = 3,
+					max_items = 1,
+					fallbacks = { "luasnip", "buffer" },
 				},
 				snippets = {
 					name = "snippets",
@@ -131,10 +133,20 @@ return {
 							and ctx.trigger.kind == vim.lsp.protocol.CompletionTriggerKind.TriggerCharacter
 					end,
 					module = "blink.cmp.sources.snippets",
-					score_offset = 850,
+					score_offset = 80,
 					max_items = 5,
 				},
 			},
+			cmdline = function()
+				local type = vim.fn.getcmdtype()
+				if type == "/" or type == "?" then
+					return { "buffer" }
+				end
+				if type == ":" then
+					return { "cmdline" }
+				end
+				return {}
+			end,
 		},
 		keymap = {
 			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },

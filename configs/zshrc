@@ -280,4 +280,8 @@ if [ -f $HOME/.newt-colors ]; then
 	export NEWT_COLORS_FILE=~/.newt-colors
 fi
 
+function cursor_tty() {
+	sudo su -c "setterm -cursor on >> /etc/issue"
+}
+
 #zprof

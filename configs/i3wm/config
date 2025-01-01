@@ -6,9 +6,9 @@
 set $mod Mod4
 
 # Default fonts
-font pango:Iosevka Nerd Font 12
-font pango:JetBrainsMono Nerd Font 12
-font pango:Fira Code Nerd Font 12
+font pango:Iosevka Nerd Font 14
+font pango:JetBrainsMono Nerd Font 14
+font pango:Fira Code Nerd Font 14
 
 # Center window title
 title_align center
@@ -53,7 +53,7 @@ exec --no-startup-id kitty
 exec --no-startup-id zen-twilight
 
 # Gnome Power Manager
-exec_always --no-startup-id gnome-power-manager
+exec_always --no-startup-id ~/.config/i3/scripts/power-manager.sh
 
 # clipboard tool
 exec_always --no-startup-id greenclip daemon
@@ -214,6 +214,10 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 # xsecurelock
 bindsym $mod+Shift+x exec --no-startup-id powermenu_t3
+# Keyboard as mouse
+bindsym $mod+m exec ~/.config/i3/scripts/hints.sh
+# Keyboard as mouse scroll
+bindsym $mod+y exec ~/.config/i3/scripts/hints.sh --mode scroll
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -240,59 +244,6 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-# Switch to mouse mode
-bindsym $mod+Shift+m mode "mouse"
-
-# Mouse mode to use cursor keys
-mode "mouse" {
-	set $slow 1
-	set $quick 10
-	# set $fast 50
-	
-	bindsym h exec xdotool mousemove_relative -- -$slow 0
-	bindsym j exec xdotool mousemove_relative 0 $slow
-	bindsym k exec xdotool mousemove_relative -- 0 -$slow
-	bindsym l exec xdotool mousemove_relative $slow 0
-
-# Arrow Keys
-	bindsym Left exec xdotool mousemove_relative -- -$slow 0
-	bindsym Down exec xdotool mousemove_relative 0 $slow
-	bindsym Up exec xdotool mousemove_relative -- 0 -$slow
-	bindsym Right exec xdotool mousemove_relative $slow 0
-
-	# Mouse movements but quicker
-	bindsym Shift+h exec xdotool mousemove_relative -- -$fast 0
-	bindsym Shift+j exec xdotool mousemove_relative 0 $fast
-	bindsym Shift+k exec xdotool mousemove_relative -- 0 -$fast
-	bindsym Shift+l exec xdotool mousemove_relative $fast 0
-
-	bindsym Shift+Left exec xdotool mousemove_relative -- -$fast 0
-	bindsym Shift+Down exec xdotool mousemove_relative 0 $fast
-	bindsym Shift+Up exec xdotool mousemove_relative -- 0 -$fast
-	bindsym Shift+Right exec xdotool mousemove_relative $fast 0
-
-	# Left click
-	bindsym f exec xdotool click 1
-	# Right click
-	bindsym d exec xdotool click 2
-	# Middle click
-	bindsym s exec xdotool click 3
-
-	# Left Click and drag
-	bindsym b exec xdotool mousedown 1
-	# Right Click and drag
-	bindsym n exec xdotool mouseup 1
-	# Middle Click and drag
-	bindsym m exec xdotool mousedown 3
-
-	# Left drag release
-	bindsym Ctrl+f xdotool mouseup 1
-	# Right drag release
-	bindsym Ctrl+d xdotool mouseup 2
-	# Middle drag release
-	bindsym Ctrl+s xdotool mouseup 3
-}
-
 bindsym $mod+r mode "resize"
 
 # Set custom launcher
@@ -302,7 +253,7 @@ mode "$mod_launcher" {
 	bindsym f exec firefox-nightly
 	bindsym c exec google-chrome-unstable
 	bindsym m exec lxrandr
-	bindsym a exec alacritty
+	bindsym t exec kitty
 
     bindsym Escape mode "default"
     bindsym Return mode "default"
@@ -336,20 +287,18 @@ assign [class="google-chrome-beta"] $ws2
 assign [class="google-chrome-unstable"] $ws2
 assign [class="zen"] $ws2
 assign [class="zen-twilight"] $ws2
-assign [class="nautilus"] $ws5
-assign [class="pcmanfm"] $ws5
 assign [class="telegram-desktop"] $ws3
 assign [class="upwork"] $ws4
 assign [class="whatsapp-for-linux"] $ws3
 
 # set primary gruvbox colorscheme colors
 # class                 border  bground text    indicator child_border
-client.focused          #89b482 #89b482 #1d2021 #89b482   #89b482
-client.focused_inactive #1d2021 #1d2021 #ebdbb2 #928374   #1d2021
-client.unfocused        #1d2021 #504945 #ebdbb2 #504945   #1d2021
-client.urgent           #1d2021 #1d2021 #fb4934 #1d2021   #1d2021
-client.placeholder      #1d2021 #1d2021 #ebdbb2 #1d2021   #1d2021
-client.background       #1d2021
+client.focused          #89b482 #89b482 #141617 #89b482   #89b482
+client.focused_inactive #141617 #141617 #ddc7a1 #928374   #141617
+client.unfocused        #141617 #504945 #ddc7a1 #504945   #141617
+client.urgent           #141617 #141617 #fb4934 #141617   #141617
+client.placeholder      #141617 #141617 #ddc7a1 #141617   #141617
+client.background       #141617
 
 # Set keyboard repeat rate
-exec_always --no-startup-id xset r rate 230 50
+exec_always --no-startup-id xset r rate 260 50

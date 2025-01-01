@@ -1,8 +1,8 @@
 {
   "layer": "top", // Waybar at top layer
   "position": "top", // Waybar position (top|bottom|left|right)
-  // "mod": "dock",
-  "height": 24,
+  "mod": "dock",
+  "height": 40,
   "width": 1920,
   "margin-bottom": 0,
   "spacing": 0,
@@ -21,15 +21,10 @@
     "network",
     "bluetooth",
     "power-profiles-daemon",
-    "custom/hyprsunset",
     "custom/swaync",
     "tray",
   ],
-  "modules-center": ["clock", "custom/weather"],
-  "image#sprite1": {
-    "path": "~/.config/waybar/Rectangle1.svg",
-    "size": 24,
-  },
+  "modules-center": ["custom/hyprsunset", "clock", "custom/weather"],
   "custom/updates": {
     "format": " ",
     "return-type": "json",
