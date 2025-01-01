@@ -234,10 +234,10 @@ multiplier = 4
 save_to_clipboard = true
 semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
 
-[terminal.shell]
-args = ["--login"]
-program = "/usr/bin/zsh"
-
+# [terminal.shell]
+# args = ["--login"]
+# program = "/usr/bin/zsh"
+#
 [window]
 decorations = "none"
 dynamic_padding = true

@@ -1,11 +1,5 @@
-#zmodload zsh/zprof
-
-# Theme
-if ! command -v starship >/dev/null; then
-	curl -sS https://starship.rs/install.sh | sh
-fi
-export STARSHIP_CONFIG=${HOME}/.config/starship.toml
-eval "$(starship init zsh)"
+# Profiling
+# zmodload zsh/zprof
 
 # Enable history
 HISTSIZE=100000
@@ -20,6 +14,8 @@ setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
+setopt inc_append_history
+setopt hist_reduce_blanks
 
 # Enable auto completion
 #setopt auto_menu
@@ -33,7 +29,6 @@ setopt hist_find_no_dups
 setopt correct
 
 autoload -Uz compinit && compinit
-autoload -Uz +X bashcompinit && bashcompinit
 zstyle :compinstall filename '${HOME}/.zshrc'
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # disable sort when completing `git checkout`
@@ -45,6 +40,8 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no
+# defer fzf-tab initialization until the first completion
+zstyle ':fzf-tab:*' auto-insert false
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # switch group using `<` and `>`
@@ -54,9 +51,8 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 setopt aliases
 source ${HOME}/.config/zsh/aliases.zsh
 
-# key bindings
+# Key bindings
 bindkey -v
-
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[F' end-of-line
@@ -64,7 +60,6 @@ bindkey '^[[H' beginning-of-line
 bindkey '^[[3~' delete-word
 bindkey '^[[2~' kill-line
 bindkey '^[[3~' delete-char
-
 bindkey -M viins "^E" end-of-line
 bindkey -M viins "^A" beginning-of-line
 bindkey -M viins "^P" history-search-backward
@@ -74,56 +69,39 @@ if command -v zoxide >/dev/null; then
 	eval "$(zoxide init zsh)"
 fi
 
-# List of plugins with optional third parameter for specific source file
-declare -g plugins=(
-    "z-shell/F-Sy-H:main"
-    "zsh-users/zsh-autosuggestions:develop"
-    "zsh-users/zsh-completions:master"
-    "zsh-users/zsh-history-substring-search:master"
-    "zsh-users/zsh-syntax-highlighting:master"
-    "Aloxaf/fzf-tab:master:fzf-tab.plugin"
-)
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
 
-# Loop through each plugin entry
-for plugin in "${plugins[@]}"; do
-    plugin_name="${plugin%%:*}"
-    rest="${plugin#*:}"
-    plugin_branch="${rest%%:*}"
-    plugin_file="${rest#*:}"
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-    # echo "Loading $plugin_name, branch: $plugin_branch, file: $plugin_file"
-    
-    # Determine the plugin directory
-    plugin_dir="${HOME}/.config/zsh/plugins/${plugin_name}"
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
 
-    # Clone the plugin if it doesn't exist
-    if [ ! -d "${plugin_dir}" ]; then
-        git clone --depth=1 -b "$plugin_branch" "https://github.com/${plugin_name}" "${plugin_dir}"
-    fi
-
-    # Determine the file to source
-    if [ "$plugin_file" != "$plugin_branch" ]; then
-        # If a specific source file is provided, use it
-        zsh_file="${plugin_dir}/${plugin_file}.zsh"
-    else
-        # Otherwise, find the first .zsh file in the plugin directory
-        zsh_file=$(find "${plugin_dir}" -maxdepth 1 -type f -name "*.zsh" | head -n 1)
-    fi
-
-    # Source the file if it exists
-    if [ -f "${zsh_file}" ]; then
-        source "${zsh_file}"
-    else
-        echo "Warning: No .zsh file found for plugin ${plugin_name}"
-    fi
-done
+zinit light z-shell/F-Sy-H
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-history-substring-search
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light Aloxaf/fzf-tab
 
 # zsh-autosuggestions
 
 # Disable automatic widget re-binding on each precmd. This can be set when
 # zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-
 # Customize the style that the suggestions are shown with.
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='bold'
@@ -139,36 +117,6 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md#how-to-tweak-it
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[comment]='fg=242'
-
-# Function to display the progress bar
-show_progress_bar() {
-	local progress=$1
-	local bar_length=30
-	local filled_length=$((progress * bar_length / 100))
-	local empty_length=$((bar_length - filled_length))
-
-	local bar
-	bar=$(printf "%0.s█" $(seq 1 "$filled_length"))
-	bar+=$(printf "%0.s▒" $(seq 1 "$empty_length"))
-
-	printf "\rUpdating '%s': [%s] %d%%" "$current_plugin" "$bar" "$progress"
-}
-
-# Function to clone a repository with a progress bar
-clone_repo_with_progress() {
-	local repo_url=$1
-	local dest_dir=$2
-	local branch=$3
-
-	git clone --progress "$repo_url" "$dest_dir" -b "$branch" 2>&1 | while IFS= read -r line; do
-		if [[ $line =~ ([0-9]+)% ]]; then
-			local progress=${BASH_REMATCH[1]}
-			show_progress_bar "$progress"
-		fi
-	done
-
-	show_progress_bar 100
-}
 
 # Cargo environment
 if [ -f ${HOME}/.cargo/env ]; then
@@ -211,52 +159,28 @@ if command -v nvim >/dev/null 2>&1; then
 	export EDITOR=nvim
 fi
 
-# ZSH plugins
-function update_zsh_plugins() {
-	for plugin in "${plugins[@]}"; do
-		plugin_name="${plugin%%:*}"
-    	rest="${plugin#*:}"
-    	plugin_branch="${rest%%:*}"
-    	plugin_file="${rest#*:}"
-
-		echo "Updating $plugin_name" >&2
-		rm -rf "$HOME/.config/zsh/plugins/$plugin_name"
-
-		clone_repo_with_progress "https://github.com/$plugin_name" "$HOME/.config/zsh/plugins/$plugin_name" "$plugin_branch"
-	done
-}
-
 # FZF
 if [ ! -f ${HOME}/.fzf.zsh ]; then
 	clone_repo_with_progress "https://github.com/junegunn/fzf" ${HOME}/.fzf
 	${HOME}/.fzf/install
 fi
-eval "$(fzf --zsh)"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Pyenv
-if [ -d ${HOME}/.pyenv ]; then
-	export PYENV_ROOT="$HOME/.pyenv"
-	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-	eval "$(pyenv init -)"
-	eval "$(pyenv virtualenv-init -)"
-fi
-
-if [ -f ${HOME}/dev/toolchains/.env ]; then
-	source ${HOME}/dev/toolchains/.env
-fi
+#if [ -d ${HOME}/.pyenv ]; then
+#	export PYENV_ROOT="$HOME/.pyenv"
+#	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+#	eval "$(pyenv init -)"
+#	eval "$(pyenv virtualenv-init -)"
+#fi
 
 # bun completions
-[ -s "/home/utsav/.bun/_bun" ] && source "/home/utsav/.bun/_bun"
+[ -s "${HOME}/.bun/_bun" ] && source "${HOME}/.bun/_bun"
 
 # bun
-if [ -d "$HOME/.bun" ]; then
+if [ -d $HOME/.bun ]; then
 	export BUN_INSTALL="$HOME/.bun"
 	export PATH="$BUN_INSTALL/bin:$PATH"
-fi
-
-# rofi
-if [ -d $HOME/.config/rofi/scripts ]; then
-	export PATH=$HOME/.config/rofi/scripts:$PATH
 fi
 
 # Local binaries
@@ -264,24 +188,31 @@ if [ -d $HOME/.local/bin ]; then
 	export PATH=$HOME/.local/bin:$PATH
 fi
 
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 # Set QT theme
 if command -v qt6ct >/dev/null; then
 	export QT_QPA_PLATFORMTHEME="qt6ct"
 fi
 
+# Pywal
 # if command -v wal >/dev/null; then
-# 	(cat ~/.cache/wal/sequences &)
+# 	(cat ${HOME}/.cache/wal/sequences &)
 # fi
 
+# Set newt colors
 if [ -f $HOME/.newt-colors ]; then
-	export NEWT_COLORS_FILE=~/.newt-colors
+	export NEWT_COLORS_FILE=${HOME}/.newt-colors
 fi
 
+# Enable console cursor
 function cursor_tty() {
 	sudo su -c "setterm -cursor on >> /etc/issue"
 }
 
-#zprof
+# Theme
+if ! command -v starship >/dev/null; then
+	curl -sS https://starship.rs/install.sh | sh
+fi
+export STARSHIP_CONFIG=${HOME}/.config/starship.toml
+eval "$(starship init zsh)"
+
+# zprof

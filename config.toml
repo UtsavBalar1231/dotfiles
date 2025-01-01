@@ -22,13 +22,13 @@ conf_type = "Dir"
 [[configs]]
 name = "zsh"
 path = "$HOME/.config/zsh/"
-hash = "0d7f84167a6c3011ce03981306203da49e2b92240cd0f3b69c16ecfcaae6d615"
+hash = "e9c429ffc97688e4467325394c4d5214a69e225f176f0e1f035bbcb1f2cea6be"
 conf_type = "Dir"
 
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "d7aed0ed2bee7270bec3430de9c2c6f79b04f6b1ecbf9e063b5fd0a65b7f82b8"
+hash = "c3cccd94eb80334af15364361ecb5f9fa22714cc0b32a648652a68c5a8f82e36"
 conf_type = "Dir"
 
 [[configs]]
@@ -46,7 +46,7 @@ conf_type = "File"
 [[configs]]
 name = "zshrc"
 path = "$HOME/.zshrc"
-hash = "72a75b91002d85b71ee8761343fdfa02ddd95ce6c72761bf7a79b0e39964c00e"
+hash = "5ca14e478eba5a66862f0249fe9beae56a213d912f7c6f2c914b2ad40f75aa2d"
 conf_type = "File"
 
 [[configs]]
@@ -70,7 +70,7 @@ conf_type = "File"
 [[configs]]
 name = "alacritty"
 path = "$HOME/.config/alacritty"
-hash = "6a8e14ff033730b0e325725198f2d5c1a3433751a6f0d785d0904f004e27d58b"
+hash = "61c72a5403b75464e4e388ed0e5a4600ca435a24d849b5db5f0d553e2b8d6a5a"
 conf_type = "Dir"
 
 [[configs]]
