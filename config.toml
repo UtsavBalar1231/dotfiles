@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "f1786d78a15009bdadb70589f45736d6b2e5a339ff7024abb4f00b1611c8d6f0"
+hash = "a8b79e401aa9d5ad7a8e0764490d982adef22a654a01de29b7510456f648f1c9"
 conf_type = "Dir"
 
 [[configs]]
@@ -28,7 +28,7 @@ conf_type = "Dir"
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "c3cccd94eb80334af15364361ecb5f9fa22714cc0b32a648652a68c5a8f82e36"
+hash = "3d57f80443ec7c988fd9d5f07eecd9ffef7c4688e53bed7abe368d08aa099e39"
 conf_type = "Dir"
 
 [[configs]]
@@ -82,7 +82,7 @@ conf_type = "Dir"
 [[configs]]
 name = "starship"
 path = "$HOME/.config/starship.toml"
-hash = "86db7cbf7f2fb4d30a1a7445723c23d22fbcfad2de290b6dd3979dc4a467ceec"
+hash = "d2c3ad751056eece4007d076cb6072d65cd4c0477c396749a123d58531a33cf3"
 conf_type = "File"
 
 [[configs]]

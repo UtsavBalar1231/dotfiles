@@ -29,14 +29,10 @@ end
 ---@type function|false|nil
 local icon_provider = false
 
+---@param ctx table
 local function get_icon(ctx)
 	ctx.kind_hl_group = "BlinkCmpKind" .. ctx.kind
 	if ctx.item.source_name == "LSP" then
-		local item_doc, color_item = ctx.item.documentation, nil
-		if item_doc then
-			local highlight_colors_avail, highlight_colors = pcall(require, "nvim-highlight-colors")
-			color_item = highlight_colors_avail and highlight_colors.format(item_doc, { kind = ctx.kind })
-		end
 		if icon_provider == false then
 			icon_provider = get_icon_provider()
 		end
@@ -46,11 +42,33 @@ local function get_icon(ctx)
 				ctx.kind_icon = icon
 			end
 		end
-		if color_item and color_item.abbr and color_item.abbr_hl_group then
-			ctx.kind_icon, ctx.kind_hl_group = color_item.abbr, color_item.abbr_hl_group
-		end
 	end
 	return ctx
+end
+
+---@param ctx table
+local function get_highlights(ctx)
+	local highlights_info = require("colorful-menu").highlights(ctx.item, vim.bo.filetype)
+	local highlights = {}
+	highlights.text = ctx.label
+	highlights.hls = {}
+
+	if highlights_info ~= nil then
+		highlights.text = highlights_info.text
+		for _, info in ipairs(highlights_info.highlights) do
+			table.insert(highlights.hls, {
+				info.range[1],
+				info.range[2],
+				group = ctx.deprecated and "BlinkCmpLabelDeprecated" or info[1],
+			})
+		end
+	end
+
+	for _, idx in ipairs(ctx.label_matched_indices) do
+		table.insert(highlights.hls, { idx, idx + 1, group = "BlinkCmpLabelMatch" })
+	end
+
+	return highlights
 end
 
 return {
@@ -62,8 +80,8 @@ return {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
 		"giuxtaposition/blink-cmp-copilot",
-		"onsails/lspkind.nvim",
-		"brenoprata10/nvim-highlight-colors",
+		"echasnovski/mini.icons",
+		"xzbdmw/colorful-menu.nvim",
 	},
 
 	opts = {
@@ -123,7 +141,6 @@ return {
 						end,
 						show_hidden_files_by_default = true,
 					},
-					max_items = 1,
 					fallbacks = { "luasnip", "buffer" },
 				},
 				snippets = {
@@ -191,7 +208,7 @@ return {
 					if ctx.mode == "cmdline" then
 						return "manual"
 					else
-						return "manual"
+						return "auto_insert"
 					end
 				end,
 				cycle = { from_top = false },
@@ -204,12 +221,11 @@ return {
 					max_height = 15,
 				},
 				auto_show = true,
-				auto_show_delay_ms = 250,
+				auto_show_delay_ms = 150,
 			},
 			ghost_text = { enabled = true },
 			menu = {
 				draw = {
-					align_to_component = "label",
 					treesitter = { "lsp" },
 					columns = {
 						{ "label", "label_description", gap = 1 },
@@ -217,6 +233,15 @@ return {
 						{ "source_name", gap = 1 },
 					},
 					components = {
+						label = {
+							width = { fill = true, max = 60 },
+							text = function(ctx)
+								return get_highlights(ctx).text
+							end,
+							highlight = function(ctx)
+								return get_highlights(ctx).hls
+							end,
+						},
 						kind_icon = {
 							text = function(ctx)
 								get_icon(ctx)

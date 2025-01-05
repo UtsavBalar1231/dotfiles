@@ -4,18 +4,26 @@ return {
 		"sainnhe/gruvbox-material",
 		lazy = true,
 		config = function()
-			vim.g.gruvbox_material_better_performance = 1
-			vim.g.gruvbox_material_foreground = "material"
 			vim.g.gruvbox_material_background = "hard"
-			vim.g.gruvbox_material_ui_contrast = "high"
-			vim.g.gruvbox_material_float_style = "dim"
-			vim.g.gruvbox_material_enable_italic = 1
-			vim.g.gruvbox_material_enable_bold = 1
-			vim.g.gruvbox_material_visual = "green background"
-			vim.g.gruvbox_material_show_eob = 1
+			vim.g.gruvbox_material_better_performance = 1
+			-- vim.g.gruvbox_material_current_word = "bold"
+			vim.g.gruvbox_material_cursor = "red"
+			vim.g.gruvbox_material_diagnostic_line_highlight = 1
 			vim.g.gruvbox_material_diagnostic_text_highlight = 1
-			vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
+			vim.g.gruvbox_material_diagnostic_virtual_text = "highlighted"
+			vim.g.gruvbox_material_enable_bold = 1
+			vim.g.gruvbox_material_enable_italic = 1
+			vim.g.gruvbox_material_float_style = "dim"
+			vim.g.gruvbox_material_foreground = "material"
 			vim.g.gruvbox_material_inlay_hints_background = "dimmed"
+			vim.g.gruvbox_material_menu_selection_background = "blue"
+			vim.g.gruvbox_material_show_eob = 1
+			vim.g.gruvbox_material_sign_column_background = "grey"
+			vim.g.gruvbox_material_ui_contrast = "high"
+			vim.g.gruvbox_material_visual = "green background"
+			vim.cmd([[
+				let g:gruvbox_material_colors_override = { 'bg_dim': ['#0e1010', '232'], 'bg0': ['#191817', '234'], 'bg1': ['#1d2021', '235'], 'bg2': ['#181615', '235'], 'bg3': ['#201d1b', '236'], 'bg4': ['#332e2a', '237'], 'bg5': ['#3e3732', '237'], 'grey0': ['#49413a', '243']}
+				]])
 
 			local configuration = vim.fn["gruvbox_material#get_configuration"]()
 			local palette = vim.fn["gruvbox_material#get_palette"](
