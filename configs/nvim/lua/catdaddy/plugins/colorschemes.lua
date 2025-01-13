@@ -3,6 +3,7 @@ return {
 	{
 		"sainnhe/gruvbox-material",
 		lazy = true,
+		enabled = not vim.g.vscode,
 		config = function()
 			vim.g.gruvbox_material_background = "hard"
 			vim.g.gruvbox_material_better_performance = 1
@@ -73,6 +74,7 @@ return {
 	{
 		"ellisonleao/gruvbox.nvim",
 		lazy = true,
+		enabled = not vim.g.vscode,
 		config = function()
 			local gruvbox = require("gruvbox")
 
@@ -149,6 +151,7 @@ return {
 		"rose-pine/neovim",
 		name = "rose-pine",
 		lazy = true,
+		enabled = not vim.g.vscode,
 		opts = {
 			variant = "main", -- auto, main, moon, or dawn
 			dark_variant = "main", -- main, moon, or dawn
@@ -229,6 +232,7 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		lazy = true,
+		enabled = not vim.g.vscode,
 		opts = {
 			no_italic = true,
 			term_colors = true,
@@ -303,6 +307,7 @@ return {
 	{
 		"rebelot/kanagawa.nvim",
 		lazy = true,
+		enabled = not vim.g.vscode,
 		opts = {
 			compile = false,
 			undercurl = true,
@@ -337,6 +342,7 @@ return {
 	{
 		"neanias/everforest-nvim",
 		lazy = true,
+		enabled = not vim.g.vscode,
 		config = function()
 			require("everforest").setup({
 				background = "hard", -- hard, medium, soft
@@ -363,6 +369,7 @@ return {
 	{
 		"AlexvZyl/nordic.nvim",
 		lazy = true,
+		enabled = not vim.g.vscode,
 		config = function()
 			require("nordic").setup({
 				-- This callback can be used to override the colors used in the base palette.

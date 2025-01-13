@@ -1,26 +1,26 @@
 * {
-  bg0:      #000000;
-  bg1:      #1d2021;
-  bg2:      #282828;
-  bg3:      #3c3836;
-  bg4:      #7c6f64;
+  bg0:      #000000b0;
+  bg1:      #1d2021e0;
+  bg2:      #282828e0;
+  bg3:      #3c3836e0;
+  bg4:      #7c6f64e0;
 
-  fg0:      #fbf1c7;
-  fg1:      #ebdbb2;
-  fg2:      #d5c4a1;
-  fg3:      #bdae93;
-  fg4:      #a89984;
+  fg0:      #fbf1c7e0;
+  fg1:      #ebdbb2e0;
+  fg2:      #d5c4a1e0;
+  fg3:      #bdae93e0;
+  fg4:      #a89984e0;
 
-  red:      #cc241d;
-  green:    #98971a;
-  yellow:   #d79921;
-  blue:     #458588;
-  purple:   #b16286;
-  aqua:     #689d6a;
-  orange:   #d65d0e;
+  red:      #ea6962;
+  green:    #a9b665;
+  yellow:   #d8a657;
+  blue:     #7daea3;
+  purple:   #d3869b;
+  aqua:     #89b482;
+  orange:   #e78a4e;
   gray:     #928374;
  
-  accent:   #ebdbb2;
+  accent:   @orange;
 
   background-color: transparent;
   text-color:       @fg0;

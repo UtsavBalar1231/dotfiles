@@ -1,0 +1,62 @@
+window {
+    background-color: transparent;
+}
+
+box#main {
+    background-color: #000000;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.625rem;
+}
+
+#entry {
+    border: none;
+    border-radius: 0.5rem;
+    color: #ddc7a1;
+    padding: 0.625rem;
+    font-family: "Iosevka Nerd Font", "JetBrainsMono Nerd Font Mono", "FiraCode Nerd Font", monospace;
+    font-size: 1.125rem;
+    text-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.5);
+}
+
+row#match {
+	border: none;
+    border-radius: 0.5rem;
+    padding: 0.625rem;
+    margin: 0.375rem 0;
+    transition: background-color 0.2s ease;
+}
+
+row#match:hover {
+    background-color: rgba(69, 133, 136, 0.2);
+}
+
+#match-title {
+    color: #cbb890;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+#match-desc {
+    color: rgba(104, 157, 106, 0.7);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+label#plugin {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+separator {
+    margin: 0.5rem 0;
+}
+
+row#match GtkImage {
+    margin-right: 0.625rem;
+    border-radius: 0.25rem;
+}
+
+#plugin {
+	padding: 0rem;
+}

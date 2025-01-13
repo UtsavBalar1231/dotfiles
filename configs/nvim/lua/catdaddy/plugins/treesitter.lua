@@ -85,8 +85,8 @@ return {
 				keymaps = {
 					init_selection = "<CR>",
 					scope_incremental = "<CR>",
-					node_incremental = "<Tab>",
-					node_decremental = "<S-Tab>",
+					node_incremental = "v",
+					node_decremental = "V",
 				},
 			},
 			playground = {
@@ -101,7 +101,7 @@ return {
 				smart_rename = {
 					enable = true,
 					keymaps = {
-						smart_rename = "grr",
+						smart_rename = "trr",
 					},
 				},
 			},

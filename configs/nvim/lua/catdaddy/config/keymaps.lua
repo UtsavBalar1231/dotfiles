@@ -106,7 +106,7 @@ keymap("v", "<space>p", '"+p', { noremap = true, silent = true, desc = "Paste fr
 keymap("n", "<Left>", "<cmd>:bprevious<cr>", { noremap = true, silent = true, desc = "Previous Buffer" })
 keymap("n", "<Right>", "<cmd>:bnext<cr>", { noremap = true, silent = true, desc = "Next Buffer" })
 -- Swift navigation between buffers with leader + leader
-keymap("n", "<leader><leader>", "<cmd>:b#<cr>", { noremap = true, silent = true, desc = "Previous Buffer" })
+-- keymap("n", "<leader><leader>", "<cmd>:b#<cr>", { noremap = true, silent = true, desc = "Previous Buffer" })
 
 -- Hide or Show the invisible characters
 keymap("n", "<leader>,", "<cmd>:set list!<cr>", { noremap = true, silent = true, desc = "Toggle Invisible Characters" })

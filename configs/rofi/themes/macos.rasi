@@ -10,10 +10,9 @@
 window {
 	location: center;
 	width:    650px;
-	padding:  25px;
-	border:   0px solid;
+	padding:  24px;
+	border:   none;
 	border-radius: 16px;
-	border-color:  @selected;
 	background-color: @bg0;
 	transparency: "real";
 }
@@ -24,12 +23,11 @@ mainbox {
 
 inputbar {
 	children: [ prompt, entry ];
-	padding: 12px;
-	margin-bottom: 25px;
+	padding: 16px 16px 16px 0px;
 }
 
 prompt {
-	padding: 10px;
+	padding: 12px;
 }
 
 entry {
@@ -51,14 +49,15 @@ listview {
 }
 
 element {
-	padding: 10px;
-	border-radius: 10px;
+	padding: 8px 16px 8px 16px;
+	margin: 4px;
+	border-radius: 12px;
 	text-color: @fg1;
 	children: [ element-icon, element-text ];
 }
 
 element-icon {
-	size: 28px;
+	size: 32px;
 	padding: 0 12px 0 0;
 }
 

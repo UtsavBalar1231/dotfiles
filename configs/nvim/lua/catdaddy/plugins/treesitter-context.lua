@@ -2,6 +2,7 @@
 return {
 	"nvim-treesitter/nvim-treesitter-context",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+	enabled = not vim.g.vscode,
 	opts = function()
 		local tsc = require("treesitter-context")
 		Snacks.toggle({

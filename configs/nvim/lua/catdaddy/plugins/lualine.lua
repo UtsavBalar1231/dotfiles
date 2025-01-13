@@ -1,6 +1,8 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	event = "VeryLazy",
+	enabled = not vim.g.vscode,
+	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+	lazy = true,
 	dependencies = {
 		{ "AndreM222/copilot-lualine" },
 	},
@@ -113,7 +115,7 @@ return {
 							inactive = { gui = "italic" },
 						},
 						symbols = {
-							modified = " ●",
+							modified = " ",
 							alternate_file = "",
 							directory = "",
 						},
@@ -122,7 +124,7 @@ return {
 				},
 				lualine_c = {
 					Util.lualine.root_dir(),
-					-- "filesize",
+					"filesize",
 
 					{
 						"filetype",

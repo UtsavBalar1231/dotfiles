@@ -4,6 +4,7 @@
 ---@field root catdaddy.util.root
 ---@field health catdaddy.util.health
 ---@field lualine catdaddy.util.lualine
+---@field shebang catdaddy.util.shebang
 local M = {}
 
 setmetatable(M, {

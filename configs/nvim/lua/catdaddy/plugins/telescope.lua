@@ -2,6 +2,7 @@ return {
 	"nvim-telescope/telescope.nvim",
 	event = { "BufReadPre", "BufNewFile" },
 	cmd = "Telescope",
+	enabled = not vim.g.vscode,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-telescope/telescope-file-browser.nvim",
@@ -81,13 +82,13 @@ return {
 
 		-- Map <leader>f[ to goto previous diagnostic
 		map("n", "<leader>f[", function()
-			vim.diagnostic.goto_prev({ desc = "Telescope diagnostics previous" })
-		end, {})
+			vim.diagnostic.jump({ count = -1, desc = "Telescope diagnostics previous" })
+		end, { desc = "Telescope diagnostics previous" })
 
 		-- Map <leader>f] to goto next diagnostic
 		map("n", "<leader>f]", function()
-			vim.diagnostic.goto_next({ desc = "Telescope diagnostics next" })
-		end, {})
+			vim.diagnostic.jump({ count = 1, desc = "Telescope diagnostics next" })
+		end, { desc = "Telescope diagnostics next" })
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function()
@@ -115,12 +116,12 @@ return {
 
 		map("n", "<leader>ff", function()
 			require("telescope").extensions.file_browser.file_browser()
-		end)
+		end, { desc = "Telescope file browser" })
 
 		map("n", "<leader>fF", function()
 			require("telescope").extensions.file_browser.file_browser({
 				cwd = vim.fn.expand("%:p:h"),
-			})
+			}, { desc = "Telescope file browser in current buffer's parent directory" })
 		end)
 
 		local fb_actions = require("telescope").extensions.file_browser.actions

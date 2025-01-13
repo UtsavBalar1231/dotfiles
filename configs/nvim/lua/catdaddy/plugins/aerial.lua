@@ -2,6 +2,7 @@ return {
 	{
 		"stevearc/aerial.nvim",
 		event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+		enabled = not vim.g.vscode,
 		opts = function()
 			local opts = {
 				backends = { "lsp", "treesitter" },
@@ -16,12 +17,12 @@ return {
 					min_width = 35,
 				},
 				show_guides = true,
-				open_automatic = function(bufnr)
-					local aerial = require("aerial")
-					return vim.api.nvim_win_get_width(0) > 120
-						and aerial.num_symbols(bufnr) > 0
-						and not aerial.was_closed()
-				end,
+				-- open_automatic = function(bufnr)
+				-- 	local aerial = require("aerial")
+				-- 	return vim.api.nvim_win_get_width(0) > 120
+				-- 		and aerial.num_symbols(bufnr) > 0
+				-- 		and not aerial.was_closed()
+				-- end,
 			}
 
 			return opts

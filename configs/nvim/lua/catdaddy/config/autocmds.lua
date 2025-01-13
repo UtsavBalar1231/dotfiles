@@ -254,3 +254,11 @@ if vim.o.shell:find("zsh") or vim.o.shell:find("fish") then
 		end,
 	})
 end
+
+-- Use an autocmd to run the shebang detection when a file is opened
+vim.cmd([[
+  augroup ShebangFiletype
+    autocmd!
+    autocmd BufReadPost * lua require('catdaddy.util.shebang').detect_shebang()
+  augroup END
+]])

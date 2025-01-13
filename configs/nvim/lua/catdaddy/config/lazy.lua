@@ -57,4 +57,6 @@ require("lazy").setup({
 	},
 })
 
-require("catdaddy.util").colorscheme.load_colorscheme()
+if not vim.g.vscode then
+	require("catdaddy.util").colorscheme.load_colorscheme()
+end

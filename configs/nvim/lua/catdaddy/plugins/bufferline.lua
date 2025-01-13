@@ -1,6 +1,7 @@
 return {
 	"akinsho/bufferline.nvim",
 	event = "VeryLazy",
+	enabled = not vim.g.vscode,
 	dependencies = "nvim-tree/nvim-web-devicons",
 	keys = {
 		{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },

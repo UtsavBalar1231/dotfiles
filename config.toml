@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "a8b79e401aa9d5ad7a8e0764490d982adef22a654a01de29b7510456f648f1c9"
+hash = "bd2de5c96badf5a9b790cbf24dd0da429b6a3fa0630190c9f60a8476a38c6115"
 conf_type = "Dir"
 
 [[configs]]
@@ -16,19 +16,19 @@ conf_type = "Dir"
 [[configs]]
 name = "rofi"
 path = "$HOME/.config/rofi/"
-hash = "59c014320120516f45a6acebf8be04c0805d97575d48a255e5eb91d50715dbb4"
+hash = "a640dc0f71cb1cea457b280a8ce3ce7968b5f5f1327d912705ded74351aab479"
 conf_type = "Dir"
 
 [[configs]]
 name = "zsh"
 path = "$HOME/.config/zsh/"
-hash = "e9c429ffc97688e4467325394c4d5214a69e225f176f0e1f035bbcb1f2cea6be"
+hash = "b18894d9e445c4e4d494a6cee9ffefa5146d12c37f500e2e1026c242a77e7a09"
 conf_type = "Dir"
 
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "3d57f80443ec7c988fd9d5f07eecd9ffef7c4688e53bed7abe368d08aa099e39"
+hash = "bc3dd5dcb17f6dd1cdeeeb0a25077cb232f3ea8fc0651cdbb15206f42d695d9a"
 conf_type = "Dir"
 
 [[configs]]
@@ -46,7 +46,7 @@ conf_type = "File"
 [[configs]]
 name = "zshrc"
 path = "$HOME/.zshrc"
-hash = "5ca14e478eba5a66862f0249fe9beae56a213d912f7c6f2c914b2ad40f75aa2d"
+hash = "51c2dd5ef95d97a75274f711091cd72c3f930ea62a47d3869174ba0b39f24ba9"
 conf_type = "File"
 
 [[configs]]
@@ -76,19 +76,19 @@ conf_type = "Dir"
 [[configs]]
 name = "i3wm"
 path = "$HOME/.config/i3"
-hash = "1568f266ce002e4fbe0d73fc825d3a4a2a736aa3b7ec284da23fbe56dc2b7f0d"
+hash = "314e4cf121579181bc918865eeb380d3a2c512f24d1a1952f299c84814317860"
 conf_type = "Dir"
 
 [[configs]]
 name = "starship"
 path = "$HOME/.config/starship.toml"
-hash = "d2c3ad751056eece4007d076cb6072d65cd4c0477c396749a123d58531a33cf3"
+hash = "574c5814c5055c8f57c3ad1b14b49570fe5e206cb11a94c1bdb686d2bf04f597"
 conf_type = "File"
 
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "ff32396363ff0f34c3b53fe29d163086051379a406881a24eb537eaaf0609513"
+hash = "eab2c46f9edc2d5a2b76d3a1b591571c1d6d698b43c4e3be7d04cfa25bd23ddc"
 conf_type = "Dir"
 
 [[configs]]
@@ -100,13 +100,13 @@ conf_type = "Dir"
 [[configs]]
 name = "gtk-3.0"
 path = "$HOME/.config/gtk-3.0"
-hash = "ecc4417db6570a65a4a48fdd4b4ccd8fd41ee45d23534a9143c79731ffc8b15c"
+hash = "94d0add136f48f2fb1a6e1d9497693c2b66fd94c6e1c9a2c5d2886d2458066e7"
 conf_type = "Dir"
 
 [[configs]]
 name = "gtk-4.0"
 path = "$HOME/.config/gtk-4.0"
-hash = "3247cce43c3a27a81d9f162fcbc267cad7b052b1f5f402263d8bb6c66aac072f"
+hash = "8133869b94f78e0a4a09ac87a79cfec94677fbf04c26a3a8e09d62a58499c206"
 conf_type = "Dir"
 
 [[configs]]
@@ -118,13 +118,13 @@ conf_type = "Dir"
 [[configs]]
 name = "waybar"
 path = "$HOME/.config/waybar"
-hash = "e44cb7cfe2d77d3916a5ff487e55d393ee68f85862433a4c25315e3c88a283a4"
+hash = "90df9afaf7a10a8e9e98bf1f72135eba0f7c9158bd57ca18ceae2435ccd7be49"
 conf_type = "Dir"
 
 [[configs]]
 name = "wallpapers"
 path = "$HOME/Pictures/wallpapers"
-hash = "046ac6b9cced260d7f8f5ec48bfc87165f9341ffcd3c8cef7e7c3908495e5759"
+hash = "4b58d9bac816509c63e148f5228ebf7f7df076306c24c3dd8513e8f943f4f8e4"
 conf_type = "Dir"
 
 [[configs]]
@@ -136,5 +136,23 @@ conf_type = "Dir"
 [[configs]]
 name = "picom"
 path = "$HOME/.config/picom"
-hash = "8b31a7373d4fc8755d81809683c8f44914c11de7401cb9db6ba732b497c0941b"
+hash = "b9d6f99c9f5ecd420c5b33512692d27476449ac24a729213df55e127ac303fd7"
 conf_type = "Dir"
+
+[[configs]]
+name = "anyrun"
+path = "$HOME/.config/anyrun"
+hash = "715287b9fcd272b76f3546a44d355869a73fd80821461464bea8281b3b9b7ca8"
+conf_type = "Dir"
+
+[[configs]]
+name = "ly"
+path = "$HOME/.config/ly"
+hash = "2e636057211a63e88186c3a07c55c15e4214c77f3358300e296be1e00027d36d"
+conf_type = "Dir"
+
+[[configs]]
+name = "pacman"
+path = "/etc/pacman.conf"
+hash = "a6e863f2f07576abfb9b965c61b701037a91de7cd7cb22f4f35d224d2a507f9c"
+conf_type = "File"

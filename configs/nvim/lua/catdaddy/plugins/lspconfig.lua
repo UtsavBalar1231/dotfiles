@@ -1,14 +1,14 @@
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+	enabled = not vim.g.vscode,
 	dependencies = {
 		"saghen/blink.cmp",
 		"j-hui/fidget.nvim",
-		{ "antosha417/nvim-lsp-file-operations", config = true },
+		-- { "antosha417/nvim-lsp-file-operations", config = true },
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
-		local blink_cmp = require("blink.cmp")
 
 		local keymap = vim.keymap
 		local opts = { noremap = true, silent = true }
@@ -47,11 +47,13 @@ return {
 			opts.desc = "LSP: Show line diagnostics"
 			keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
-			opts.desc = "LSP: Go to previous diagnostic"
-			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
-
-			opts.desc = "LSP: Go to next diagnostic"
-			keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+			--- [[ Available as defaults since Neovim 0.11.x ]]
+			-- opts.desc = "LSP: Go to previous diagnostic"
+			-- keymap.set("n", "[d", vim.diagnostic.jump({ count = 1 }), opts) -- jump to previous diagnostic in buffer
+			--
+			-- opts.desc = "LSP: Go to next diagnostic"
+			-- keymap.set("n", "]d", vim.diagnostic.jump({ count = -1 }), opts) -- jump to next diagnostic in buffer
+			--- ]]
 
 			opts.desc = "LSP: Show documentation for what is under cursor"
 			keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
@@ -69,7 +71,9 @@ return {
 		end
 
 		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = blink_cmp.get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
+		local capabilities = require("blink.cmp").get_lsp_capabilities({
+			textDocument = { completion = { completionItem = { snippetSupport = false } } },
+		})
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -84,11 +88,18 @@ return {
 			on_attach = on_attach,
 			settings = { -- custom settings for lua
 				Lua = {
+					-- Disable LSP Snippets, (using luasnip)
+					completion = {
+						callSnippet = "Disable",
+						keywordSnippet = "Disable",
+					},
 					-- make the language server recognize "vim" global
 					diagnostics = {
 						globals = { "vim" },
 					},
+					telemetry = { enable = false },
 					workspace = {
+						checkThirdParty = false,
 						-- make language server aware of runtime files
 						library = {
 							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
@@ -107,6 +118,7 @@ return {
 
 		-- bash / shell
 		lspconfig.bashls.setup({
+			filetypes = { "sh", "zsh" },
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
@@ -234,11 +246,7 @@ return {
 		vim.diagnostic.config({
 			-- update_in_insert = true,
 			float = {
-				focusable = false,
-				style = "minimal",
-				-- border = "rounded",
 				header = "",
-				prefix = "",
 			},
 		})
 	end,

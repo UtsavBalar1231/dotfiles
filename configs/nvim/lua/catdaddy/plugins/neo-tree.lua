@@ -3,6 +3,7 @@ return {
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		cmd = "Neotree",
+		enabled = not vim.g.vscode,
 		dependencies = {
 			{ "MunifTanjim/nui.nvim", lazy = true },
 		},
@@ -15,14 +16,13 @@ return {
 				desc = "Explorer NeoTree (Root Dir)",
 			},
 			{
-				"<leader>fE",
+				"<leader>E",
 				function()
+					---@diagnostic disable-next-line: undefined-field
 					require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
 				end,
 				desc = "Explorer NeoTree (cwd)",
 			},
-			{ "<leader>e", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
-			{ "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
 			{
 				"<leader>ge",
 				function()
@@ -134,6 +134,7 @@ return {
 		"MagicDuck/grug-far.nvim",
 		opts = { headerMaxWidth = 80 },
 		cmd = "GrugFar",
+		enabled = not vim.g.vscode,
 		keys = {
 			{
 				"<leader>sr",

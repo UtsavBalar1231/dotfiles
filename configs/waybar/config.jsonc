@@ -42,7 +42,8 @@
     "sort-by-number": true,
   },
   "hyprland/window": {
-    "format": " {} ",
+    "format": "{}",
+    "icon": true,
     "separate-outputs": true,
     "max-length": 64,
   },

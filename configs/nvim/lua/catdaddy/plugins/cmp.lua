@@ -46,128 +46,30 @@ local function get_icon(ctx)
 	return ctx
 end
 
----@param ctx table
-local function get_highlights(ctx)
-	local highlights_info = require("colorful-menu").highlights(ctx.item, vim.bo.filetype)
-	local highlights = {}
-	highlights.text = ctx.label
-	highlights.hls = {}
-
-	if highlights_info ~= nil then
-		highlights.text = highlights_info.text
-		for _, info in ipairs(highlights_info.highlights) do
-			table.insert(highlights.hls, {
-				info.range[1],
-				info.range[2],
-				group = ctx.deprecated and "BlinkCmpLabelDeprecated" or info[1],
-			})
-		end
-	end
-
-	for _, idx in ipairs(ctx.label_matched_indices) do
-		table.insert(highlights.hls, { idx, idx + 1, group = "BlinkCmpLabelMatch" })
-	end
-
-	return highlights
-end
-
 return {
 	"saghen/blink.cmp",
 	version = "*",
+	enabled = not vim.g.vscode,
 	event = "InsertEnter",
 	build = "cargo build --release",
+
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
 		"giuxtaposition/blink-cmp-copilot",
-		"echasnovski/mini.icons",
+		-- "echasnovski/mini.icons",
+		"onsails/lspkind.nvim",
 		"xzbdmw/colorful-menu.nvim",
 	},
 
+	--- @module 'blink.cmp'
+	--- @type blink.cmp.Config
 	opts = {
-		snippets = {
-			expand = function(snippet)
-				require("luasnip").lsp_expand(snippet)
-			end,
-			active = function(filter)
-				if filter and filter.direction then
-					return require("luasnip").jumpable(filter.direction)
-				end
-				return require("luasnip").in_snippet()
-			end,
-			jump = function(direction)
-				require("luasnip").jump(direction)
-			end,
-		},
-		sources = {
-			min_keyword_length = function(ctx)
-				if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
-					return 2
-				end
-				return 0
-			end,
-			default = { "lsp", "path", "snippets", "luasnip", "buffer" },
-			providers = {
-				buffer = {
-					name = "buffer",
-					enabled = true,
-					max_items = 4,
-					score_offset = 85,
-					min_keyword_length = 3,
-				},
-				luasnip = {
-					name = "luasnip",
-					enabled = true,
-					module = "blink.cmp.sources.luasnip",
-					score_offset = 90,
-					max_items = 6,
-				},
-				lsp = {
-					name = "lsp",
-					enabled = true,
-					module = "blink.cmp.sources.lsp",
-					score_offset = 95,
-				},
-				path = {
-					name = "path",
-					module = "blink.cmp.sources.path",
-					enabled = true,
-					score_offset = 100,
-					opts = {
-						trailing_slash = false,
-						label_trailing_slash = true,
-						get_cwd = function(context)
-							return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
-						end,
-						show_hidden_files_by_default = true,
-					},
-					fallbacks = { "luasnip", "buffer" },
-				},
-				snippets = {
-					name = "snippets",
-					enabled = function(ctx)
-						return ctx ~= nil
-							and ctx.trigger.kind == vim.lsp.protocol.CompletionTriggerKind.TriggerCharacter
-					end,
-					module = "blink.cmp.sources.snippets",
-					score_offset = 80,
-					max_items = 5,
-				},
-			},
-			cmdline = function()
-				local type = vim.fn.getcmdtype()
-				if type == "/" or type == "?" then
-					return { "buffer" }
-				end
-				if type == ":" then
-					return { "cmdline" }
-				end
-				return {}
-			end,
-		},
 		keymap = {
+			preset = "none",
 			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 			["<C-e>"] = { "hide", "fallback" },
+			["<C-y>"] = { "select_and_accept" },
 			["<CR>"] = { "accept", "fallback" },
 
 			["<Tab>"] = {
@@ -200,46 +102,97 @@ return {
 			["<C-up>"] = { "scroll_documentation_up", "fallback" },
 			["<C-down>"] = { "scroll_documentation_down", "fallback" },
 		},
+
+		snippets = {
+			preset = "luasnip",
+		},
+
+		appearance = {
+			nerd_font_variant = "mono",
+			use_nvim_cmp_as_default = true,
+		},
+
+		sources = {
+			min_keyword_length = function(ctx)
+				if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
+					return 2
+				end
+				return 0
+			end,
+			default = function()
+				local success, node = pcall(vim.treesitter.get_node)
+				if
+					success
+					and node
+					and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type())
+				then
+					return { "buffer" }
+				else
+					return { "lsp", "path", "snippets", "buffer" }
+				end
+			end,
+			providers = {
+				path = {
+					opts = {
+						trailing_slash = false,
+						label_trailing_slash = true,
+						get_cwd = function(context)
+							return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
+						end,
+						show_hidden_files_by_default = true,
+					},
+				},
+			},
+			cmdline = function()
+				local type = vim.fn.getcmdtype()
+				if type == "/" or type == "?" then
+					return { "buffer" }
+				end
+				if type == ":" then
+					return { "cmdline" }
+				end
+				return {}
+			end,
+		},
+
 		signature = { enabled = true },
+
 		completion = {
 			accept = { auto_brackets = { enabled = true } },
 			list = {
-				selection = function(ctx)
-					if ctx.mode == "cmdline" then
-						return "manual"
-					else
-						return "auto_insert"
-					end
-				end,
+				selection = {
+					preselect = function(ctx)
+						return ctx.mode ~= "cmdline"
+					end,
+					auto_insert = function(ctx)
+						return ctx.mode ~= "cmdline"
+					end,
+				},
 				cycle = { from_top = false },
 				max_items = 50,
 			},
 			documentation = {
-				window = {
-					min_width = 15,
-					max_width = 50,
-					max_height = 15,
-				},
-				auto_show = true,
+				auto_show = false,
 				auto_show_delay_ms = 150,
 			},
 			ghost_text = { enabled = true },
 			menu = {
+				auto_show = function(ctx)
+					return ctx.mode ~= "cmdline" or not vim.tbl_contains({ "/", "?" }, vim.fn.getcmdtype())
+				end,
 				draw = {
 					treesitter = { "lsp" },
 					columns = {
-						{ "label", "label_description", gap = 1 },
-						{ "kind_icon", "kind", gap = 1 },
-						{ "source_name", gap = 1 },
+						{ "kind_icon", "label", "label_description", gap = 1 },
+						{ "kind", "source_name", gap = 1 },
 					},
 					components = {
 						label = {
-							width = { fill = true, max = 60 },
 							text = function(ctx)
-								return get_highlights(ctx).text
+								return require("colorful-menu").blink_components_text(ctx)
 							end,
 							highlight = function(ctx)
-								return get_highlights(ctx).hls
+								return require("colorful-menu").blink_components_highlight(ctx)
 							end,
 						},
 						kind_icon = {
@@ -255,11 +208,8 @@ return {
 				},
 			},
 		},
-		appearance = {
-			nerd_font_variant = "mono",
-			use_nvim_cmp_as_default = false,
-		},
 	},
+
 	opts_extend = {
 		"sources.cmdline",
 		"sources.default",

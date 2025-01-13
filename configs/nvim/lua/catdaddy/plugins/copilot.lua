@@ -3,6 +3,7 @@ return {
 		"zbirenbaum/copilot.lua",
 		cmd = "Copilot",
 		event = "InsertEnter",
+		enabled = not vim.g.vscode,
 		build = ":Copilot auth",
 		opts = {
 			suggestion = {
@@ -14,40 +15,37 @@ return {
 					prev = "<M-[>",
 				},
 			},
-			panel = { enabled = false },
+			panel = { enabled = true },
 		},
 	},
 
 	-- AI completion engine
-	vim.g.ai_cmp
-			and {
-				"saghen/blink.cmp",
-				optional = true,
-				dependencies = { "giuxtaposition/blink-cmp-copilot" },
-				opts = {
-					sources = {
-						default = { "copilot" },
-						providers = {
-							copilot = {
-								name = "copilot",
-								module = "blink-cmp-copilot",
-								kind = "Copilot",
-								score_offset = 100,
-								async = true,
-
-								transform_items = function(_, items)
-									local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-									local kind_idx = #CompletionItemKind + 1
-									CompletionItemKind[kind_idx] = "Copilot"
-									for _, item in ipairs(items) do
-										item.kind = kind_idx
-									end
-									return items
-								end,
-							},
-						},
-					},
-				},
-			}
-		or nil,
+	-- {
+	-- 	"saghen/blink.cmp",
+	-- 	enabled = not vim.g.vscode,
+	-- 	dependencies = { "giuxtaposition/blink-cmp-copilot" },
+	-- 	opts = {
+	-- 		sources = {
+	-- 			default = { "copilot" },
+	-- 			providers = {
+	-- 				copilot = {
+	-- 					name = "copilot",
+	-- 					module = "blink-cmp-copilot",
+	-- 					score_offset = 100,
+	-- 					async = true,
+	--
+	-- 					transform_items = function(_, items)
+	-- 						local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+	-- 						local kind_idx = #CompletionItemKind + 1
+	-- 						CompletionItemKind[kind_idx] = "Copilot"
+	-- 						for _, item in ipairs(items) do
+	-- 							item.kind = kind_idx
+	-- 						end
+	-- 						return items
+	-- 					end,
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 }

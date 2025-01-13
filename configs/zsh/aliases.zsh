@@ -9,24 +9,24 @@ function get_package_manager() {
 	ID=$(grep '^ID=' /etc/os-release | cut -d'=' -f2)
 
 	case $ID in
-		'arch')
-			if command -v paru >/dev/null 2>&1; then
-				echo 'paru'
-			elif command -v yay >/dev/null 2>&1; then
-				echo 'yay'
-			else
-				echo 'pacman'
-			fi
-			;;
-		'fedora')
-			echo 'dnf'
-			;;
-		'debian' | 'ubuntu')
-			echo 'apt'
-			;;
-		*)
-			echo 'unknown'
-			;;
+	'arch')
+		if command -v paru >/dev/null 2>&1; then
+			echo 'paru'
+		elif command -v yay >/dev/null 2>&1; then
+			echo 'yay'
+		else
+			echo 'pacman'
+		fi
+		;;
+	'fedora')
+		echo 'dnf'
+		;;
+	'debian' | 'ubuntu')
+		echo 'apt'
+		;;
+	*)
+		echo 'unknown'
+		;;
 	esac
 }
 
@@ -38,18 +38,18 @@ function install_package() {
 		return
 	fi
 	case $package_manager in
-		'dnf')
-			sudo dnf install $1
-			;;
-		'apt')
-			sudo apt install $3
-			;;
-		'pacman')
-			sudo pacman -S --noconfirm $2
-			;;
-		*)
-			echo "Please install $2" >&2
-			;;
+	'dnf')
+		sudo dnf install $1
+		;;
+	'apt')
+		sudo apt install $3
+		;;
+	'pacman')
+		sudo pacman -S --noconfirm $2
+		;;
+	*)
+		echo "Please install $2" >&2
+		;;
 	esac
 }
 
@@ -110,9 +110,7 @@ else
 	install_package 'neovim' 'neovim' 'neovim'
 fi
 
-if !command -v git>/dev/null 2>&1; then
-	install_package 'git' 'git' 'git'
-fi
+! command -v git >/dev/null && install_package 'git' 'git' 'git'
 
 # git aliases
 alias gb='git branch'
@@ -146,25 +144,25 @@ alias ssh="TERM=xterm-256color ssh"
 if command -v gdrive >/dev/null 2>&1; then
 	function gdr() {
 		case $1 in
-			'upload'|'-u')
-				shift
-				echo "Uploading... $@"
-				output=$(gdrive files upload "$@" 2>&1)
-				id=$(echo "$output" | grep 'Id:' | awk '{print $2}')
-				url=$(echo "$output" | grep 'ViewUrl:' | awk '{print $2}')
-				if [[ ! -z $id ]]; then
-					echo "ID: $id"
-					gdrive permissions share "$id"
-				fi
-					echo "URL: $url"
-				;;
-			'list'|'-l')
-				shift
-				gdrive list $@
-				;;
-			*)
-				gdrive $@
-				;;
+		'upload' | '-u')
+			shift
+			echo "Uploading... $@"
+			output=$(gdrive files upload "$@" 2>&1)
+			id=$(echo "$output" | grep 'Id:' | awk '{print $2}')
+			url=$(echo "$output" | grep 'ViewUrl:' | awk '{print $2}')
+			if [[ ! -z $id ]]; then
+				echo "ID: $id"
+				gdrive permissions share "$id"
+			fi
+			echo "URL: $url"
+			;;
+		'list' | '-l')
+			shift
+			gdrive list $@
+			;;
+		*)
+			gdrive $@
+			;;
 		esac
 	}
 fi
@@ -173,9 +171,7 @@ fi
 alias x="xdg-open"
 
 # alias for kitty graph visualization
-if command -v dot >/dev/null 2>&1; then
-	alias idot="dot -T png | kitty +kitten icat"
-fi
+command -v dot >/dev/null 2>&1 && alias idot="dot -T png | kitty +kitten icat"
 
 # alias for clipboard
 if [ $(get_xdg_session_type) = 'wayland' ]; then
@@ -200,10 +196,8 @@ alias :wq='sudo shutdown -h now'
 alias :q='sudo systemctl suspend'
 
 # alias for terminal file manager
-if command -v yazi >/dev/null 2>&1; then
-	alias y='yazi'
-fi
+command -v yazi >/dev/null 2>&1 && alias y='yazi'
 
-if command -v nvim >/dev/null; then
-	export SUDO_EDITOR=$(which nvim)
-fi
+# alias for nvim as sudo editor
+command -v nvim >/dev/null 2>&1 && export SUDO_EDITOR=$(which nvim)
+

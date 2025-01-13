@@ -1,6 +1,7 @@
 return {
 	"saecki/crates.nvim",
 	event = { "BufRead Cargo.toml" },
+	enabled = not vim.g.vscode,
 	config = function()
 		require("crates").setup({
 			lsp = {
