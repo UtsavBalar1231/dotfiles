@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2181
 
 # Configuration
 BATTERY_THRESHOLD=25
 STATIC_WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 DYNAMIC_WALLPAPER_DIR="$HOME/Pictures/wallpapers/gifs"
-CHANGE_INTERVAL=2
+CHANGE_INTERVAL=540
 TRANSITION_DURATION=0.694
 LOG_FILE="$HOME/.cache/wallpaper_changer.log"
 TMP_DIR=$(mktemp -d)
@@ -47,23 +46,6 @@ get_wallpaper_dir() {
 		fi
 	fi
 	echo "$DYNAMIC_WALLPAPER_DIR"
-}
-
-# Set wallpaper with mpvpaper
-set_wallpaper_mpvpaper() {
-	local img="$1"
-	if command -v mpvpaper &>/dev/null; then
-		# Ensure no other mpvpaper instance is running
-		pkill -f mpvpaper 2>/dev/null
-		mpvpaper ALL "$img" -o loop &
-		if [[ $? -eq 0 ]]; then
-			log_message "INFO" "Wallpaper set using mpvpaper: $img"
-			return 0
-		else
-			log_message "ERROR" "Failed to set wallpaper using mpvpaper: $img"
-		fi
-	fi
-	return 1
 }
 
 # Set wallpaper with different tools
@@ -127,11 +109,17 @@ calculate_gif_speed() {
 # Set gif as wallpaper in Wayland
 animate_gif_wayland() {
 	local gif="$1"
-	log_message "INFO" "Setting wallpaper using swww or mpvpaper..."
-	set_wallpaper_mpvpaper "$gif" || set_wallpaper "swww"
-	if [[ $? -ne 0 ]]; then
-		log_message "ERROR" "Failed to set wallpaper using mpvpaper or swww: $gif"
-		exit 1
+
+	pkill -f "mpvpaper"
+
+	if [[ -n "$gif" ]]; then
+		if mpvpaper ALL "$gif" -o loop -f; then
+			log_message "INFO" "Starting mpvpaper for: $gif"
+		elif set_wallpaper "$gif" "swww"; then
+			log_message "INFO" "Falling back to swww for: $gif"
+		else
+			log_message "ERROR" "No suitable tool available for animated wallpaper: $gif"
+		fi
 	fi
 }
 
@@ -176,7 +164,7 @@ animate_gif_wallpaper() {
 	fi
 }
 
-# Main wallpaper loop 
+# Main wallpaper loop
 wallpaper_loop() {
 	local dir="$1"
 	while true; do
@@ -191,11 +179,11 @@ wallpaper_loop() {
 		if [[ "$img" == *.gif ]]; then
 			log_message "INFO" "Animating GIF wallpaper: $img"
 			animate_gif_wallpaper "$img"
-			wait
 		else
 			log_message "INFO" "Setting static wallpaper: $img"
 			set_wallpaper_fallback "$img"
 		fi
+
 		sleep "$CHANGE_INTERVAL"
 	done
 }
@@ -225,7 +213,7 @@ main() {
 		exit 1
 	fi
 
-	log_env 
+	log_env
 
 	wallpaper_loop "$wallpaper_dir"
 }

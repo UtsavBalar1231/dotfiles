@@ -9,7 +9,11 @@ M.detect_shebang = function()
 		or string.match(first_line, "^#!.*/bin/env%s+zsh")
 		or string.match(first_line, "^#!.*/bin/sh")
 	then
-		vim.cmd("setfiletype bash")
+		-- check the file type first and if it's not already set to bash, set it to bash
+		if vim.bo.filetype ~= "bash" then
+			vim.bo.filetype = "bash"
+		end
+		-- vim.cmd("setfiletype bash")
 	end
 end
 

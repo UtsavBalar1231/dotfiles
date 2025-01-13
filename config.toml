@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "bd2de5c96badf5a9b790cbf24dd0da429b6a3fa0630190c9f60a8476a38c6115"
+hash = "3e4d838c52c9339758a5b3f3ef42acc9507e05ceaf709f5b5eb2023b5061dc77"
 conf_type = "Dir"
 
 [[configs]]
@@ -46,7 +46,7 @@ conf_type = "File"
 [[configs]]
 name = "zshrc"
 path = "$HOME/.zshrc"
-hash = "51c2dd5ef95d97a75274f711091cd72c3f930ea62a47d3869174ba0b39f24ba9"
+hash = "5ff2361adefc9d94ca2a9693b3c9e61cdd9f12e15ff0b293b26733087c5db517"
 conf_type = "File"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "eab2c46f9edc2d5a2b76d3a1b591571c1d6d698b43c4e3be7d04cfa25bd23ddc"
+hash = "fcf536532d408434eafe4bfa0093295bdacb9e8bafb69a4649813913d7b31c1b"
 conf_type = "Dir"
 
 [[configs]]

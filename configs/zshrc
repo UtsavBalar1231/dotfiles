@@ -232,7 +232,7 @@ kill_process() {
 
     # Extract the PID (2nd field in `ps -ef` output)
     local pid
-    pid=$(echo "$selected_process" | awk '{print $2}')
+    pid=$(echo "$selected_process" | awk '{print $1}')
 
     # Confirm and kill the process
     echo "Selected process:"
