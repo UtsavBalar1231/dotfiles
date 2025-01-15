@@ -1,5 +1,5 @@
 ---@class catdaddy.util
----@field config Config
+---@field config catdaddy.util.config
 ---@field colorscheme catdaddy.util.colorscheme
 ---@field root catdaddy.util.root
 ---@field health catdaddy.util.health

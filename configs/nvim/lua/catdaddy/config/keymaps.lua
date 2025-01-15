@@ -26,6 +26,9 @@ map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window W
 -- Map <leader>w to quick save
 map({ "i", "x", "n", "s" }, "<leader>w", "<cmd>:w<cr><esc>", { desc = "Quick Save File" })
 
+-- Map :wq to :x to save and close
+map("n", ":wq", ":x", { desc = "Save and Close" })
+
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })

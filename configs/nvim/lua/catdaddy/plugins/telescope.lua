@@ -20,14 +20,13 @@ return {
 		end
 
 		--- [[ Telescope Custom Colorscheme
-		local util = require("catdaddy.util")
 		local function handle_colorscheme_selection(prompt_bufnr)
 			local entry = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
 			require("telescope.actions").close(prompt_bufnr)
 			if entry and entry.value then
 				local colorscheme = entry.value
 				vim.cmd("colorscheme " .. colorscheme)
-				util.colorscheme.set_colorscheme(colorscheme)
+				Util.colorscheme.set_colorscheme(colorscheme)
 			end
 		end
 

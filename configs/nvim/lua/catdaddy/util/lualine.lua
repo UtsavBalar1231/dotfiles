@@ -1,4 +1,3 @@
----@diagnostic disable: deprecated
 ---@class catdaddy.util.lualine
 local M = {}
 

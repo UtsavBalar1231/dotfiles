@@ -4,8 +4,6 @@ return {
 	enabled = not vim.g.vscode,
 	dependencies = {
 		"saghen/blink.cmp",
-		"j-hui/fidget.nvim",
-		-- { "antosha417/nvim-lsp-file-operations", config = true },
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
@@ -13,12 +11,38 @@ return {
 		local keymap = vim.keymap
 		local opts = { noremap = true, silent = true }
 
-		local on_attach = function(_, bufnr)
-			-- if vim.lsp.inlay_hint then
-			-- 	vim.lsp.inlay_hint.enable(true, { 0 })
-			-- end
-			opts.buffer = bufnr
+		local on_attach = function(client, bufnr)
+			-- Uncomment code below to enable inlay hint from language server, some LSP server supports inlay hint,
+			-- but disable this feature by default, so you may need to enable inlay hint in the LSP server config.
+			-- vim.lsp.inlay_hint.enable(true, {buffer=bufnr})
 
+			-- The below command will highlight the current variable and its usages in the buffer.
+			if client.server_capabilities.documentHighlightProvider then
+				vim.cmd([[
+      				hi! link LspReferenceRead Visual
+      				hi! link LspReferenceText Visual
+      				hi! link LspReferenceWrite Visual
+    			]])
+
+				local gid = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+				vim.api.nvim_create_autocmd("CursorHold", {
+					group = gid,
+					buffer = bufnr,
+					callback = function()
+						vim.lsp.buf.document_highlight()
+					end,
+				})
+
+				vim.api.nvim_create_autocmd("CursorMoved", {
+					group = gid,
+					buffer = bufnr,
+					callback = function()
+						vim.lsp.buf.clear_references()
+					end,
+				})
+			end
+
+			opts.buffer = bufnr
 			-- set keybinds
 			opts.desc = "LSP: Show references"
 			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
@@ -75,24 +99,12 @@ return {
 			textDocument = { completion = { completionItem = { snippetSupport = false } } },
 		})
 
-		-- Change the Diagnostic symbols in the sign column (gutter)
-		local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
-
 		-- configure lua server (with special settings)
 		lspconfig.lua_ls.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
-			settings = { -- custom settings for lua
+			settings = {
 				Lua = {
-					-- Disable LSP Snippets, (using luasnip)
-					completion = {
-						callSnippet = "Disable",
-						keywordSnippet = "Disable",
-					},
 					-- make the language server recognize "vim" global
 					diagnostics = {
 						globals = { "vim" },
@@ -105,6 +117,23 @@ return {
 							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
 							[vim.fn.stdpath("config") .. "/lua"] = true,
 						},
+					},
+					codeLens = {
+						enable = true,
+					},
+					completion = {
+						callSnippet = "Replace",
+					},
+					doc = {
+						privateName = { "^_" },
+					},
+					hint = {
+						enable = true,
+						setType = false,
+						paramType = true,
+						paramName = "Disable",
+						semicolon = "Disable",
+						arrayIndex = "Disable",
 					},
 				},
 			},
@@ -243,10 +272,39 @@ return {
 			on_attach = on_attach,
 		})
 
+		lspconfig.zls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		-- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
+		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+			border = "rounded",
+		})
+
 		vim.diagnostic.config({
-			-- update_in_insert = true,
-			float = {
-				header = "",
+			underline = true,
+			update_in_insert = false,
+			virtual_text = {
+				spacing = 4,
+				source = "if_many",
+				prefix = vim.fn.has("nvim-0.10.0") == 0 and "●" or function(diagnostic)
+					local icons = Util.config.icons.diagnostics
+					for d, icon in pairs(icons) do
+						if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+							return icon
+						end
+					end
+				end,
+			},
+			severity_sort = true,
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = Util.config.icons.diagnostics.Error,
+					[vim.diagnostic.severity.WARN] = Util.config.icons.diagnostics.Warn,
+					[vim.diagnostic.severity.HINT] = Util.config.icons.diagnostics.Hint,
+					[vim.diagnostic.severity.INFO] = Util.config.icons.diagnostics.Info,
+				},
 			},
 		})
 	end,

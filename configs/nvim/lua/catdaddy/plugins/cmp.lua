@@ -4,48 +4,6 @@ local has_words_before = function()
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-local function get_icon_provider()
-	local mini_icons_avail, mini_icons = pcall(require, "mini.icons")
-	if mini_icons_avail then
-		return function(kind)
-			return mini_icons.get("lsp", kind or "")
-		end
-	end
-	local lspkind_avail, lspkind = pcall(require, "lspkind")
-	if lspkind_avail then
-		require("lspkind").init({
-			mode = "symbol",
-			symbol_map = {
-				Codeium = "{…}",
-				Copilot = "",
-			},
-		})
-		return function(kind)
-			return lspkind.symbolic(kind, { mode = "symbol" })
-		end
-	end
-end
-
----@type function|false|nil
-local icon_provider = false
-
----@param ctx table
-local function get_icon(ctx)
-	ctx.kind_hl_group = "BlinkCmpKind" .. ctx.kind
-	if ctx.item.source_name == "LSP" then
-		if icon_provider == false then
-			icon_provider = get_icon_provider()
-		end
-		if icon_provider then
-			local icon = icon_provider(ctx.kind)
-			if icon then
-				ctx.kind_icon = icon
-			end
-		end
-	end
-	return ctx
-end
-
 return {
 	"saghen/blink.cmp",
 	version = "*",
@@ -57,8 +15,6 @@ return {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
 		"giuxtaposition/blink-cmp-copilot",
-		-- "echasnovski/mini.icons",
-		"onsails/lspkind.nvim",
 		"xzbdmw/colorful-menu.nvim",
 	},
 
@@ -109,7 +65,10 @@ return {
 
 		appearance = {
 			nerd_font_variant = "mono",
-			use_nvim_cmp_as_default = true,
+			use_nvim_cmp_as_default = false,
+			kind_icons = vim.tbl_extend("keep", {
+				Color = "██", -- Use block instead of icon for color items to make swatches more usable
+			}, Util.config.icons.kinds),
 		},
 
 		sources = {
@@ -196,13 +155,10 @@ return {
 							end,
 						},
 						kind_icon = {
-							text = function(ctx)
-								get_icon(ctx)
-								return ctx.kind_icon .. ctx.icon_gap
-							end,
-							highlight = function(ctx)
-								return get_icon(ctx).kind_hl_group
-							end,
+							-- text = function(ctx)
+							-- end,
+							-- highlight = function(ctx)
+							-- end,
 						},
 					},
 				},

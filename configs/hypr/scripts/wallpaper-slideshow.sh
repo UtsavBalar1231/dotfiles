@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Configuration
-BATTERY_THRESHOLD=25
 STATIC_WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 DYNAMIC_WALLPAPER_DIR="$HOME/Pictures/wallpapers/gifs"
 CHANGE_INTERVAL=540
@@ -11,47 +10,54 @@ TMP_DIR=$(mktemp -d)
 DEFAULT_GIF_SPEED=0.010
 
 # Check if session is Xorg
-is_xorg() {
-	[[ "$XDG_SESSION_TYPE" == "x11" ]]
-}
+is_xorg() { [[ "$XDG_SESSION_TYPE" == "x11" ]]; }
 
 # Check if session is Wayland
-is_wayland() {
-	[[ "$XDG_SESSION_TYPE" == "wayland" ]]
-}
+is_wayland() { [[ "$XDG_SESSION_TYPE" == "wayland" ]]; }
 
 # Logging function
 log_message() {
 	local level="$1"
 	local message="$2"
 
-	if [[ ! -f "$LOG_FILE" ]]; then
-		touch "$LOG_FILE"
-	fi
-
+	[[ ! -f "$LOG_FILE" ]] && touch "$LOG_FILE"
 	echo "$(date '+%Y-%m-%d %H:%M:%S') [$level] $message" >>"$LOG_FILE"
-	if [[ "$level" == "ERROR" ]]; then
-		return 1
+	[[ "$level" == "ERROR" ]] && return 1
+}
+
+get_battery_status() {
+	local battery_status
+	if [[ -f /sys/class/power_supply/BAT1/status ]]; then
+		battery_status=$(</sys/class/power_supply/BAT1/status)
+		echo "$battery_status"
 	fi
 }
 
 # Determine wallpaper directory based on battery status
 get_wallpaper_dir() {
-	local battery_level
-	if [[ -f /sys/class/power_supply/BAT1/capacity ]]; then
-		battery_level=$(</sys/class/power_supply/BAT1/capacity)
-		if [[ "$battery_level" -lt $BATTERY_THRESHOLD ]]; then
-			echo "$STATIC_WALLPAPER_DIR"
-			return
-		fi
-	fi
-	echo "$DYNAMIC_WALLPAPER_DIR"
+	local battery_status
+	battery_status=$(get_battery_status)
+
+	case "$battery_status" in
+	"Discharging")
+		echo "$STATIC_WALLPAPER_DIR"
+		;;
+	"Charging")
+		echo "$DYNAMIC_WALLPAPER_DIR"
+		;;
+	*)
+		echo "$STATIC_WALLPAPER_DIR"
+		;;
+	esac
 }
 
 # Set wallpaper with different tools
 set_wallpaper() {
-	local img="$1"
-	local tool="$2"
+	local tool="$1"
+	local img="$2"
+
+	log_message "INFO" "set_wallpaper: [img: $img tool: $tool]"
+
 	if command -v "$tool" &>/dev/null; then
 		case "$tool" in
 		feh) feh --bg-fill "$img" ;;
@@ -59,13 +65,17 @@ set_wallpaper() {
 		swaybg) swaybg -i "$img" ;;
 		matugen) matugen image "$img" ;;
 		wal) wal -ei "$img" ;;
-		swww) swww --transition-type any --transition-duration "$TRANSITION_DURATION" "$img" ;;
+		swww)
+			[[ -z "$(pgrep -f swww-daemon)" ]] && swww-daemon &
+
+			swww img "$img" --transition-type=any --transition-duration="$TRANSITION_DURATION"
+			;;
 		*) log_message "ERROR" "Unsupported wallpaper tool: $tool" ;;
 		esac
+		# shellcheck disable=SC2181
 		if [[ $? -eq 0 ]]; then
-			if [[ "$tool" != "feh" ]]; then
-				log_message "INFO" "Wallpaper set using $tool: $img"
-			fi
+			# TODO: temp disable feh logging
+			[[ "$tool" != "feh" ]] && log_message "INFO" "Wallpaper set using $tool: $img"
 			return 0
 		else
 			log_message "ERROR" "Failed to set wallpaper using $tool: $img"
@@ -79,14 +89,14 @@ set_wallpaper_fallback() {
 	local img="$1"
 
 	if is_wayland; then
-		set_wallpaper "swww" img "$img" --transition-type any --transition-duration "$TRANSITION_DURATION" ||
-			set_wallpaper "wal" -ei "$img" ||
-			set_wallpaper "matugen" image "$img" ||
-			set_wallpaper "swaybg" -i "$img" ||
+		set_wallpaper "swww" "$img" ||
+			set_wallpaper "wal" "$img" ||
+			set_wallpaper "matugen" "$img" ||
+			set_wallpaper "swaybg" "$img" ||
 			log_message "ERROR" "No suitable wallpaper tool found for: $img"
 	elif is_xorg; then
-		set_wallpaper "wal" -ei "$img" ||
-			set_wallpaper "feh" --bg-fill "$img" ||
+		set_wallpaper "wal" "$img" ||
+			set_wallpaper "feh" "$img" ||
 			log_message "ERROR" "No suitable wallpaper tool found for: $img"
 	else
 		log_message "ERROR" "Unsupported session type"
@@ -140,9 +150,7 @@ animate_gif_xorg() {
 	# Calculate GIF speed
 	local speed
 	speed=$(calculate_gif_speed "$gif")
-	if [[ -z "$speed" ]]; then
-		speed=$DEFAULT_GIF_SPEED
-	fi
+	[[ -z "$speed" ]] && speed=$DEFAULT_GIF_SPEED
 
 	# Animate the GIF frames as wallpaper
 	while :; do
@@ -166,8 +174,14 @@ animate_gif_wallpaper() {
 
 # Main wallpaper loop
 wallpaper_loop() {
-	local dir="$1"
 	while true; do
+		local dir
+		dir=$(get_wallpaper_dir)
+		if [[ ! -d "$dir" ]]; then
+			log_message "ERROR" "Wallpaper directory not found: $dir"
+			exit 1
+		fi
+
 		local img
 		img=$(find "$dir" -type f | shuf -n 1)
 		if [[ -z "$img" ]]; then
@@ -193,29 +207,22 @@ log_env() {
 	log_message "INFO" "----------------------------------------"
 	log_message "INFO" "Environment:"
 	log_message "INFO" "XDG_SESSION_TYPE: $XDG_SESSION_TYPE"
-	log_message "INFO" "BATTERY_THRESHOLD: $BATTERY_THRESHOLD"
 	log_message "INFO" "STATIC_WALLPAPER_DIR: $STATIC_WALLPAPER_DIR"
 	log_message "INFO" "DYNAMIC_WALLPAPER_DIR: $DYNAMIC_WALLPAPER_DIR"
 	log_message "INFO" "CHANGE_INTERVAL: $CHANGE_INTERVAL"
 	log_message "INFO" "TRANSITION_DURATION: $TRANSITION_DURATION"
 	log_message "INFO" "LOG_FILE: $LOG_FILE"
 	log_message "INFO" "TMP_DIR: $TMP_DIR"
+	log_message "INFO" "CURRENT WALLPAPER DIR: $(get_wallpaper_dir)"
 	log_message "INFO" "----------------------------------------"
 }
 
 # Main function
 main() {
-	local wallpaper_dir
-	wallpaper_dir=$(get_wallpaper_dir)
-
-	if [[ ! -d "$wallpaper_dir" ]]; then
-		log_message "ERROR" "Wallpaper directory not found: $wallpaper_dir"
-		exit 1
-	fi
+	[[ -f "$LOG_FILE" ]] && rm -f "$LOG_FILE"
 
 	log_env
-
-	wallpaper_loop "$wallpaper_dir"
+	wallpaper_loop
 }
 
 main

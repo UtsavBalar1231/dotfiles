@@ -4,6 +4,20 @@ return {
 		event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 		enabled = not vim.g.vscode,
 		opts = function()
+			local icons = vim.deepcopy(Util.config.icons.kinds)
+
+			-- HACK: fix lua's weird choice for `Package` for control
+			-- structures like if/else/for/etc.
+			icons.lua = { Package = icons.Control }
+
+			---@type table<string, boolean|string[]>|false
+			local filter_kind = false
+			if Util.config.kind_filter then
+				filter_kind = assert(vim.deepcopy(Util.config.kind_filter))
+				filter_kind._ = filter_kind.default
+				filter_kind.default = nil
+			end
+
 			local opts = {
 				backends = { "lsp", "treesitter" },
 				guides = {
@@ -17,6 +31,8 @@ return {
 					min_width = 35,
 				},
 				show_guides = true,
+				icons = icons,
+				filter_kind = filter_kind,
 				-- open_automatic = function(bufnr)
 				-- 	local aerial = require("aerial")
 				-- 	return vim.api.nvim_win_get_width(0) > 120
@@ -29,9 +45,7 @@ return {
 		end,
 		config = function(_, opts)
 			require("aerial").setup(opts)
-
 			vim.keymap.set("n", "<F1>", "<cmd>AerialToggle<cr>", { silent = true })
-
 			vim.api.nvim_set_hl(0, "AerialLine", { link = "PmenuSel" })
 		end,
 	},
@@ -47,7 +61,7 @@ return {
 		end,
 		keys = {
 			{
-				"<leader>ss",
+				"<leader><F1>",
 				"<cmd>Telescope aerial<cr>",
 				desc = "Goto Symbol (Aerial)",
 			},

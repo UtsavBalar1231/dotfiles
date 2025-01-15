@@ -20,12 +20,18 @@ return {
 		-- PERF: we don't need this lualine require madness 🤷
 		local lualine_require = require("lualine_require")
 		lualine_require.require = require
+		local icons = Util.config.icons
 
 		local diagnostics = {
 			"diagnostics",
 			sources = { "nvim_diagnostic" },
 			sections = { "error", "warn", "info" },
-			symbols = { error = " ", warn = " ", info = " " },
+			symbols = {
+				error = icons.diagnostics.Error,
+				warn = icons.diagnostics.Warn,
+				info = icons.diagnostics.Info,
+				hint = icons.diagnostics.Hint,
+			},
 			update_in_insert = true,
 			always_visible = false,
 		}
@@ -34,8 +40,8 @@ return {
 			"diff",
 			colored = false,
 			symbols = {
-				modified = " ",
 				added = " ",
+				modified = " ",
 				removed = " ",
 			},
 			source = function()
