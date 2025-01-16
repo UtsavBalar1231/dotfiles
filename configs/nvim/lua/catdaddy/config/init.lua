@@ -10,3 +10,7 @@ require("catdaddy.config.cmd")
 if vim.g.vscode then
 	require("catdaddy.config.vscode")
 end
+
+if vim.g.neovide then
+	require("catdaddy.config.neovide")
+end

@@ -42,7 +42,7 @@ map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 keymap("n", "<leader>Q", "<cmd>:qa<cr>", { noremap = true, silent = true, desc = "Quick Quit All" })
 
 -- Map <leader>sw to save and source
-keymap("n", "<leader>ss", "<cmd>:w<cr>:source %<cr>", { noremap = true, silent = true, desc = "Save and Source" })
+-- keymap("n", "<leader>ss", "<cmd>:w<cr>:source %<cr>", { noremap = true, silent = true, desc = "Save and Source" })
 
 -- Use Q to quit
 keymap("n", "Q", "<cmd>:q<cr>", { noremap = true, silent = true, desc = "Quit" })
@@ -102,8 +102,8 @@ keymap("n", "<C-a>", "ggVG", { noremap = true, silent = true, desc = "Select All
 -- Proper X clipboard support
 keymap("n", "<leader>y", '"+y', { noremap = true, silent = true, desc = "Copy to Clipboard" })
 keymap("v", "<leader>y", '"+y', { noremap = true, silent = true, desc = "Copy to Clipboard" })
-keymap("n", "<space>p", '"+p', { noremap = true, silent = true, desc = "Paste from Clipboard" })
-keymap("v", "<space>p", '"+p', { noremap = true, silent = true, desc = "Paste from Clipboard" })
+keymap("n", "<leader>p", '"+p', { noremap = true, silent = true, desc = "Paste from Clipboard" })
+keymap("v", "<leader>p", '"+p', { noremap = true, silent = true, desc = "Paste from Clipboard" })
 
 -- Left and right arrow keys to move between buffers
 keymap("n", "<Left>", "<cmd>:bprevious<cr>", { noremap = true, silent = true, desc = "Previous Buffer" })

@@ -8,6 +8,7 @@ TRANSITION_DURATION=0.694
 LOG_FILE="$HOME/.cache/wallpaper_changer.log"
 TMP_DIR=$(mktemp -d)
 DEFAULT_GIF_SPEED=0.010
+SLIDESHOW_STATUS="stopped" # stopped|running|paused
 
 # Check if session is Xorg
 is_xorg() { [[ "$XDG_SESSION_TYPE" == "x11" ]]; }
@@ -173,7 +174,7 @@ animate_gif_wallpaper() {
 }
 
 # Main wallpaper loop
-wallpaper_loop() {
+start_slideshow() {
 	while true; do
 		local dir
 		dir=$(get_wallpaper_dir)
@@ -197,9 +198,11 @@ wallpaper_loop() {
 			log_message "INFO" "Setting static wallpaper: $img"
 			set_wallpaper_fallback "$img"
 		fi
+		SLIDESHOW_STATUS="running"
 
 		sleep "$CHANGE_INTERVAL"
-	done
+	done &
+	SLIDESHOW_PID=$!
 }
 
 # Log environment variables
@@ -217,12 +220,64 @@ log_env() {
 	log_message "INFO" "----------------------------------------"
 }
 
+set_selected_wallpaper() {
+	local wallpaper_dir
+	wallpaper_dir="$(get_wallpaper_dir)"
+	if [ -z "$wallpaper_dir" ]; then
+		echo "Wallpaper directory not found."
+		return 1
+	fi
+
+	# Use fzf to select a wallpaper
+	local selected_wallpaper
+	selected_wallpaper="$(find "$wallpaper_dir" -type f | fzf)"
+
+	if [ -n "$selected_wallpaper" ]; then
+		# Stop the slideshow and set the selected wallpaper
+		stop_slideshow
+		if [[ "$selected_wallpaper" == *.gif ]]; then
+			log_message "INFO" "Animating GIF wallpaper: $selected_wallpaper"
+			animate_gif_wallpaper "$selected_wallpaper"
+		else
+			log_message "INFO" "Setting static wallpaper: $selected_wallpaper"
+			set_wallpaper_fallback "$selected_wallpaper"
+		fi
+		SLIDESHOW_STATUS="paused"
+		log_message "INFO" "Selected wallpaper set: $selected_wallpaper"
+	else
+		log_message "WARNING" "No wallpaper selected."
+	fi
+}
+
+stop_slideshow() {
+	if [ "$SLIDESHOW_STATUS" != "stopped" ] && [ -n "$SLIDESHOW_PID" ] && kill -0 "$SLIDESHOW_PID" 2>/dev/null; then
+		kill "$SLIDESHOW_PID"
+		unset SLIDESHOW_PID
+		SLIDESHOW_STATUS="stopped"
+		log_message "INFO" "Slideshow stopped."
+	else
+		log_message "WARNING" "Slideshow not running, status: $SLIDESHOW_STATUS"
+	fi
+}
+
+resume_slideshow() {
+	log_message "INFO" "Resuming slideshow..."
+	if [ "$SLIDESHOW_STATUS" == "paused" ]; then
+		start_slideshow
+		SLIDESHOW_STATUS="running"
+	else
+		log_message "WARNING" "Slideshow not paused, status: $SLIDESHOW_STATUS"
+	fi
+}
+
+export -f set_selected_wallpaper stop_slideshow resume_slideshow
+
 # Main function
 main() {
 	[[ -f "$LOG_FILE" ]] && rm -f "$LOG_FILE"
 
 	log_env
-	wallpaper_loop
+	start_slideshow
 }
 
 main

@@ -46,6 +46,8 @@ tmux
 tree-sitter-cli
 ttf-terminus-nerd
 vim
+vulkan-intel
+vulkan-mesa-layers
 yazi
 zoxide
 zsh

@@ -1,0 +1,64 @@
+/* Background colors */
+@define-color bg_dim #141017;
+@define-color bg0 #1d2021;
+@define-color bg1 #282828;
+@define-color bg2 #3c3836;
+@define-color bg3 #504945;
+@define-color bg4 #665c54;
+@define-color bg5 #7c6f64;
+
+/* Statusline backgrounds */
+@define-color bg_statusline1 #282828;
+@define-color bg_statusline2 #332021;
+@define-color bg_statusline3 #504945;
+
+/* Diff and visual backgrounds */
+@define-color bg_diff_green #323616;
+@define-color bg_visual_green #333634;
+@define-color bg_diff_red #351116;
+@define-color bg_visual_red #442621;
+@define-color bg_diff_blue #043188;
+@define-color bg_visual_blue #248535;
+@define-color bg_visual_yellow #479629;
+
+/* Current word background */
+@define-color bg_current_word #232027;
+
+/* Foreground colors */
+@define-color fg0 #d4be98;
+@define-color fg1 #ddc7a1;
+
+/* Bright colors */
+@define-color bright_red #ec6962;
+@define-color bright_orange #e78a4e;
+@define-color bright_yellow #d8a657;
+@define-color bright_green #a9b665;
+@define-color bright_aqua #89b482;
+@define-color bright_blue #7daea3;
+@define-color bright_purple #d3869b;
+
+/* Background variants for bright colors */
+@define-color bg_red #ec6962;
+@define-color bg_green #a9b665;
+@define-color bg_yellow #d8a657;
+
+/* Grey colors */
+@define-color grey0 #7c6f64;
+@define-color grey1 #928374;
+@define-color grey2 #a89984;
+
+/* Neutral colors */
+@define-color neutral_red #cc241d;
+@define-color neutral_green #98971a;
+@define-color neutral_yellow #d79921;
+@define-color neutral_blue #458588;
+@define-color neutral_purple #b16286;
+@define-color neutral_aqua #689d6a;
+@define-color neutral_orange #d65d0e;
+
+/* Text and base colors */
+@define-color text @bg4;
+@define-color base @bg0;
+@define-color surface @bg1;
+@define-color hover @bg2;
+@define-color active @neutral_aqua;

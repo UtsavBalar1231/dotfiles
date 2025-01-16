@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "7f7471b3b1caf43ba8739cc2ac743ea756c703fdf3679fb2df6ffde196d18d58"
+hash = "a749607bc8d0f1639e7dcd5e51e8d4b8658f0ab2862fb32ab0a9972b9b981231"
 conf_type = "Dir"
 
 [[configs]]
@@ -16,7 +16,7 @@ conf_type = "Dir"
 [[configs]]
 name = "rofi"
 path = "$HOME/.config/rofi/"
-hash = "a640dc0f71cb1cea457b280a8ce3ce7968b5f5f1327d912705ded74351aab479"
+hash = "b827a1eea20bb9c09c120c7e7fb0c4e2424a6dacb84d7aebd63f908c47fb2f59"
 conf_type = "Dir"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "dde1316b108842bcbdb4d2f55124c490060872962a53a4d44fb7f24301d312d2"
+hash = "3b2ba08ca8aa7ff787ccbceb5f7e6e6b9e0b3cd1f4f555e0f7c1d4f8c4ede718"
 conf_type = "Dir"
 
 [[configs]]
@@ -118,7 +118,7 @@ conf_type = "Dir"
 [[configs]]
 name = "waybar"
 path = "$HOME/.config/waybar"
-hash = "90df9afaf7a10a8e9e98bf1f72135eba0f7c9158bd57ca18ceae2435ccd7be49"
+hash = "281c0f0ec4feb321bd4d0e1dce09336c6ebefbf4dd38cc5b92ef7dd3374db87e"
 conf_type = "Dir"
 
 [[configs]]
@@ -142,7 +142,7 @@ conf_type = "Dir"
 [[configs]]
 name = "anyrun"
 path = "$HOME/.config/anyrun"
-hash = "715287b9fcd272b76f3546a44d355869a73fd80821461464bea8281b3b9b7ca8"
+hash = "d1e114d82be493aec0230fc4d1e98464d8abf8083b5bebdc6c2af1ed3a95fea3"
 conf_type = "Dir"
 
 [[configs]]
@@ -156,3 +156,9 @@ name = "pacman"
 path = "/etc/pacman.conf"
 hash = "a6e863f2f07576abfb9b965c61b701037a91de7cd7cb22f4f35d224d2a507f9c"
 conf_type = "File"
+
+[[configs]]
+name = "swaync"
+path = "$HOME/.config/swaync"
+hash = "56a52d0850c39b6e4157a1715ab9300fa1c501556113994e9522c43916eea45e"
+conf_type = "Dir"

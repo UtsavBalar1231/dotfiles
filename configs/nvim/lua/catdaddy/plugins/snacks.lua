@@ -2,6 +2,7 @@ return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
+	dependencies = { "nvim-lua/plenary.nvim" },
 	---@type snacks.Config
 	opts = {
 		animate = { enabled = false },
@@ -22,11 +23,11 @@ return {
 					indent = 8,
 				},
 				{ section = "startup" },
-				{ title = "MRU", padding = 1 },
-				{ section = "recent_files", limit = 8, padding = 1 },
-				{ title = "MRU ", file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
-				{ section = "recent_files", cwd = true, limit = 8, padding = 1 },
-				{ title = "Bookmarks", padding = 1 },
+				{ title = "MRU",            padding = 1 },
+				{ section = "recent_files", limit = 8,                            padding = 1 },
+				{ title = "MRU ",           file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
+				{ section = "recent_files", cwd = true,                           limit = 8,  padding = 1 },
+				{ title = "Bookmarks",      padding = 1 },
 				{ section = "keys" },
 			},
 		},
@@ -60,7 +61,7 @@ return {
 		debug = { enabled = false },
 		styles = {
 			notification = {
-				border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+				border = Util.config.icons.border,
 				wo = { wrap = true },
 			},
 		},
@@ -140,14 +141,14 @@ return {
 		{
 			"<leader>gb",
 			function()
-				Snacks.git.blame_line()
+				Snacks.picker.git_log_line()
 			end,
 			desc = "Git Blame Line",
 		},
 		{
 			"<leader>gf",
 			function()
-				Snacks.lazygit.log_file()
+				Snacks.picker.git_log_file()
 			end,
 			desc = "Lazygit Current File History",
 		},
@@ -161,9 +162,16 @@ return {
 		{
 			"<leader>gl",
 			function()
-				Snacks.lazygit.log()
+				Snacks.picker.git_log({ cwd = Util.root.git() })
 			end,
 			desc = "Lazygit Log (cwd)",
+		},
+		{
+			"<leader>gL",
+			function()
+				Snacks.picker.git_log()
+			end,
+			{ desc = "Git Log (cwd)" },
 		},
 		{
 			"<leader>un",
@@ -209,6 +217,270 @@ return {
 			desc = "Prev Reference",
 			mode = { "n", "t" },
 		},
+		{
+			"<leader>b,",
+			function()
+				Snacks.picker.buffers()
+			end,
+			desc = "Buffers",
+		},
+		{
+			"<leader>/",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Grep",
+		},
+		{
+			"<leader>:",
+			function()
+				Snacks.picker.command_history()
+			end,
+			desc = "Command History",
+		},
+		{
+			"<leader><space>",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find Files",
+		},
+		-- find
+		{
+			"<leader>fb",
+			function()
+				Snacks.picker.buffers()
+			end,
+			desc = "Buffers",
+		},
+		{
+			"<leader>fc",
+			function()
+				Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+			end,
+			desc = "Find Config File",
+		},
+		{
+			"<leader>ff",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find Files",
+		},
+		{
+			"<leader>fF",
+			function()
+				Snacks.picker.files({ cwd = vim.fn.expand("%:p:h") })
+			end,
+			desc = "Find Files in Current Buffer Directory",
+		},
+		{
+			"<leader>gf",
+			function()
+				Snacks.picker.git_files()
+			end,
+			desc = "Find Git Files",
+		},
+		{
+			"<leader>fr",
+			function()
+				Snacks.picker.recent()
+			end,
+			desc = "Recent",
+		},
+		{
+			"<leader>gs",
+			function()
+				Snacks.picker.git_status()
+			end,
+			desc = "Git Status",
+		},
+		{
+			"<leader>sb",
+			function()
+				Snacks.picker.lines()
+			end,
+			desc = "Buffer Lines",
+		},
+		{
+			"<leader>sB",
+			function()
+				Snacks.picker.grep_buffers()
+			end,
+			desc = "Grep Open Buffers",
+		},
+		{
+			"<leader>fg",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Grep",
+		},
+		{
+			"<leader>fG",
+			function()
+				Snacks.picker.grep({ cwd = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":h") })
+			end,
+			desc = "Grep in Parent Directory",
+		},
+		{
+			"<leader>sw",
+			function()
+				Snacks.picker.grep_word()
+			end,
+			desc = "Visual selection or word",
+			mode = { "n", "x" },
+		},
+		-- search
+		{
+			'<leader>s"',
+			function()
+				Snacks.picker.registers()
+			end,
+			desc = "Registers",
+		},
+		{
+			"<leader>sa",
+			function()
+				Snacks.picker.autocmds()
+			end,
+			desc = "Autocmds",
+		},
+		{
+			"<leader>sc",
+			function()
+				Snacks.picker.command_history()
+			end,
+			desc = "Command History",
+		},
+		{
+			"<leader>sC",
+			function()
+				Snacks.picker.commands()
+			end,
+			desc = "Commands",
+		},
+		{
+			"<leader>fd",
+			function()
+				Snacks.picker.diagnostics()
+			end,
+			desc = "Diagnostics",
+		},
+		{
+			"<leader>sh",
+			function()
+				Snacks.picker.help()
+			end,
+			desc = "Help Pages",
+		},
+		{
+			"<leader>sH",
+			function()
+				Snacks.picker.highlights()
+			end,
+			desc = "Highlights",
+		},
+		{
+			"<leader>sj",
+			function()
+				Snacks.picker.jumps()
+			end,
+			desc = "Jumps",
+		},
+		{
+			"<leader>fk",
+			function()
+				Snacks.picker.keymaps()
+			end,
+			desc = "Keymaps",
+		},
+		{
+			"<leader>fl",
+			function()
+				Snacks.picker.loclist()
+			end,
+			desc = "Location List",
+		},
+		{
+			"<leader>fm",
+			function()
+				Snacks.picker.man()
+			end,
+			desc = "Man Pages",
+		},
+		{
+			"<leader>sm",
+			function()
+				Snacks.picker.marks()
+			end,
+			desc = "Marks",
+		},
+		{
+			"<leader>sR",
+			function()
+				Snacks.picker.resume()
+			end,
+			desc = "Resume",
+		},
+		{
+			"<leader>fq",
+			function()
+				Snacks.picker.qflist()
+			end,
+			desc = "Quickfix List",
+		},
+		{
+			"<leader>uC",
+			function()
+				Snacks.picker.colorschemes()
+			end,
+			desc = "Colorschemes",
+		},
+		{
+			"<leader>qp",
+			function()
+				Snacks.picker.projects()
+			end,
+			desc = "Projects",
+		},
+		-- LSP
+		{
+			"gd",
+			function()
+				Snacks.picker.lsp_definitions()
+			end,
+			desc = "Goto Definition",
+		},
+		{
+			"gr",
+			function()
+				Snacks.picker.lsp_references()
+			end,
+			nowait = true,
+			desc = "References",
+		},
+		{
+			"gi",
+			function()
+				Snacks.picker.lsp_implementations()
+			end,
+			desc = "Goto Implementation",
+		},
+		{
+			"gy",
+			function()
+				Snacks.picker.lsp_type_definitions()
+			end,
+			desc = "Goto T[y]pe Definition",
+		},
+		{
+			"<leader>ss",
+			function()
+				Snacks.picker.lsp_symbols()
+			end,
+			desc = "LSP Symbols",
+		},
 	},
 	init = function()
 		vim.g.snacks_animate = false
@@ -249,7 +521,8 @@ return {
 			---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
 			callback = function(ev)
 				local client = vim.lsp.get_client_by_id(ev.data.client_id)
-				local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+				local value = ev.data.params
+				.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
 				if not client or type(value) ~= "table" then
 					return
 				end

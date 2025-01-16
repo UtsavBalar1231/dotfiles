@@ -1,58 +1,53 @@
 @import "/home/utsav/.config/waybar/themes/gruvbox.css";
 
 * {
-	font-family: "JetBrainsMono Nerd Font";
-	font-size: 1rem;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 1rem;
 }
 
 window#waybar {
-	background-color: @bg0;
-	/* border-radius: 0.3125rem; */
+  background-color: @bg0;
 }
 
 #workspaces button {
-	box-shadow: none;
-	text-shadow: none;
-	margin: 0.5rem;
-	border-radius: 1rem;
-	color: @foreground;
-	font-weight: bold;
-	font-style: normal;
-	animation: ws_normal 20s ease-in-out 1;
+  box-shadow: none;
+  text-shadow: none;
+  font-size: 0.5rem;
+  margin: 0.125rem;
+  padding: 0.75rem;
+  border-radius: 0rem;
+  animation: ws_normal 20s ease-in-out 1;
 }
 
 #workspaces button:hover {
-	background-color: @foreground;
-	color: @bg0;
+  color: @bg2;
 }
 
 #workspaces button.active {
-	color: @bg0;
-	background-color: @color3;
-	transition: all 0.1s ease-in-out;
-	animation: ws_active 20s ease-in-out 1;
+  color: @color6;
+  transition: all 0.1s ease-in-out;
+  animation: ws_active 20s ease-in-out 1;
 }
 
-#workspaces button.active:hover {
-	color: @foreground;
-}
-
+#workspaces button.active:hover,
 #workspaces button:not(.active):not(.empty):not(:hover) {
-	color: @bg2;
+  color: @bg4;
 }
 
 .modules-left,
 .modules-right,
 .modules-center {
-	background-color: @bg0;
-	/* border-radius: 0.6125rem; */
-	/*margin: 0.125rem;*/
-	/*padding: 0 0.5rem;*/
+  /*background-color: @bg0;*/
+  /*border-radius: 0.6125rem; */
+  /*margin: 0.125rem;*/
+  /*padding: 0 0.5rem;*/
 }
 
 tooltip {
-	background: @bg0;
-	border-radius: 0.6125rem;
+  background: @bg0;
+  border-radius: 0.6125rem;
+  margin: 0.25rem;
+  padding: 0.5rem;
 }
 
 #memory,
@@ -61,76 +56,72 @@ tooltip {
 #cpu,
 #disk,
 #battery {
-	margin: 0;
-	padding: 0 0.6125rem;
+  margin: 0 0.6125rem 0 0.6125rem;
 }
 
 #memory {
-	color: @color2;
-	padding-left: 0.6125rem;
+  color: @color2;
+  /*padding-left: 0.6125rem;*/
 }
 
 #backlight {
-	color: @color3;
+  color: @color3;
 }
 
 #pulseaudio {
-	color: @color1;
+  color: @color1;
 }
 
 #cpu,
 #disk {
-	color: @color5;
+  color: @color5;
 }
 
 #battery,
 #tray {
-	color: @color6;
+  color: @color6;
 }
 
+#custom-swaync,
 #hyprland-window,
 #custom-updates,
 #clock,
 #custom-weather,
+#custom-hyprsunset,
 #tray {
-	padding: 0 0.6125rem 0 0.6125rem;
+  margin: 0 0.6125rem 0 0.6125rem;
 }
 
-#network,
-#custom-swaync {
-	padding: 0 1.0rem 0 1.0rem;
-}
-
-#custom-hyprsunset {
-	font-size: 1.25rem;
-	padding-right: 1.0rem;
+#power-profiles-daemon,
+#network {
+  margin: 0 1rem 0 0.5rem;
 }
 
 #bluetooth {
-	padding: 0 0.75rem 0 1.0rem;
+  margin: 0 1rem 0 1rem;
 }
 
-#power-profiles-daemon {
-	padding: 0 1rem 0 0.75rem;
+#custom-hyprsunset {
+  font-size: 1.25rem;
 }
 
 #bluetooth,
 #power-profiles-daemon.balanced {
-	color: @color12;
+  color: @color12;
 }
 
 #bluetooth.disabled,
 #bluetooth.offline,
 #network.disabled,
 #network.offline {
-	color: @bg2;
+  color: @bg2;
 }
 
 #network,
 #power-profiles-daemon.power-saver {
-	color: @color14;
+  color: @color14;
 }
 
 #power-profiles-daemon.performance {
-	color: @color9;
+  color: @color9;
 }

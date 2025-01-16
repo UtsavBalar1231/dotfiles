@@ -1,0 +1,134 @@
+@import "./colors.css";
+
+* {
+  font-size: 1rem;
+  all: unset;
+  font-weight: 900;
+  font-family:
+    VictorMonoNerdFont,
+    JetBrainsMonoNerdFont,
+    IosevkaNerdFont,
+    Font Awesome,
+    sans-serif;
+  transition: 200ms;
+}
+
+.notification-row {
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+.floating-notifications.background .notification-row .notification-background {
+  background: alpha(@base, 0.95);
+  color: @bg5;
+  border-radius: 1.25rem;
+  margin: 0.25rem 0 0 0;
+  padding: 0;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .notification {
+  border-radius: 0.8rem;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .notification.critical {
+  border: none;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .notification
+  .notification-content {
+  margin: 1rem;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .notification
+  > *:last-child
+  > *
+  .notification-action {
+  border-radius: 0.5rem;
+  background-color: alpha(@base, 0.95);
+  margin: 0.5rem;
+  border: none;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .notification
+  > *:last-child
+  > *
+  .notification-action:hover {
+  background-color: @hover;
+  border: none;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .notification
+  > *:last-child
+  > *
+  .notification-action:active {
+  background-color: @active;
+  color: @text;
+}
+
+.image {
+  margin: 0.5rem 1rem 0.5rem 0;
+}
+
+.summary {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.body {
+  font-size: 0.8rem;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .close-button {
+  background: transparent;
+  border-radius: 1.25rem;
+  color: @text;
+  background-color: alpha(@text, 0.1);
+  margin: 0;
+  padding: 0.25rem;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .close-button:hover {
+  background-color: @active;
+}
+
+.floating-notifications.background
+  .notification-row
+  .notification-background
+  .close-button:active {
+  background-color: @active;
+  color: @text;
+}
+
+.notification.critical progress {
+  background-color: @active;
+}
+
+.notification.low progress,
+.notification.normal progress {
+  background-color: @active;
+}
