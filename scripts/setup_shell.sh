@@ -11,7 +11,7 @@ if ! command -v zsh &>/dev/null; then
 fi
 
 # Set zsh as default for current user
-chsh -s "$(which zsh)"
+chsh -s "$(which zsh)" $(whoami)
 
 # Set zsh as default for root user
 sudo chsh -s "$(which zsh)"

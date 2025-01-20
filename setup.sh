@@ -11,15 +11,13 @@ export TZ="Asia/Kolkata"
 
 # Setup build environment: {{{
 echo "Setting up git..."
-source "${CUR_DIR}"/scripts/setup_git.sh
-echo "Setting up environment..."
-source "${CUR_DIR}"/scripts/setup_env.sh
+bash "${CUR_DIR}"/scripts/setup_git.sh
 # }}}
 
 # Install rust: {{{
 if ! command -v rustup &>/dev/null; then
 	echo "Setting up rust..."
-	source "${CUR_DIR}"/scripts/setup_rust.sh
+	bash "${CUR_DIR}"/scripts/setup_rust.sh
 fi
 # }}}
 

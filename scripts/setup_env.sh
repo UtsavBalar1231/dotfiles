@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 debian_packages="
+autoconf
 bc
 bison
 build-essential
 bzip2
 clang
+cmake
 curl
 dwarves
 flex
@@ -13,19 +15,18 @@ fzf
 g++-multilib
 gcc-multilib
 gnupg
-kitty
 lib32ncurses-dev
 libelf-dev
 libncurses5-dev
 libssl-dev
 libxml2-utils
-luarocks
+make
+meson
 p7zip-full
+pkg-config
 python-is-python3
 python3
 rsync
-shellcheck
-stow
 tmux
 unzip
 wget
@@ -34,7 +35,6 @@ xsel
 xsltproc
 zip
 zlib1g-dev
-zsh
 "
 
 if [ ! -f /etc/arch-release ]; then
