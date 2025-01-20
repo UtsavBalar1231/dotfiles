@@ -7,281 +7,21 @@ return {
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
-
-		local keymap = vim.keymap
-		local opts = { noremap = true, silent = true }
-
-		local on_attach = function(client, bufnr)
-			-- Uncomment code below to enable inlay hint from language server, some LSP server supports inlay hint,
-			-- but disable this feature by default, so you may need to enable inlay hint in the LSP server config.
-			-- vim.lsp.inlay_hint.enable(true, {buffer=bufnr})
-
-			-- The below command will highlight the current variable and its usages in the buffer.
-			if client.server_capabilities.documentHighlightProvider then
-				vim.cmd([[
-      				hi! link LspReferenceRead Visual
-      				hi! link LspReferenceText Visual
-      				hi! link LspReferenceWrite Visual
-    			]])
-
-				local gid = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
-				vim.api.nvim_create_autocmd("CursorHold", {
-					group = gid,
-					buffer = bufnr,
-					callback = function()
-						vim.lsp.buf.document_highlight()
-					end,
-				})
-
-				vim.api.nvim_create_autocmd("CursorMoved", {
-					group = gid,
-					buffer = bufnr,
-					callback = function()
-						vim.lsp.buf.clear_references()
-					end,
-				})
-			end
-
-			opts.buffer = bufnr
-			-- set keybinds
-			opts.desc = "LSP: Show references"
-			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
-
-			opts.desc = "LSP: Go to declaration"
-			keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
-
-			opts.desc = "LSP: Show definitions"
-			keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
-
-			opts.desc = "LSP: Show implementations"
-			keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
-
-			opts.desc = "LSP: Show type definitions"
-			keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
-
-			opts.desc = "LSP: See available code actions"
-			keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-
-			opts.desc = "LSP: Smart rename"
-			keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
-
-			opts.desc = "LSP: Show buffer diagnostics"
-			keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
-
-			opts.desc = "LSP: Show line diagnostics"
-			keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts) -- show diagnostics for line
-
-			--- [[ Available as defaults since Neovim 0.11.x ]]
-			-- opts.desc = "LSP: Go to previous diagnostic"
-			-- keymap.set("n", "[d", vim.diagnostic.jump({ count = 1 }), opts) -- jump to previous diagnostic in buffer
-			--
-			-- opts.desc = "LSP: Go to next diagnostic"
-			-- keymap.set("n", "]d", vim.diagnostic.jump({ count = -1 }), opts) -- jump to next diagnostic in buffer
-			--- ]]
-
-			opts.desc = "LSP: Show documentation for what is under cursor"
-			keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-
-			opts.desc = "Restart LSP"
-			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
-
-			opts.desc = "LSP Format buffer"
-			keymap.set("n", "<leader>F", function()
-				vim.lsp.buf.format({ async = true })
-			end, opts)
-
-			opts.desc = "LSP Signature help"
-			keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-		end
-
-		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = require("blink.cmp").get_lsp_capabilities({
-			textDocument = { completion = { completionItem = { snippetSupport = false } } },
-		})
-
-		-- configure lua server (with special settings)
-		lspconfig.lua_ls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				Lua = {
-					-- make the language server recognize "vim" global
-					diagnostics = {
-						globals = { "vim" },
-					},
-					telemetry = { enable = false },
-					workspace = {
-						checkThirdParty = false,
-						-- make language server aware of runtime files
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.stdpath("config") .. "/lua"] = true,
-						},
-					},
-					codeLens = {
-						enable = true,
-					},
-					completion = {
-						callSnippet = "Replace",
-					},
-					doc = {
-						privateName = { "^_" },
-					},
-					hint = {
-						enable = true,
-						setType = false,
-						paramType = true,
-						paramName = "Disable",
-						semicolon = "Disable",
-						arrayIndex = "Disable",
-					},
+			workspace = {
+				fileOperations = {
+					didRename = true,
+					willRename = true,
+				},
+			},
+			textDocument = {
+				completion = {
+					completionItem = { snippetSupport = false },
 				},
 			},
 		})
 
-		-- asm/nasm
-		lspconfig.asm_lsp.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- bash / shell
-		lspconfig.bashls.setup({
-			filetypes = { "sh", "zsh" },
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- c/c++
-		lspconfig.clangd.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			cmd = {
-				"clangd",
-				"--all-scopes-completion",
-				"--background-index", -- should include a compile_commands.json or .txt
-				"--clang-tidy",
-				"--cross-file-rename",
-				"--completion-style=detailed",
-				"--fallback-style=Microsoft",
-				"--function-arg-placeholders",
-				"--header-insertion-decorators",
-				"--header-insertion=never",
-				"--limit-results=10",
-				"--pch-storage=memory",
-				"--query-driver=/usr/include/*",
-				"--suggest-missing-includes",
-			},
-		})
-
-		-- css
-		lspconfig.cssls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- esbonio (sphinx)
-		lspconfig.esbonio.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- go lang
-		-- lspconfig.gopls.setup({
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- })
-
-		-- html
-		lspconfig.html.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- json
-		lspconfig.jsonls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		lspconfig.marksman.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- python
-		lspconfig.pyright.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- rust (called from rustaceanvim)
-		lspconfig.rust_analyzer.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- typescript
-		lspconfig.ts_ls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- vim
-		lspconfig.vimls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- xml
-		lspconfig.lemminx.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- yaml
-		lspconfig.yamlls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- hyprls
-		lspconfig.hyprls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- c3 lsp
-		local lsp_configurations = require("lspconfig.configs")
-
-		if not lsp_configurations.c3_lsp then
-			lsp_configurations.c3_lsp = {
-				default_config = {
-					name = "c3_lsp",
-					cmd = {
-						"/usr/local/bin/c3lsp",
-					},
-					filetypes = { "c3" },
-					root_dir = require("lspconfig.util").root_pattern(".git", "CMakeLists.txt"),
-				},
-			}
-		end
-
-		lspconfig.c3_lsp.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		lspconfig.zls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
-		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-			border = "rounded",
-		})
-
+		-- Configure diagnostics
 		vim.diagnostic.config({
 			underline = true,
 			update_in_insert = false,
@@ -290,8 +30,8 @@ return {
 				source = "if_many",
 				prefix = vim.fn.has("nvim-0.10.0") == 0 and "●" or function(diagnostic)
 					local icons = Util.config.icons.diagnostics
-					for d, icon in pairs(icons) do
-						if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+					for severity, icon in pairs(icons) do
+						if diagnostic.severity == vim.diagnostic.severity[severity:upper()] then
 							return icon
 						end
 					end
@@ -307,5 +47,151 @@ return {
 				},
 			},
 		})
+
+		-- Common on_attach function
+		local function on_attach(_, bufnr)
+			local keymap = vim.keymap
+			local opts = { noremap = true, silent = true, buffer = bufnr }
+
+			-- Enable inlay hints if supported
+			vim.lsp.inlay_hint.enable(true, { buffer = bufnr })
+
+			-- Keybindings
+			local mappings = {
+				{
+					mode = "n",
+					lhs = "gD",
+					rhs = vim.lsp.buf.declaration,
+					desc = "LSP: Go to declaration",
+				},
+				{
+					mode = { "n", "v" },
+					lhs = "<leader>ca",
+					rhs = vim.lsp.buf.code_action,
+					desc = "LSP: See available code actions",
+				},
+				{
+					mode = "n",
+					lhs = "<leader>rn",
+					rhs = vim.lsp.buf.rename,
+					desc = "LSP: Smart rename",
+				},
+				{
+					mode = "n",
+					lhs = "<leader>e",
+					rhs = vim.diagnostic.open_float,
+					desc = "LSP: Show line diagnostics",
+				},
+				{
+					mode = "n",
+					lhs = "K",
+					rhs = vim.lsp.buf.hover,
+					desc = "LSP: Show documentation for what is under cursor",
+				},
+				{ mode = "n", lhs = "<leader>rs", rhs = ":LspRestart<CR>", desc = "Restart LSP" },
+				{
+					mode = "n",
+					lhs = "<leader>F",
+					rhs = function()
+						vim.lsp.buf.format({ async = true })
+					end,
+					desc = "LSP Format buffer",
+				},
+				{ mode = "n", lhs = "<C-k>", rhs = vim.lsp.buf.signature_help, desc = "LSP Signature help" },
+			}
+
+			for _, map in ipairs(mappings) do
+				opts.desc = map.desc
+				keymap.set(map.mode, map.lhs, map.rhs, opts)
+			end
+		end
+
+		-- Language server configurations
+		local servers = {
+			asm_lsp = {},
+			bashls = { filetypes = { "sh", "zsh" } },
+			clangd = {
+				cmd = {
+					"clangd",
+					"--all-scopes-completion",
+					"--background-index",
+					"--clang-tidy",
+					"--cross-file-rename",
+					"--completion-style=detailed",
+					"--fallback-style=Microsoft",
+					"--function-arg-placeholders",
+					"--header-insertion-decorators",
+					"--header-insertion=never",
+					"--limit-results=10",
+					"--pch-storage=memory",
+					"--query-driver=/usr/include/*",
+					"--suggest-missing-includes",
+				},
+			},
+			cssls = {},
+			esbonio = {},
+			html = {},
+			jsonls = {},
+			lua_ls = {
+				settings = {
+					Lua = {
+						diagnostics = { globals = { "vim" } },
+						telemetry = { enable = false },
+						workspace = {
+							checkThirdParty = false,
+							library = {
+								[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+								[vim.fn.stdpath("config") .. "/lua"] = true,
+							},
+						},
+						codeLens = { enable = true },
+						completion = { callSnippet = "Replace" },
+						doc = { privateName = { "^_" } },
+						hint = {
+							enable = true,
+							setType = false,
+							paramType = true,
+							paramName = "Disable",
+							semicolon = "Disable",
+							arrayIndex = "Disable",
+						},
+					},
+				},
+			},
+			marksman = {},
+			pyright = {},
+			rust_analyzer = {},
+			ts_ls = {},
+			vimls = {},
+			lemminx = {},
+			yamlls = {},
+			hyprls = {},
+			c3_lsp = {},
+			zls = {},
+		}
+
+		for server, config in pairs(servers) do
+			config.capabilities = capabilities
+			config.on_attach = on_attach
+			lspconfig[server].setup(config)
+		end
+
+		-- Hover window border customization
+		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+			border = Util.config.icons.border,
+		})
+
+		-- Custom configuration for c3_lsp
+		local lsp_configurations = require("lspconfig.configs")
+		if not lsp_configurations.c3_lsp then
+			lsp_configurations.c3_lsp = {
+				default_config = {
+					name = "c3_lsp",
+					cmd = { "/usr/local/bin/c3lsp" },
+					filetypes = { "c3" },
+					root_dir = require("lspconfig.util").root_pattern(".git", "CMakeLists.txt"),
+				},
+			}
+		end
 	end,
 }

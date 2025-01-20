@@ -4,7 +4,9 @@
 ---@field root catdaddy.util.root
 ---@field health catdaddy.util.health
 ---@field lualine catdaddy.util.lualine
+---@field lsp catdaddy.util.lsp
 ---@field shebang catdaddy.util.shebang
+---@field url catdaddy.util.url
 local M = {}
 
 setmetatable(M, {
@@ -53,6 +55,21 @@ function M.on_load(name, fn)
 			end,
 		})
 	end
+end
+
+---@param name string
+function M.get_plugin(name)
+	return require("lazy.core.config").spec.plugins[name]
+end
+
+---@param name string
+function M.opts(name)
+	local plugin = M.get_plugin(name)
+	if not plugin then
+		return {}
+	end
+	local Plugin = require("lazy.core.plugin")
+	return Plugin.values(plugin, "opts", false)
 end
 
 return M

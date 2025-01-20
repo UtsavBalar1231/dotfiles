@@ -1,6 +1,8 @@
 ---@class catdaddy.util.shebang
 local M = {}
 
+--- Detects the shebang of the current file and sets the filetype to bash if it's a bash script
+---@return nil
 M.detect_shebang = function()
 	local first_line = vim.fn.getline(1)
 	if
@@ -13,7 +15,6 @@ M.detect_shebang = function()
 		if vim.bo.filetype ~= "bash" then
 			vim.bo.filetype = "bash"
 		end
-		-- vim.cmd("setfiletype bash")
 	end
 end
 

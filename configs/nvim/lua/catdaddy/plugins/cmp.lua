@@ -66,9 +66,7 @@ return {
 		appearance = {
 			nerd_font_variant = "mono",
 			use_nvim_cmp_as_default = false,
-			kind_icons = vim.tbl_extend("keep", {
-				Color = "██", -- Use block instead of icon for color items to make swatches more usable
-			}, Util.config.icons.kinds),
+			kind_icons = Util.config.icons.kinds,
 		},
 
 		sources = {

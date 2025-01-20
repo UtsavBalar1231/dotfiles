@@ -1,6 +1,5 @@
 _G.Util = require("catdaddy.util")
 
----@diagnostic disable: undefined-field
 require("catdaddy.config.lazy")
 require("catdaddy.config.options")
 require("catdaddy.config.autocmds")
@@ -14,3 +13,5 @@ end
 if vim.g.neovide then
 	require("catdaddy.config.neovide")
 end
+
+Util.url.setup()

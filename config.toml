@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "a749607bc8d0f1639e7dcd5e51e8d4b8658f0ab2862fb32ab0a9972b9b981231"
+hash = "ed47adac91a969b80e0aac4a813abb0a5df9d2cd386398ec1595ae208aeeb73f"
 conf_type = "Dir"
 
 [[configs]]
@@ -16,7 +16,7 @@ conf_type = "Dir"
 [[configs]]
 name = "rofi"
 path = "$HOME/.config/rofi/"
-hash = "b827a1eea20bb9c09c120c7e7fb0c4e2424a6dacb84d7aebd63f908c47fb2f59"
+hash = "ab2e1d1316b724dbea08021bceaccd9bc01bc88de9789e7e0014d5768f6d4a09"
 conf_type = "Dir"
 
 [[configs]]
@@ -28,7 +28,7 @@ conf_type = "Dir"
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "bc3dd5dcb17f6dd1cdeeeb0a25077cb232f3ea8fc0651cdbb15206f42d695d9a"
+hash = "a605e6f5f136a6c18c0c54cd694a1b9e2dda56b7542000f88dc253a01ca36ee6"
 conf_type = "Dir"
 
 [[configs]]
@@ -46,7 +46,7 @@ conf_type = "File"
 [[configs]]
 name = "zshrc"
 path = "$HOME/.zshrc"
-hash = "5ff2361adefc9d94ca2a9693b3c9e61cdd9f12e15ff0b293b26733087c5db517"
+hash = "bf6c2e1f8864a40555650130b065b21d651b312d54ab00b7e3b5a676a9788ba5"
 conf_type = "File"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "3b2ba08ca8aa7ff787ccbceb5f7e6e6b9e0b3cd1f4f555e0f7c1d4f8c4ede718"
+hash = "27a6b468fe4941e0b5e2dda1f069020c0d20b4d7050242635d0401432bd9a27c"
 conf_type = "Dir"
 
 [[configs]]
@@ -154,11 +154,29 @@ conf_type = "Dir"
 [[configs]]
 name = "pacman"
 path = "/etc/pacman.conf"
-hash = "a6e863f2f07576abfb9b965c61b701037a91de7cd7cb22f4f35d224d2a507f9c"
+hash = "d14d679f64fc44deb9622eeaebc75ecf9c14f84ca62a4a83bb810f2c7df35490"
 conf_type = "File"
 
 [[configs]]
 name = "swaync"
 path = "$HOME/.config/swaync"
-hash = "56a52d0850c39b6e4157a1715ab9300fa1c501556113994e9522c43916eea45e"
+hash = "99223fc33b59bcab76bd365539cde9160ae3d45db94235247b365e2930b8d36d"
+conf_type = "Dir"
+
+[[configs]]
+name = "election-flags"
+path = "$HOME/.config/electron-flags.conf"
+hash = "44f70a9d3f7d342b6276915320e2181ecd773f533a59ab0b392157efb2eb4f94"
+conf_type = "File"
+
+[[configs]]
+name = "makepkg"
+path = "/etc/makepkg.conf"
+hash = "2494f384a7e29495ef95c90941e710fdb6f6cf6b918e58c632961c171b59af2a"
+conf_type = "File"
+
+[[configs]]
+name = "makepkgd"
+path = "/etc/makepkg.conf.d"
+hash = "75741a5a2cdbdcfdc08a3b7768fb274b1bafd51fff3d08a1d96c678f58a7b781"
 conf_type = "Dir"

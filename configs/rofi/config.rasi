@@ -6,13 +6,11 @@ configuration {
     display-run: "";
     display-window: "";
     display-filebrowser: "";
-	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
-    /*drun-display-format: "{icon} {name}";*/
-    run-display-format: "{icon} {name}";
+    drun-display-format: "{icon} {name}";
     window-format: "{w} - {c} - {t:0}";
     sort: true;
     sorting-method: "fzf";
-    font: "JetBrainsMono Nerd Font 12";
+    font: "JetBrainsMono Nerd Font 10";
 
     matching: "normal";
     tokenize: true;
@@ -24,4 +22,4 @@ configuration {
     }
 }
 
-@theme "macos"
+@theme "material"

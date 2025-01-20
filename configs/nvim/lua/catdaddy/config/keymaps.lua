@@ -27,7 +27,7 @@ map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window W
 map({ "i", "x", "n", "s" }, "<leader>w", "<cmd>:w<cr><esc>", { desc = "Quick Save File" })
 
 -- Map :wq to :x to save and close
-map("n", ":wq", ":x", { desc = "Save and Close" })
+-- map("n", ":wq", ":x", { desc = "Save and Close" })
 
 -- tabs
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
@@ -193,3 +193,9 @@ keymap("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 keymap("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 keymap("n", "[q", "lua vim.cmd.cprev()<cr>", { desc = "Previous Quickfix" })
 keymap("n", "]q", "lua vim.cmd.cnext()<cr>", { desc = "Next Quickfix" })
+
+-- Custom command to open URL under cursor
+vim.api.nvim_create_user_command("OpenUrl", Util.url.open_url, { desc = "Open the URL under the cursor" })
+
+-- Keymap for opening URLs
+keymap("n", "<leader>mu", ":OpenUrl<CR>", { noremap = true, silent = true })

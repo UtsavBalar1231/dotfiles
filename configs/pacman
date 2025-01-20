@@ -34,8 +34,8 @@ Color
 ILoveCandy
 #NoProgressBar
 CheckSpace
-#VerbosePkgLists
-ParallelDownloads = 10
+VerbosePkgLists
+ParallelDownloads = 20
 DownloadUser = alpm
 #DisableSandbox
 

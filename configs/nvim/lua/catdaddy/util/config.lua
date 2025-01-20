@@ -29,16 +29,18 @@ local defaults = {
 			modified = " ",
 			removed = " ",
 		},
+
 		border = {
-			{ '┌', 'FloatBorder' },
-			{ '─', 'FloatBorder' },
-			{ '┐', 'FloatBorder' },
-			{ '│', 'FloatBorder' },
-			{ '┘', 'FloatBorder' },
-			{ '─', 'FloatBorder' },
-			{ '└', 'FloatBorder' },
-			{ '│', 'FloatBorder' },
+			{ "┏", "FloatBorder" },
+			{ "━", "FloatBorder" },
+			{ "┓", "FloatBorder" },
+			{ "┃", "FloatBorder" },
+			{ "┛", "FloatBorder" },
+			{ "━", "FloatBorder" },
+			{ "┗", "FloatBorder" },
+			{ "┃", "FloatBorder" },
 		},
+
 		kinds = {
 			Array = " ",
 			Boolean = "󰨙 ",

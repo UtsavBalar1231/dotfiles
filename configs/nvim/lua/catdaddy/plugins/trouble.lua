@@ -10,7 +10,7 @@ return {
 				preview = {
 					type = "float",
 					relative = "editor",
-					border = "rounded",
+					border = Util.config.icons.border,
 					title = "Preview",
 					title_pos = "center",
 					position = { 0, -2 },

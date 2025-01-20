@@ -251,4 +251,24 @@ kill_process() {
     fi
 }
 
+function jank_scrollback_search() {
+    # Find all files named history.txt in /tmp
+    local files
+    files=$(find /tmp -name "history.txt" -print0 | xargs -0 stat -c '%Y %n' | sort -rn | head -n 1 | awk '{print $2}')
+
+    if [[ -z "$files" ]]; then
+    	echo "No history.txt files found in /tmp" >&2
+    	return 1
+    fi
+    local trimmed_files
+    trimmed_files=$(echo "$files" | tr -d ' \n')
+
+    cat $trimmed_files | fzf
+}
+
+zle -N jank_scrollback_search
+
+# Bind the widget to Ctrl+f
+bindkey '^f' jank_scrollback_search
+
 # zprof

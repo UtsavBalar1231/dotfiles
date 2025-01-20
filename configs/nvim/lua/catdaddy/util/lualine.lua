@@ -1,5 +1,6 @@
 ---@class catdaddy.util.lualine
 local M = {}
+-- Kanged from: https://github.com/LazyVim/LazyVim/blob/v14.6.0/lua/lazyvim/util/lualine.lua
 
 ---@param icon string
 ---@param status fun(): nil|"ok"|"error"|"pending"

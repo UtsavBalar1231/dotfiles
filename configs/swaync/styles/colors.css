@@ -1,8 +1,10 @@
 /* Background colors */
-@define-color bg_dim #141017;
-@define-color bg0 #1d2021;
-@define-color bg1 #282828;
-@define-color bg2 #3c3836;
+@define-color bg_dim rgba(0, 0, 0, 0.7);
+@define-color bg_dim_noalpha #141617;
+@define-color bg0 rgba(29, 32, 33, 0.7);
+@define-color bg0_noalpha #1d2021;
+@define-color bg1 rgba(60, 56, 54, 0.7);
+@define-color bg2 rgba(88, 85, 83, 0.7);
 @define-color bg3 #504945;
 @define-color bg4 #665c54;
 @define-color bg5 #7c6f64;

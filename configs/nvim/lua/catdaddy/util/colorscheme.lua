@@ -1,72 +1,117 @@
 ---@class catdaddy.util.colorscheme
 local M = {}
 
-local cs_config_file = vim.fn.stdpath("config") .. "/lua/catdaddy/util/colorscheme.json"
+local colorscheme_config_file = vim.fn.stdpath("config") .. "/lua/catdaddy/util/colorscheme.json"
+local default_colorscheme = "default"
 
---- Write a default colorscheme to the config file
-local function write_default_colorscheme()
-	local file = io.open(cs_config_file, "w")
-	if file then
-		local colorscheme = "default"
-		file:write(vim.fn.json_encode({ colorscheme = colorscheme }))
-		file:close()
-	else
-		vim.notify("Failed to write default colorscheme", vim.log.levels.ERROR)
+--- Write a colorscheme to the config file
+---@param colorscheme string The colorscheme to write
+local function write_colorscheme(colorscheme)
+	local file, err = io.open(colorscheme_config_file, "w")
+	if not file then
+		vim.notify("Failed to write colorscheme: " .. (err or "unknown error"), vim.log.levels.ERROR)
+		return false
 	end
+	file:write(vim.fn.json_encode({ colorscheme = colorscheme }))
+	file:close()
+	return true
+end
+
+--- Read the saved colorscheme from the config file
+---@return string|nil The saved colorscheme, or nil if not found
+local function read_colorscheme()
+	local file, err = io.open(colorscheme_config_file, "r")
+	if not file then
+		vim.notify("Failed to read colorscheme: " .. (err or "not found"), vim.log.levels.ERROR)
+		return nil
+	end
+	local data = file:read("*a")
+	file:close()
+	local ok, decoded = pcall(vim.fn.json_decode, data)
+	if ok and decoded.colorscheme then
+		return decoded.colorscheme
+	end
+	vim.notify("Invalid colorscheme data in config file", vim.log.levels.ERROR)
+	return nil
 end
 
 --- Save the current colorscheme to a config file
 ---@param colorscheme string The colorscheme to save
 function M.set_colorscheme(colorscheme)
-	local file = io.open(cs_config_file, "w")
-	if file then
-		file:write(vim.fn.json_encode({ colorscheme = colorscheme }))
-		file:close()
+	if write_colorscheme(colorscheme) then
 		vim.notify("Colorscheme saved: " .. colorscheme)
-	else
-		vim.notify("Failed to save colorscheme", vim.log.levels.ERROR)
 	end
 end
 
---- Load the saved colorscheme from the config file or set to a default
+--- Load the saved colorscheme from the config file or set to default
 function M.load_colorscheme()
-	local file = io.open(cs_config_file, "r")
-	if file then
-		local data = file:read("*a")
-		file:close()
-		local ok, decoded = pcall(vim.fn.json_decode, data)
-		if ok and decoded.colorscheme then
-			vim.cmd("colorscheme " .. decoded.colorscheme)
-			return
-		end
-	else
-		vim.notify("No saved colorscheme found. Using default", vim.log.levels.WARN)
+	local colorscheme = read_colorscheme() or default_colorscheme
+	vim.cmd("colorscheme " .. colorscheme)
+	if colorscheme == default_colorscheme then
+		write_colorscheme(default_colorscheme)
 	end
-	-- If the file doesn't exist or is invalid, write the default colorscheme
-	write_default_colorscheme()
-	vim.cmd("colorscheme " .. "default")
 end
 
---- Get the saved colorscheme from the config file or return the default
+--- Get the saved colorscheme or return the default
 ---@return string The colorscheme name
 function M.get_colorscheme()
-	local file = io.open(cs_config_file, "r")
-	if file then
-		local data = file:read("*a")
-		file:close()
-		local ok, decoded = pcall(vim.fn.json_decode, data)
-		if ok and decoded.colorscheme then
-			return decoded.colorscheme
-		else
-			vim.notify("Failed to decode colorscheme file. Returning default", vim.log.levels.WARN)
-			write_default_colorscheme()
-			return "default"
-		end
-	else
-		vim.notify("No saved colorscheme found. Returning default", vim.log.levels.WARN)
-		write_default_colorscheme()
-		return "default"
+	return read_colorscheme() or default_colorscheme
+end
+
+--- Get a list of built-in colorschemes
+---@return string[] A list of built-in colorscheme names
+function M.get_builtin_colorschemes()
+	return {
+		"blue",
+		"darkblue",
+		"default",
+		"delek",
+		"desert",
+		"elflord",
+		"evening",
+		"habamax",
+		"industry",
+		"koehler",
+		"lunaperche",
+		"morning",
+		"murphy",
+		"pablo",
+		"peachpuff",
+		"quiet",
+		"retrobox",
+		"ron",
+		"shine",
+		"slate",
+		"sorbet",
+		"torte",
+		"vim",
+		"wildcharm",
+		"zaibatsu",
+		"zellner",
+	}
+end
+
+--- Get a list of available colorschemes
+---@return table A list of colorscheme names
+function M.get_available_colorschemes()
+	local rtp = vim.o.runtimepath
+	if package.loaded.lazy then
+		rtp = rtp .. "," .. table.concat(require("lazy.core.util").get_unloaded_rtp(""), ",")
 	end
+	local files = vim.fn.globpath(rtp, "colors/*.{vim,lua}", true, true)
+	local builtins = M.get_builtin_colorschemes()
+	return vim.tbl_map(
+		function(file)
+			return {
+				text = vim.fn.fnamemodify(file, ":t:r"),
+				file = file,
+			}
+		end,
+		vim.tbl_filter(function(file)
+			local name = vim.fn.fnamemodify(file, ":t:r")
+			return not vim.tbl_contains(builtins, name)
+		end, files)
+	)
 end
 
 return M

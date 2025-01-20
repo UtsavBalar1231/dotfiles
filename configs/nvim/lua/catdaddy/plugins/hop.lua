@@ -1,6 +1,6 @@
 return {
 	"smoka7/hop.nvim",
-	event = "VeryLazy",
+	event = "InsertEnter",
 	config = true,
 	keys = {
 		{
