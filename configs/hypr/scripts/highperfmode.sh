@@ -1,27 +1,18 @@
 #!/bin/bash
 
-# Check if power-profiles-daemon is installed
-if command -v powerprofilesctl &>/dev/null; then
-	has_power_profiles=true
-else
-	has_power_profiles=false
-fi
+command -v powerprofilesctl &>/dev/null && has_power_profiles=true || has_power_profiles=false
 
 if [ -f ~/.cache/perfmode ]; then
-	notify-send -i "" "Hyprland" "Perfmode deactivated! Animations and blur enabled."
-	# Deactivate perfmode
+	notify-send "󰾆  Perfmode deactivated!" "Animations and blur enabled."
 	hyprctl reload
 	rm ~/.cache/perfmode
 
-	# Set power profile to balanced
-	if $has_power_profiles; then
-		powerprofilesctl set balanced
-	fi
+	[[ $has_power_profiles ]] && powerprofilesctl set balanced
 
 	# Reload waybar
 	~/.config/hypr/scripts/reload.sh
 else
-	notify-send -i "" "Hyprland" "Perfmode activated! Animations and blur disabled."
+	notify-send "󰓅  Perfmode activated!" "Animations and blur disabled."
 
 	# Activate perfmode
 	hyprctl --batch "\
@@ -34,10 +25,7 @@ else
     keyword decoration:rounding 0"
 	touch ~/.cache/perfmode
 
-	# Set power profile to performance
-	if $has_power_profiles; then
-		powerprofilesctl set performance
-	fi
+	[[ $has_power_profiles ]] && powerprofilesctl set performance
 
 	# Reload waybar
 	~/.config/hypr/scripts/reload.sh

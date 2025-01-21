@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "ed47adac91a969b80e0aac4a813abb0a5df9d2cd386398ec1595ae208aeeb73f"
+hash = "e61d06f6f623d9f49bd1a17e75be45334074212a14ab8c8f3cb328a9f38163b3"
 conf_type = "Dir"
 
 [[configs]]
@@ -22,13 +22,13 @@ conf_type = "Dir"
 [[configs]]
 name = "zsh"
 path = "$HOME/.config/zsh/"
-hash = "b18894d9e445c4e4d494a6cee9ffefa5146d12c37f500e2e1026c242a77e7a09"
+hash = "b3c0512d5bc1929078923a9520c0b11b68450f3fe74d857e1bca770a62f03105"
 conf_type = "Dir"
 
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "a605e6f5f136a6c18c0c54cd694a1b9e2dda56b7542000f88dc253a01ca36ee6"
+hash = "d87ccc54ad87b51b1793ad312ff91d834efd4ba8d9b920491388a57ec6121ac5"
 conf_type = "Dir"
 
 [[configs]]
@@ -46,7 +46,7 @@ conf_type = "File"
 [[configs]]
 name = "zshrc"
 path = "$HOME/.zshrc"
-hash = "bf6c2e1f8864a40555650130b065b21d651b312d54ab00b7e3b5a676a9788ba5"
+hash = "ed521c36aeac0d15a2d55559b4eade28b50de7ca381ce37cdfc7b6beee4a8e42"
 conf_type = "File"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "27a6b468fe4941e0b5e2dda1f069020c0d20b4d7050242635d0401432bd9a27c"
+hash = "a7506ec2965f73a22f1e972b2556b40a75b632b6dd0a4e238caa71ba9fe6ce79"
 conf_type = "Dir"
 
 [[configs]]

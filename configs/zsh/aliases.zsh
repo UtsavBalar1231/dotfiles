@@ -81,6 +81,21 @@ else
 	install_package 'bat' 'bat' 'bat'
 fi
 
+fman() {
+	batman="man {1} | col -bx | bat --language=man --plain --color always"
+	man -k . | sort |
+		awk -v cyan=$(tput setaf 6) -v blue=$(tput setaf 4) -v res=$(tput sgr0) -v bld=$(tput bold) '{ $1=cyan bld $1; $2=res blue;} 1' |
+		fzf \
+			-q "$1" \
+			--ansi \
+			--tiebreak=begin \
+			--prompt=' Man > ' \
+			--preview-window '50%,rounded,<50(up,85%,border-bottom)' \
+			--preview "${batman}" \
+			--bind "enter:execute(man {1})" \
+			--bind "alt-m:+change-preview(${batman})+change-prompt( Man > )" \
+}
+
 # alias for rg
 if command -v rg >/dev/null 2>&1; then
 	# alias rg='rg --smart-case'
@@ -101,6 +116,8 @@ fi
 if command -v nvim >/dev/null 2>&1; then
 	alias v='nvim'
 	alias n='nvim'
+	export MANPAGER="nvim +Man!"
+	export MANWIDTH=999
 else
 	if [ $(get_package_manager) -eq 'apt' ]; then
 		sudo add-apt-repository ppa:neovim-ppa/unstable -y
@@ -194,6 +211,12 @@ alias :wq='sudo shutdown -h now'
 
 # suspend system
 alias :q='sudo systemctl suspend'
+
+# alias for sudo !!
+alias fuck='sudo !!'
+
+# alias for kitty icat kitten
+alias icat='kitty +kitten icat'
 
 # alias for terminal file manager
 command -v yazi >/dev/null 2>&1 && alias y='yazi'

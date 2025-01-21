@@ -6,10 +6,17 @@ return {
 			signs = {
 				add = { text = "▎" },
 				change = { text = "▎" },
-				delete = { text = "" },
-				topdelete = { text = "" },
-				changedelete = { text = "" },
-				untracked = { text = "" },
+				delete = { text = "" },
+				topdelete = { text = "" },
+				changedelete = { text = "▎" },
+				untracked = { text = "▎" },
+			},
+			signs_staged = {
+				add = { text = "▎" },
+				change = { text = "▎" },
+				delete = { text = "" },
+				topdelete = { text = "" },
+				changedelete = { text = "▎" },
 			},
 			signcolumn = true,
 			numhl = true,
@@ -44,18 +51,15 @@ return {
 					end)
 					return "<Ignore>"
 				end, { expr = true, desc = "git Previous hunk" })
-				map("n", "<leader>hp", gs.preview_hunk, { desc = "git Preview hunk" })
+				map("n", "<leader>gp", gs.preview_hunk, { desc = "git Preview hunk" })
 				map("n", "<leader>gd", gs.diffthis, { desc = "git Diff this" })
-				map("n", "<leader>hs", gs.stage_hunk, { desc = "git Stage hunk" })
 				map("v", "<leader>hs", function()
 					gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "git Stage hunk" })
 				map("n", "<leader>gU", gs.undo_stage_hunk, { desc = "git Undo stage hunk" })
 				map("n", "<leader>gS", gs.stage_buffer, { desc = "git Stage buffer" })
 				map("n", "<leader>gR", gs.reset_buffer, { desc = "git Reset buffer" })
-				map("n", "<leader>gu", gs.reset_hunk, { desc = "git Reset hunk" })
-				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "git Select hunk" })
-				map("v", "<leader>hr", function()
+				map("n", "<leader>gu", function()
 					gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "git Reset hunk" })
 				map("n", "<leader>bl", function()
@@ -68,12 +72,22 @@ return {
 				map("n", "<leader>td", gs.toggle_deleted, { desc = "git Toggle deleted" })
 			end,
 			preview_config = {
-				border = "single",
+				border = Util.config.icons.border,
 				style = "minimal",
 				relative = "cursor",
 				row = 0,
 				col = 1,
 			},
 		})
+
+		Snacks.toggle({
+			name = "Git Signs",
+			get = function()
+				return require("gitsigns.config").config.signcolumn
+			end,
+			set = function(state)
+				require("gitsigns").toggle_signs(state)
+			end,
+		}):map("<leader>uG")
 	end,
 }

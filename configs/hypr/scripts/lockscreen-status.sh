@@ -1,120 +1,98 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# shellcheck disable=SC2155
 
-# Function to get network details
+ICON_WIFI=" "
+ICON_ETHERNET="󰈀 "
+ICON_DISCONNECTED="󰖪 "
+ICON_BATTERY=(
+	"󰂎" "󰁺" "󰁻" "󰁼" "󰁽"
+	"󰁾" "󰁿" "󰂀" "󰂁" "󰂂"
+	"󰁹"
+)
+ICON_USER=" "
+ICON_PLAYING="󰎈 "
+ICON_PAUSED="󰏤 "
+ICON_STOPPED="󰐊 "
+
 get_network_details() {
-	# Icons for network
-	local icon_wifi=" "
-	local icon_ethernet="󰈀 "
-	local icon_disconnected="󰖪 "
-
-	# Variables for status
-	local wifi_status=""
-	local ethernet_status=""
-
-	# Get network interface information
-	local interfaces
-	interfaces=$(ip link show | awk '/^[0-9]+: / {print $2}')
+	local wifi_status="" ethernet_status=""
+	local interfaces=$(ip link show | awk '/^[0-9]+: / {print $2}')
 
 	for interface in $interfaces; do
-		interface=${interface%:} # Remove the trailing colon
-		local ip_address
-		ip_address=$(ip addr show "$interface" | awk '/inet / {print $2}' | cut -d/ -f1)
+		interface=${interface%:} # Remove trailing colon
+		local ip_address=$(ip addr show "$interface" 2>/dev/null | awk '/inet / {print $2}' | cut -d/ -f1)
 
 		if [[ -n "$ip_address" ]]; then
 			if [[ "$interface" =~ ^w ]]; then
-				essid=$(iw dev "$interface" link | awk '/SSID/ {for (i=2; i<=NF; i++) printf "%s ", $i; print ""}')
-				# Wi-Fi interface
-				wifi_status="$icon_wifi $essid"
+				local essid=$(iw dev "$interface" link 2>/dev/null | awk '/SSID/ {for (i=2; i<=NF; i++) printf "%s ", $i; print ""}')
+				wifi_status="$ICON_WIFI $essid"
 			elif [[ "$interface" =~ ^e ]]; then
-				# Ethernet interface
-				ethernet_status="$icon_ethernet $ip_address"
+				ethernet_status="$ICON_ETHERNET $ip_address"
 			fi
 		fi
 	done
 
-	# Determine final output
 	if [[ -n "$wifi_status" && -n "$ethernet_status" ]]; then
-		# Both Wi-Fi and Ethernet connected
 		echo "$wifi_status $ethernet_status"
 	elif [[ -n "$wifi_status" ]]; then
-		# Only Wi-Fi connected
 		echo "$wifi_status"
 	elif [[ -n "$ethernet_status" ]]; then
-		# Only Ethernet connected
-		echo "$icon_disconnected $ethernet_status"
+		echo "$ICON_DISCONNECTED $ethernet_status"
 	else
-		# Neither Wi-Fi nor Ethernet connected
-		echo "$icon_disconnected"
+		echo "$ICON_DISCONNECTED"
 	fi
 }
 
-
-# Function to get battery percentage
 get_battery_percentage() {
 	local battery_percentage=-1
-	if [[ -f /sys/class/power_supply/BAT1/capacity ]]; then
-		battery_percentage=$(cat /sys/class/power_supply/BAT1/capacity)
+	local battery_capacity="/sys/class/power_supply/BAT1/capacity"
+
+	if [[ -f "$battery_capacity" ]]; then
+		battery_percentage=$(cat "$battery_capacity")
 	else
 		echo "󰂎 Error: Battery information not found."
 		exit 1
 	fi
 
-	local battery_icons=(
-		"󰂎" "󰁺" "󰁻" "󰁼" "󰁽"
-		"󰁾" "󰁿" "󰂀" "󰂁" "󰂂"
-		"󰁹"
-	)
-
 	if [[ $battery_percentage -ge 0 ]]; then
-		echo "${battery_icons[$((battery_percentage / 10))]} $battery_percentage%"
+		echo "${ICON_BATTERY[$((battery_percentage / 10))]} $battery_percentage%"
 	else
 		echo "󰂎 No battery found."
 		exit 1
 	fi
 }
 
-# Function to get the current user
 get_whoami() {
-	local user_icon=" "
-	whoami=$(whoami)
-	echo "$user_icon $whoami"
+	echo "$ICON_USER $(whoami)"
 }
 
-# Function to get the current playing song
 get_which_song() {
-	if ! command -v mpc &> /dev/null; then
+	if ! command -v mpc &>/dev/null; then
 		echo ""
 		return
 	fi
-	local icon_playing="󰎈 "
-	local icon_paused="󰏤 "
-	local icon_resumed="󰐊 "
 
-	# Get music status and current song
-	local music_status
-	local which_song
-	music_status=$(mpc status | awk '/^\[.*\]/ {print $1}')
-	which_song=$(mpc current)
+	local music_status=$(mpc status 2>/dev/null | awk '/^\[.*\]/ {print $1}')
+	local which_song=$(mpc current 2>/dev/null)
 
-	# Determine icon based on music status
 	case "$music_status" in
-		"[playing]")
-			echo "$icon_playing $which_song"
-			;;
-		"[paused]")
-			echo "$icon_paused $which_song"
-			;;
-		"[stopped]")
-			echo "$icon_resumed Not Playing"
-			;;
-		*)
-			echo ""
-			;;
+	"[playing]")
+		echo "$ICON_PLAYING $which_song"
+		;;
+	"[paused]")
+		echo "$ICON_PAUSED $which_song"
+		;;
+	"[stopped]")
+		echo "$ICON_STOPPED Not Playing"
+		;;
+	*)
+		echo ""
+		;;
 	esac
 }
 
-# Main case logic
-case "$1" in
+main() {
+	case "$1" in
 	"network")
 		get_network_details
 		;;
@@ -131,4 +109,7 @@ case "$1" in
 		echo "󰇚 Usage: $0 {network|battery|whoami|song}"
 		exit 1
 		;;
-esac
+	esac
+}
+
+main "$@"

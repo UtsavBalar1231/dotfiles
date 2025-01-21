@@ -1,35 +1,52 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2155
 
 # Battery Monitoring Script for Hyprland
 # Requires `notify-send` for notifications
 
-# Configuration
-BATTERY=$(basename "$(find /sys/class/power_supply/ | grep BAT | head -n 1)") # Automatically detect battery name
-CHECK_INTERVAL=1                                                              # Time in seconds between checks
-LOW_BATTERY_THRESHOLD=20                                                      # Battery percentage for low battery warning
-CRITICAL_BATTERY_THRESHOLD=10                                                 # Battery percentage for critical battery warning
+set -euo pipefail
 
-# Icon Paths
-GRUVBOX_PATH="/usr/share/icons/Gruvbox-Plus-Dark/panel/16"
-BREEZE_PATH="/usr/share/icons/breeze/status/16"
+# Configuration
+readonly BATTERY=$(basename "$(find /sys/class/power_supply/ -name 'BAT*' | head -n 1)") # Automatically detect battery name
+readonly CHECK_INTERVAL=1                                                                # Time in seconds between checks
+readonly LOW_BATTERY_THRESHOLD=20                                                        # Battery percentage for low battery warning
+readonly CRITICAL_BATTERY_THRESHOLD=10                                                   # Battery percentage for critical battery warning
+
+# Get the current GTK icon theme
+readonly GTK_ICON_THEME=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | sed "s/'//g")
+
+# Default icon paths
+readonly DEFAULT_ICON_PATHS=(
+	"/usr/share/icons/$GTK_ICON_THEME/panel/16"
+	"/usr/share/icons/$GTK_ICON_THEME/status/16"
+	"/usr/share/icons/$GTK_ICON_THEME/16x16/status"
+	"/usr/share/icons/$GTK_ICON_THEME/16x16/panel"
+)
 
 # Determine icon set
-if [[ -d $GRUVBOX_PATH ]]; then
-	ICON_PATH=$GRUVBOX_PATH
-elif [[ -d $BREEZE_PATH ]]; then
-	ICON_PATH=$BREEZE_PATH
-else
-	ICON_PATH=
+for path in "${DEFAULT_ICON_PATHS[@]}"; do
+	if [[ -d "$path" ]]; then
+		readonly ICON_PATH="$path"
+		break
+	fi
+done
+
+# Fallback to Gruvbox or Breeze if the GTK theme's icons are not found
+if [[ -z "${ICON_PATH:-}" ]]; then
+	if [[ -d "/usr/share/icons/Gruvbox-Plus-Dark/panel/16" ]]; then
+		readonly ICON_PATH="/usr/share/icons/Gruvbox-Material-Dark/24x24/panel"
+	elif [[ -d "/usr/share/icons/breeze/status/16" ]]; then
+		readonly ICON_PATH="/usr/share/icons/breeze/status/16"
+	else
+		readonly ICON_PATH=""
+	fi
 fi
 
 # Functions
 get_icon_for_capacity() {
-	if [[ -z $ICON_PATH ]]; then
-		echo ""
-		return
-	fi
+	local -r capacity=$1
+	[[ -z $ICON_PATH ]] && return
 
-	local capacity=$1
 	case $capacity in
 	[0-9] | 10) echo "$ICON_PATH/battery-010.svg" ;;
 	1[1-9] | 20) echo "$ICON_PATH/battery-020.svg" ;;
@@ -46,19 +63,19 @@ get_icon_for_capacity() {
 }
 
 notify() {
-	local urgency="$1"
-	local title="$2"
-	local message="$3"
-	local icon="$4"
+	local -r urgency="$1"
+	local -r title="$2"
+	local -r message="$3"
+	local -r icon="$4"
 	notify-send -u "$urgency" -i "$icon" "$title" "$message"
 }
 
 get_battery_status() {
-	cat /sys/class/power_supply/"$BATTERY"/status
+	cat "/sys/class/power_supply/$BATTERY/status"
 }
 
 get_battery_capacity() {
-	cat /sys/class/power_supply/"$BATTERY"/capacity
+	cat "/sys/class/power_supply/$BATTERY/capacity"
 }
 
 monitor_battery() {
@@ -66,9 +83,7 @@ monitor_battery() {
 	local previous_capacity=-1
 
 	while true; do
-		local status
-		local capacity
-		local icon
+		local status capacity icon
 
 		status=$(get_battery_status)
 		capacity=$(get_battery_capacity)
@@ -100,7 +115,7 @@ monitor_battery() {
 		fi
 
 		previous_capacity=$capacity
-		sleep $CHECK_INTERVAL
+		sleep "$CHECK_INTERVAL"
 	done
 }
 

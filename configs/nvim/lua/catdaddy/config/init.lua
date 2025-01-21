@@ -13,5 +13,3 @@ end
 if vim.g.neovide then
 	require("catdaddy.config.neovide")
 end
-
-Util.url.setup()

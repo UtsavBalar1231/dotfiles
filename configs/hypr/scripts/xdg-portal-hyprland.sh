@@ -1,22 +1,40 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Kill all possible running xdg-desktop-portals
-sudo killall -e xdg-desktop-portal-hyprland
-sudo killall -e xdg-desktop-portal-gnome
-sudo killall -e xdg-desktop-portal-kde
-sudo killall -e xdg-desktop-portal-lxqt
-sudo killall -e xdg-desktop-portal-wlr
-sudo killall -e xdg-desktop-portal-gtk
-sudo killall -e xdg-desktop-portal
+set -euo pipefail
 
-/usr/lib/xdg-desktop-portal-hyprland &
-sleep 0.5
+PORTAL_PROCESSES=(
+	xdg-desktop-portal-hyprland
+	xdg-desktop-portal-gnome
+	xdg-desktop-portal-kde
+	xdg-desktop-portal-lxqt
+	xdg-desktop-portal-wlr
+	xdg-desktop-portal-gtk
+	xdg-desktop-portal
+)
 
-# Start xdg-desktop-portal-gtk
-if [ -f /usr/lib/xdg-desktop-portal-gtk ] ;then
-    /usr/lib/xdg-desktop-portal-gtk &
-    sleep 0.5
-fi
+kill_portals() {
+	for process in "${PORTAL_PROCESSES[@]}"; do
+		if pgrep -x "$process" >/dev/null; then
+			echo "Killing $process..."
+			sudo killall -e "$process" || true
+		fi
+	done
+}
 
-/usr/lib/xdg-desktop-portal &
-sleep 0.5
+start_portal() {
+	local portal_path="$1"
+	if [[ -f "$portal_path" ]]; then
+		echo "Starting $portal_path..." 
+		"$portal_path" &
+		sleep 1
+	fi
+}
+
+main() {
+	kill_portals
+	start_portal "/usr/lib/xdg-desktop-portal-hyprland"
+	start_portal "/usr/lib/xdg-desktop-portal-gtk"
+	start_portal "/usr/lib/xdg-desktop-portal"
+}
+
+main

@@ -1,28 +1,37 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 get_option() {
-	hyprctl getoption decoration:"$1" | awk 'NR==1{print $2}'
+	hyprctl getoption "decoration:$1" | awk 'NR==1{print $2}'
 }
 
-set_option() {
+set_opacity() {
+	local opacity="$1"
 	hyprctl --batch "\
-    keyword decoration:active_opacity $1;\
-    keyword decoration:inactive_opacity $1"
-	exit
+        keyword decoration:active_opacity $opacity;\
+        keyword decoration:inactive_opacity $opacity"
 }
 
 toggle_blur() {
-	hyprctl "keyword decoration:blur:enabled $1"
+	local state="$1"
+	hyprctl keyword "decoration:blur:enabled" "$state"
 }
 
-active_opacity=$(get_option active_opacity)
-inactive_opacity=$(get_option inactive_opacity)
-blur_enabled=$(hyprctl getoption decoration:blur:enabled | awk 'NR==2{print $2}')
+main() {
+	local active_opacity inactive_opacity blur_enabled
 
-if [ "$active_opacity" = "1.000000" ] && [ "$inactive_opacity" = "1.000000" ]; then
-	[ "$blur_enabled" = "true" ] && toggle_blur no
-	set_option 0
-else
-	[ "$blur_enabled" = "true" ] && toggle_blur yes
-	set_option 1
-fi
+	active_opacity=$(get_option active_opacity)
+	inactive_opacity=$(get_option inactive_opacity)
+	blur_enabled=$(hyprctl getoption decoration:blur:enabled | awk 'NR==2{print $2}')
+
+	if [[ "$active_opacity" == "1.000000" && "$inactive_opacity" == "1.000000" ]]; then
+		[[ "$blur_enabled" == "true" ]] && toggle_blur no
+		set_opacity 0
+	else
+		[[ "$blur_enabled" == "true" ]] && toggle_blur yes
+		set_opacity 1
+	fi
+}
+
+main

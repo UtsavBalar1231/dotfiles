@@ -2,35 +2,33 @@
 # zmodload zsh/zprof
 # shellcheck disable=SC2034,SC2086,SC2296,SC2016,SC1090,SC1091,SC1094,SC2154
 
+[[ -z "$XDG_CONFIG_HOME" ]] && export XDG_CONFIG_HOME=${HOME}/.config
+[[ -z "$XDG_CACHE_HOME" ]] && export XDG_CACHE_HOME=${HOME}/.cache
+[[ -z "$XDG_DATA_HOME" ]] && export XDG_DATA_HOME=${HOME}/.local/share
+export TERM="xterm-256color"
+
 # Enable history
-HISTSIZE=100000
-SAVEHIST=$HISTSIZE
-HISTFILE=${HOME}/.zsh_history
-HISTDUP=erase
+export HISTSIZE=100000
+export SAVEHIST=${HISTSIZE}
+export HISTFILE=${HOME}/.zsh_history
+export HIST_IGNORE="cd|ls|clear|clea|exit|history|n"
+export HISTDUP=erase
 
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
-setopt inc_append_history
-setopt hist_reduce_blanks
+setopt APPENDHISTORY
+setopt SHAREHISTORY
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt INC_APPEND_HISTORY
 
-# Enable auto completion
-#setopt auto_menu
-#setopt auto_list
-#setopt auto_param_keys
-#setopt auto_param_slash
-#setopt auto_remove_slash
-#setopt autocd
-#setopt auto_pushd
-
-setopt correct
+# Enable zsh command correction
+setopt CORRECT
 
 autoload -Uz compinit && compinit
-zstyle :compinstall filename '${HOME}/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -51,7 +49,7 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 # Enable aliases
 setopt aliases
 
-[[ -f ${HOME}/.config/zsh/aliases.zsh ]] && source ${HOME}/.config/zsh/aliases.zsh
+[[ -f ${XDG_CONFIG_HOME}/zsh/aliases.zsh ]] && source ${XDG_CONFIG_HOME}/zsh/aliases.zsh
 
 # Key bindings
 bindkey -v
@@ -70,15 +68,15 @@ bindkey -M viins "^N" history-search-forward
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 
 ### Added by Zinit's installer
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+if [[ ! -f ${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh ]]; then
 	print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-	command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-	command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" &&
+	command mkdir -p "${XDG_DATA_HOME}/zinit" && command chmod g-rwX "${XDG_DATA_HOME}/zinit"
+	command git clone https://github.com/zdharma-continuum/zinit "${XDG_DATA_HOME}/zinit/zinit.git" &&
 		print -P "%F{33} %F{34}Installation successful.%f%b" ||
 		print -P "%F{160} The clone has failed.%f%b"
 fi
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+source "${XDG_DATA_HOME}/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -98,22 +96,12 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light Aloxaf/fzf-tab
 
 # zsh-autosuggestions
-
-# Disable automatic widget re-binding on each precmd. This can be set when
-# zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-# Customize the style that the suggestions are shown with.
-# See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='bold'
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240,bold,underline"
 
 # zsh-syntax-highlighting
-
-# Set what highlighters will be used.
-# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters.md
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-
-# Customize the main highlighter styles.
-# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md#how-to-tweak-it
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[comment]='fg=242'
 
@@ -131,7 +119,7 @@ fi
 [[ -d ${HOME}/.local/bin ]] && export PATH="${HOME}/.local/bin":${PATH}
 
 # Mason binaries
-[[ -d ${HOME}/.local/share/nvim/mason/bin ]] && export PATH="${HOME}/.local/share/nvim/mason/bin":${PATH}
+[[ -d ${XDG_DATA_HOME}/nvim/mason/bin ]] && export PATH="${XDG_DATA_HOME}/nvim/mason/bin":${PATH}
 
 # Gitlint
 [[ -f ${HOME}/.gitlint ]] && export GITLINT_CONFIG=${HOME}/.gitlint
@@ -187,7 +175,13 @@ function cursor_tty() {
 
 # Theme
 ! command -v starship >/dev/null 2>&1 && curl -sS https://starship.rs/install.sh | sh
-export STARSHIP_CONFIG=${HOME}/.config/starship.toml
+
+export STARSHIP_CONFIG=${XDG_CONFIG_HOME}/starship.toml
+if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
+      "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select-wrapped" ]]; then
+    zle -N zle-keymap-select "";
+fi
+
 eval "$(starship init zsh)"
 
 get_latest_wallpaper() {
@@ -195,80 +189,10 @@ get_latest_wallpaper() {
 	local regex="^(Wallpaper set using|Animating GIF wallpaper): "
 
 	if [[ -f "$log_file" ]]; then
-		# awk -F': ' '$0 ~ "'"$regex"'" {print $2} END {if (NR) print $0; else print "No wallpaper set yet."}' "$log_file"
-
 		awk '"'"$regex"'" {latest=$0} END {if (latest) print latest; else print "No wallpaper set yet."}' "$log_file" | awk -F': ' '{print $2}'
 	else
 		echo "Log file not found: $log_file"
 	fi
 }
-
-# Fzf integration to kill a process by name
-kill_process() {
-    local process_name="$1"
-    if [[ -z "$process_name" ]]; then
-        echo "Usage: kill_process <partial-process-name>"
-        return 1
-    fi
-
-    # Get the list of processes matching the partial name
-    local process_list
-    # shellcheck disable=SC2009
-    process_list=$(ps -eo pid,command | grep -i "$process_name" | grep -v grep)
-
-    if [[ -z "$process_list" ]]; then
-        echo "No matching processes found for: $process_name"
-        return 1
-    fi
-
-    # Use fzf to select a process
-    local selected_process
-    selected_process=$(echo "$process_list" | fzf --ansi --preview 'echo {}' --height ~20%)
-
-    if [[ -z "$selected_process" ]]; then
-        echo "No process selected."
-        return 1
-    fi
-
-    # Extract the PID (2nd field in `ps -ef` output)
-    local pid
-    pid=$(echo "$selected_process" | awk '{print $1}')
-
-    # Confirm and kill the process
-    echo "Selected process:"
-    echo "$selected_process"
-    echo -n "Are you sure you want to kill this process? (y/N): "
-    read -r confirm
-
-    if [[ "$confirm" =~ ^[Yy]$ ]]; then
-        if kill -9 "$pid" 2>/dev/null; then
-            echo "Process $pid killed successfully."
-        else
-            echo "Failed to kill process $pid. You might need additional permissions."
-        fi
-    else
-        echo "Process not killed."
-    fi
-}
-
-function jank_scrollback_search() {
-    # Find all files named history.txt in /tmp
-    local files
-    files=$(find /tmp -name "history.txt" -print0 | xargs -0 stat -c '%Y %n' | sort -rn | head -n 1 | awk '{print $2}')
-
-    if [[ -z "$files" ]]; then
-    	echo "No history.txt files found in /tmp" >&2
-    	return 1
-    fi
-    local trimmed_files
-    trimmed_files=$(echo "$files" | tr -d ' \n')
-
-    cat $trimmed_files | fzf
-}
-
-zle -N jank_scrollback_search
-
-# Bind the widget to Ctrl+f
-bindkey '^f' jank_scrollback_search
 
 # zprof
