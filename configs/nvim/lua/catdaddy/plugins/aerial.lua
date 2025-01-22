@@ -3,6 +3,7 @@ return {
 		"stevearc/aerial.nvim",
 		event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 		enabled = not vim.g.vscode,
+
 		opts = function()
 			local icons = vim.deepcopy(Util.config.icons.kinds)
 

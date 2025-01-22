@@ -1,9 +1,20 @@
 return {
 	"stevearc/oil.nvim",
-	event = "InsertEnter",
+	lazy = true,
 	---@module 'oil'
 	---@type oil.SetupOpts
 	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+	cmd = { "Oil" },
+	keys = {
+		{ "-", "<CMD>Oil<CR>", desc = "Oil: Open parent directory" },
+		{
+			"_",
+			function()
+				require("oil").open(vim.fn.getcwd())
+			end,
+			desc = "Oil: Open cwd",
+		},
+	},
 	config = function()
 		-- Declare a global function to retrieve the current directory
 		function _G.get_oil_winbar()
@@ -40,15 +51,15 @@ return {
 				spell = false,
 				list = false,
 				conceallevel = 3,
-				concealcursor = "nvic",
+				concealcursor = "n",
 			},
 			-- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
 			delete_to_trash = false,
 			-- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
-			skip_confirm_for_simple_edits = false,
+			skip_confirm_for_simple_edits = true,
 			-- Selecting a new/moved/renamed file or directory will prompt you to save changes first
 			-- (:help prompt_save_on_select_new_entry)
-			prompt_save_on_select_new_entry = true,
+			prompt_save_on_select_new_entry = false,
 			-- Oil will automatically delete hidden buffers after this delay
 			-- You can set the delay to false to disable cleanup entirely
 			-- Note that the cleanup process only starts when none of the oil buffers are currently displayed
@@ -66,7 +77,8 @@ return {
 			-- Set to `false` to disable, or "name" to keep it on the file names
 			constrain_cursor = "editable",
 			-- Set to true to watch the filesystem for changes and reload oil
-			watch_for_changes = false,
+			watch_for_changes = true,
+
 			-- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
 			-- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
 			-- Additionally, if it is a string that matches "actions.<name>",
@@ -74,24 +86,25 @@ return {
 			-- Set to `false` to remove a keymap
 			-- See :help oil-actions for a list of all available actions
 			keymaps = {
-				["g?"] = { "actions.show_help", mode = "n" },
-				["<CR>"] = "actions.select",
-				["<C-s>"] = { "actions.select", opts = { vertical = true } },
-				["<C-h>"] = { "actions.select", opts = { horizontal = true } },
-				["<C-t>"] = { "actions.select", opts = { tab = true } },
-				["<C-p>"] = "actions.preview",
-				["<C-c>"] = { "actions.close", mode = "n" },
-				["<C-l>"] = "actions.refresh",
-				["-"] = { "actions.parent", mode = "n" },
-				["_"] = { "actions.open_cwd", mode = "n" },
-				["`"] = { "actions.cd", mode = "n" },
-				["~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
-				["gs"] = { "actions.change_sort", mode = "n" },
-				["gx"] = "actions.open_external",
-				["g."] = { "actions.toggle_hidden", mode = "n" },
-				["g\\"] = { "actions.toggle_trash", mode = "n" },
+				["g?"] = { "actions.show_help", mode = "n", opts = { desc = "Oil: show help" } },
+				["<CR>"] = { "actions.select", opts = { desc = "Oil: select" } },
+				["<C-s>"] = { "actions.select", opts = { vertical = true, desc = "Oil: select vertically" } },
+				["<C-h>"] = { "actions.select", opts = { horizontal = true, desc = "Oil: select horizontally" } },
+				["<C-t>"] = { "actions.select", opts = { tab = true, desc = "Oil: select in new tab" } },
+				["<C-p>"] = { "actions.preview", opts = { desc = "Oil: preview" } },
+				["<C-c>"] = { "actions.close", mode = "n", opts = { desc = "Oil: close" } },
+				["q"] = { "actions.close", opts = { desc = "Oil: close" } },
+				["<C-l>"] = { "actions.refresh", opts = { desc = "Oil: refresh" } },
+				["-"] = { "actions.parent", mode = "n", opts = { desc = "Oil: parent directory" } },
+				["_"] = { "actions.open_cwd", mode = "n", opts = { desc = "Oil: open current working directory" } },
+				["`"] = { "actions.cd", mode = "n", opts = { desc = "Oil: change directory" } },
+				["~"] = { "actions.cd", opts = { scope = "tab", desc = "Oil: change directory in tab" } },
+				["gs"] = { "actions.change_sort", mode = "n", opts = { desc = "Oil: change sort" } },
+				["gx"] = { "actions.open_external", opts = { desc = "Oil: open externally" } },
+				["g."] = { "actions.toggle_hidden", mode = "n", opts = { desc = "Oil: toggle hidden files" } },
+				["g\\"] = { "actions.toggle_trash", mode = "n", opts = { desc = "Oil: toggle trash" } },
 				["gd"] = {
-					desc = "Toggle file detail view",
+					desc = "Oil: toggle file detail view",
 					callback = function()
 						detail = not detail
 						if detail then
@@ -102,6 +115,7 @@ return {
 					end,
 				},
 			},
+
 			-- Set to false to disable all of the above keymaps
 			use_default_keymaps = true,
 			view_options = {
@@ -113,9 +127,9 @@ return {
 					return m ~= nil
 				end,
 				-- This function defines what will never be shown, even when `show_hidden` is set
-				is_always_hidden = function(name, bufnr)
-					return false
-				end,
+				-- is_always_hidden = function(name, bufnr)
+				-- 	return false
+				-- end,
 				-- Sort file names with numbers in a more intuitive order for humans.
 				-- Can be "fast", true, or false. "fast" will turn it off for large directories.
 				natural_order = "fast",
@@ -128,24 +142,24 @@ return {
 					{ "name", "asc" },
 				},
 				-- Customize the highlight group for the file name
-				highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
-					return nil
-				end,
+				-- highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
+				-- 	return nil
+				-- end,
 			},
 			-- Extra arguments to pass to SCP when moving/copying files over SSH
 			extra_scp_args = {},
 			-- EXPERIMENTAL support for performing file operations with git
 			git = {
 				-- Return true to automatically git add/mv/rm files
-				add = function(path)
-					return false
-				end,
-				mv = function(src_path, dest_path)
-					return false
-				end,
-				rm = function(path)
-					return false
-				end,
+				-- add = function(path)
+				-- 	return false
+				-- end,
+				-- mv = function(src_path, dest_path)
+				-- 	return false
+				-- end,
+				-- rm = function(path)
+				-- 	return false
+				-- end,
 			},
 			-- Configuration for the floating window in oil.open_float
 			float = {
@@ -153,7 +167,7 @@ return {
 				padding = 2,
 				max_width = 0,
 				max_height = 0,
-				border = "rounded",
+				border = Util.config.icons.border,
 				win_options = {
 					winblend = 0,
 				},
@@ -174,9 +188,9 @@ return {
 				-- How to open the preview window "load"|"scratch"|"fast_scratch"
 				preview_method = "fast_scratch",
 				-- A function that returns true to disable preview on a file e.g. to avoid lag
-				disable_preview = function(filename)
-					return false
-				end,
+				-- disable_preview = function(filename)
+				-- 	return false
+				-- end,
 				-- Window-local options to use for preview window buffers
 				win_options = {},
 			},
@@ -198,7 +212,7 @@ return {
 				min_height = { 5, 0.1 },
 				-- optionally define an integer/float for the exact height of the preview window
 				height = nil,
-				border = "rounded",
+				border = Util.config.icons.border,
 				win_options = {
 					winblend = 0,
 				},
@@ -211,7 +225,7 @@ return {
 				max_height = { 10, 0.9 },
 				min_height = { 5, 0.1 },
 				height = nil,
-				border = "rounded",
+				border = Util.config.icons.border,
 				minimized_border = "none",
 				win_options = {
 					winblend = 0,
@@ -219,17 +233,12 @@ return {
 			},
 			-- Configuration for the floating SSH window
 			ssh = {
-				border = "rounded",
+				border = Util.config.icons.border,
 			},
 			-- Configuration for the floating keymaps help window
 			keymaps_help = {
-				border = "rounded",
+				border = Util.config.icons.border,
 			},
 		})
-
-		vim.keymap.set("n", "<BS>", function()
-			require("oil").toggle_float()
-			-- require("oil").open()
-		end, { noremap = true, desc = "Toggle Oil" })
 	end,
 }

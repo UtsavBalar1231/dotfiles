@@ -1,5 +1,4 @@
 local g = vim.g
-local opt = vim.opt
 
 -- Set ZSH as default global shell
 ---@diagnostic disable-next-line: inject-field
@@ -17,86 +16,85 @@ g.maplocalleader = ","
 g.bigfile_size = 1024 * 256
 
 -- Enable undo dir setup
-opt.undodir = vim.fn.stdpath("config") .. "/../../.vimdid"
-opt.undofile = true
+vim.o.undodir = vim.fn.stdpath("config") .. "/../../.vimdid"
+vim.o.undofile = true
 
 -- Enable lazy redraw
-opt.lazyredraw = true
+vim.o.lazyredraw = true
 
------------------------
 --- Sane tabs setup ---
------------------------
 -- Do not use spaces for tabs
-opt.expandtab = false
+vim.o.expandtab = false
 -- Shift 4 spaces when tab
-opt.shiftwidth = 4
+vim.o.shiftwidth = 4
 -- 1 tab == 4 spaces
-opt.tabstop = 4
+vim.o.tabstop = 4
 -- Enable auto indentation in vim
-opt.autoindent = true
+vim.o.autoindent = true
 -- Autoindent new lines
-opt.smartindent = true
+vim.o.smartindent = true
 -- Smart tab
-opt.smarttab = true
+vim.o.smarttab = true
 -- Copy indent from current line
-opt.copyindent = true
+vim.o.copyindent = true
 -- Preserve indent on next line
-opt.preserveindent = true
-
----------------------------
+vim.o.preserveindent = true
 --- Better search setup ---
----------------------------
+
 -- Ignore case when searching
-opt.ignorecase = true
+vim.o.ignorecase = true
 -- But be smart about it
-opt.smartcase = true
+vim.o.smartcase = true
 -- Highlight search results
-opt.hlsearch = true
+vim.o.hlsearch = true
 -- Incremental search
-opt.incsearch = true
+vim.o.incsearch = true
 -- grep-like search
-opt.gdefault = true
---- Grep setup
-opt.grepformat = "%f:%l:%c:%m"
-opt.grepprg = "rg --vimgrep"
+vim.o.gdefault = true
+-- Grep setup
+if vim.fn.executable("rg") == 1 then
+	vim.o.grepprg = "rg --vimgrep --no-heading --smart-case"
+	vim.o.grepformat = "%f:%l:%c:%m,%f:%l:%m"
+elseif vim.fn.executable("ag") == 1 then
+	vim.o.grepprg = "ag --vimgrep"
+	vim.o.grepformat = "%f:%l:%c:%m"
+elseif vim.fn.executable("ack") == 1 then
+	vim.o.grepprg = "ack --nogroup --nocolor"
+elseif vim.fn.finddir(".git", ".;") ~= "" then
+	vim.o.grepprg = "git --no-pager grep --no-color -n"
+	vim.o.grepformat = "%f:%l:%m,%m %f match%ts,%f"
+else
+	vim.o.grepprg = "grep -nIR $* /dev/null"
+end
+
 -- infer cases in keyword completion
-opt.infercase = true
+vim.o.infercase = true
 
-opt.guicursor = {
-	"n-sm:block",
-	"v:hor50",
-	"c-ci-cr-i-ve:ver10",
-	"o-r:hor10",
-	"a:Cursor/Cursor-blinkwait1-blinkon1-blinkoff1",
-}
-
--------------------------------
 --- General editor settings ---
--------------------------------
 ---@diagnostic disable-next-line: undefined-field
-opt.timeoutlen = vim.g.vscode and 1000 or 300
+vim.o.timeoutlen = vim.g.vscode and 1000 or 300
 -- Set default encoding
-opt.encoding = "utf-8"
+vim.o.encoding = "utf-8"
 -- Default scrolloff in vim
-opt.scrolloff = 4
+vim.o.scrolloff = 4
 -- Enable auto write
-opt.autowrite = true
+vim.o.autowrite = true
 -- Enable mouse support
-opt.mouse = "a"
+vim.o.mouse = "a"
 -- Copy/paste to system clipboard
-opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
+vim.o.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
 -- Autocomplete options
-opt.completeopt = { "menu", "menuone", "noselect" }
+vim.o.completeopt = "menu,menuone,noselect" -- Converted table to string
 -- Hide * markup for bold and italic, but not markers with substitutions
-opt.conceallevel = 2
+vim.o.conceallevel = 2
 --- Jump options
-opt.jumpoptions = "view"
+vim.o.jumpoptions = "view"
 -- Save swap file and trigger CursorHold
-opt.updatetime = 250
+vim.o.updatetime = 250
 -- Do not save backup
-opt.writebackup = false
+vim.o.writebackup = false
 -- Set fillchars
-opt.fillchars = {
+vim.opt.fillchars = {
 	diff = "╱",
 	eob = " ",
 	fold = " ",
@@ -114,89 +112,90 @@ opt.fillchars = {
 }
 
 -- Fold settings
-opt.foldcolumn = "1"
-opt.foldlevel = 99
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-opt.foldmethod = "expr"
+vim.o.foldcolumn = "1"
+vim.o.foldlevel = 99
 
-opt.cmdwinheight = 30
-opt.colorcolumn = "+0"
-opt.confirm = true
-opt.fileignorecase = true
-
--------------------------------
+vim.o.cmdwinheight = 30
+vim.o.colorcolumn = "+0"
+vim.o.confirm = true
+vim.o.fileignorecase = true
 --- General editor UI setup ---
--------------------------------
+
 -- Show line number
-opt.number = true
+vim.o.number = true
 -- Enable relative line numbers
-opt.relativenumber = true
+vim.o.relativenumber = true
 -- Disable the default ruler
-opt.ruler = false
-opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+vim.o.ruler = false
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 -- Highlight matching parenthesis
-opt.showmatch = true
+vim.o.showmatch = true
 -- Line length marker at 120 columns
-opt.colorcolumn = "80"
+vim.o.colorcolumn = "80"
 -- Vertical split to the right
-opt.splitright = true
+vim.o.splitright = true
 -- Horizontal split to the bottom
-opt.splitbelow = true
+vim.o.splitbelow = true
 -- Keep windows equal when splitting
-opt.equalalways = true
--- Put new windows right of current
-opt.splitright = true
+vim.o.equalalways = true
 -- Ignore case letters when search
-opt.ignorecase = true
+vim.o.ignorecase = true
+-- allow cursor to wrap to next/prev line
+vim.o.whichwrap = "h,l"
 -- Ignore lowercase for the whole pattern
-opt.smartcase = true
+vim.o.smartcase = true
 -- Wrap on word boundary
-opt.linebreak = true
--- Enable 24-bit RGB colors
-opt.termguicolors = true
+vim.o.linebreak = true
+
+local is_tty = os.getenv("XDG_SESSION_TYPE") == "tty" and os.getenv("SSH_TTY") == ""
+if is_tty then
+	vim.o.termguicolors = false
+else
+	-- Enable 24-bit RGB colors
+	vim.o.termguicolors = true
+end
 -- Set global statusline
-opt.laststatus = 3
+vim.o.laststatus = 3
 -- allow backspace on indent, end of line or insert mode start position
-opt.backspace = "indent,eol,start"
+vim.o.backspace = "indent,eol,start"
 -- Enable ttyfast
-opt.ttyfast = true
+vim.o.ttyfast = true
 -- Show (partial) command in status line
-opt.showcmd = true
+vim.o.showcmd = true
 -- No show mode
-opt.showmode = false
+vim.o.showmode = false
 -- Show nbsp, extends, precedes and trailing spaces
-opt.list = false
-opt.listchars = "nbsp:¬,extends:»,precedes:«,trail:•"
+vim.o.list = false
+vim.o.listchars = "nbsp:¬,extends:»,precedes:«,trail:•"
 -- Better display for messages
-opt.cmdheight = 1
+vim.o.cmdheight = 1
 -- Show cursor line
-opt.cursorline = true
+vim.o.cursorline = true
 -- Popup blend
-opt.pumblend = 0
+vim.o.pumblend = 0
 -- Maximum number of entries in a popup
-opt.pumheight = 10
+vim.o.pumheight = 10
 -- Round indent
-opt.shiftround = true
+vim.o.shiftround = true
 -- Columns of context
-opt.sidescrolloff = 8
+vim.o.sidescrolloff = 8
 -- Always show the signcolumn, otherwise it would shift the text each time
-opt.signcolumn = "yes"
+vim.o.signcolumn = "yes"
 -- Allow cursor to move where there is no text in visual block mode
-opt.virtualedit = "block"
+vim.o.virtualedit = "block"
 -- Enable line wrap
-opt.wrap = true
+vim.o.wrap = true
 -- turn off swapfile
-opt.swapfile = false
+vim.o.swapfile = false
 -- Emoji support
-opt.emoji = true
+vim.o.emoji = true
 -- Disable modeline
-opt.modeline = false
-opt.modelines = 0
-----------------------------
+vim.o.modeline = false
+vim.o.modelines = 0
 --- Format options setup ---
-----------------------------
-opt.formatoptions = "jcroqlnt" -- tcqj
-opt.diffopt = {
+
+vim.o.formatoptions = "jcroqlnt"
+vim.opt.diffopt = {
 	"filler",
 	"indent-heuristic",
 	"linematch:60",
@@ -204,21 +203,29 @@ opt.diffopt = {
 }
 
 --- Incremental live completion
-opt.inccommand = "nosplit"
+vim.o.inccommand = "nosplit"
 
 -- Show short messages
-opt.shortmess = "acstFOSW"
+vim.opt.shortmess:append("c") -- for nvim-cmp
+vim.opt.shortmess:append("I") -- Hide the startup screen
+vim.opt.shortmess:append("A") -- Ignore swap file messages
+vim.opt.shortmess:append("a") -- Shorter message formats
+
+-- built-in ftplugins should not change my keybindings
+vim.g.no_plugin_maps = true
+vim.cmd.filetype({ args = { "plugin", "on" } })
+vim.cmd.filetype({ args = { "plugin", "indent", "on" } })
 
 -- Enable spell checking
-opt.spelllang = { "en" }
-opt.spelloptions:append("noplainbuffer")
+vim.o.spelllang = "en" -- Converted table to string
+vim.opt.spelloptions:append("noplainbuffer")
 
 if vim.fn.has("nvim-0.10") == 1 then
-	opt.smoothscroll = true
-	opt.foldmethod = "expr"
-	opt.foldtext = ""
+	vim.o.smoothscroll = true
+	vim.o.foldmethod = "expr"
+	vim.o.foldtext = ""
 else
-	opt.foldmethod = "indent"
+	vim.o.foldmethod = "indent"
 end
 
 -- Fix markdown indentation settings
@@ -230,59 +237,40 @@ g.loaded_python3_provider = 0
 g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
 
-opt.viewoptions = {
+vim.opt.viewoptions = {
 	"cursor",
 	"folds",
 }
 
-opt.wildmode = "longest:full"
-opt.wildoptions = "pum"
-opt.wildignore:append({
-	".git/*",
-	".hg/*",
-	".svn/*",
+vim.o.wildmenu = true
+vim.o.wildmode = "longest,list,full"
+vim.o.wildoptions = "pum"
+vim.opt.wildignore:append({
+	".git/",
+	".hg/",
+	".svn/",
 	".DS_Store",
-	"*.pyc",
-	"*.pyo",
-	"*.rbc",
-	"*.rbo",
-	"*.class",
-	"*.o",
-	"*.so",
-	"*.cache",
-	"*~",
-	"*.swp",
-	"blue.vim",
-	"darkblue.vim",
-	"delek.vim",
-	"desert.vim",
-	"elflord.vim",
-	"evening.vim",
-	"habamax.vim",
-	"industry.vim",
-	"koehler.vim",
-	"lunaperche.vim",
-	"morning.vim",
-	"murphy.vim",
-	"pablo.vim",
-	"peachpuff.vim",
-	"quiet.vim",
-	"retrobox.vim",
-	"ron.vim",
-	"shine.vim",
-	"slate.vim",
-	"sorbet.vim",
-	"torte.vim",
-	"wildcharm.vim",
-	"zaibatsu.vim",
-	"zellner.vim",
-}, ",")
-
-
--- Show the current document symbols location from Trouble in lualine
--- You can disable this for a buffer by setting `vim.b.trouble_lualine = false`
-vim.g.trouble_lualine = true
+	".pyc",
+	".pyo",
+	".rbc",
+	".rbo",
+	".class",
+	".o",
+	".so",
+	".cache",
+	"~",
+	".swp",
+	".png",
+	".jpg",
+	".jpeg",
+	".gif",
+	".wav",
+	"*.aiff",
+})
 
 -- if the completion engine supports the AI source,
 -- use that instead of inline suggestions
 vim.g.ai_cmp = true
+
+-- Expand %% to current directory in command mode
+vim.cmd.cabbr({ args = { "<expr>", "%%", "&filetype == 'oil' ? bufname('%')[6:] : expand('%:p:h')" } })

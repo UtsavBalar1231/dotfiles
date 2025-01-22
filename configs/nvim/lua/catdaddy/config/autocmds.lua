@@ -9,7 +9,7 @@ local autocmd = vim.api.nvim_create_autocmd
 -- 	},
 -- 	ctermfg = 109,
 -- })
--- 
+--
 -- autocmd({ "BufReadPost", "BufNewFile", "BufEnter", "WinEnter" }, {
 -- 	group = augroup("URL", { clear = true }),
 -- 	pattern = "*",
@@ -199,4 +199,43 @@ autocmd({ "InsertEnter", "WinLeave" }, {
 		end
 	end,
 	desc = "Disable cursorline when leaving window",
+})
+
+autocmd("FocusGained", {
+	desc = "Reload files from disk when we focus vim",
+	pattern = "*",
+	command = "if getcmdwintype() == '' | checktime | endif",
+	group = augroup("reload_files", { clear = true }),
+})
+
+autocmd("BufEnter", {
+	desc = "Every time we enter an unmodified buffer, check if it changed on disk",
+	pattern = "*",
+	command = "if &buftype == '' && !&modified && expand('%') != '' | exec 'checktime ' . expand('<abuf>') | endif",
+	group = augroup("checktime", { clear = true }),
+})
+
+-- Close the scratch preview automatically
+autocmd({ "CursorMovedI", "InsertLeave" }, {
+	desc = "Close the popup-menu automatically",
+	pattern = "*",
+	command = "if pumvisible() == 0 && !&pvw && getcmdwintype() == ''|pclose|endif",
+	group = augroup("close_popup", { clear = true }),
+})
+
+autocmd("BufNew", {
+	desc = "Edit files with :line at the end",
+	pattern = "*",
+	group = augroup("edit_line", { clear = true }),
+	callback = function(args)
+		local bufname = vim.api.nvim_buf_get_name(args.buf)
+		local root, line = bufname:match("^(.*):(%d+)$")
+		if vim.fn.filereadable(bufname) == 0 and root and line and vim.fn.filereadable(root) == 1 then
+			vim.schedule(function()
+				vim.cmd.edit({ args = { root } })
+				pcall(vim.api.nvim_win_set_cursor, 0, { tonumber(line), 0 })
+				vim.api.nvim_buf_delete(args.buf, { force = true })
+			end)
+		end
+	end,
 })

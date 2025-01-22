@@ -1,12 +1,15 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	enabled = not vim.g.vscode,
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	lazy = true,
 	dependencies = {
 		{ "AndreM222/copilot-lualine" },
 	},
 	init = function()
+		-- Show the current document symbols location from Trouble in lualine
+		-- You can disable this for a buffer by setting vim.b.trouble_lualine = false
+		vim.g.trouble_lualine = true
+
 		vim.g.lualine_laststatus = vim.o.laststatus
 		if vim.fn.argc(-1) > 0 then
 			-- set an empty statusline till lualine loads

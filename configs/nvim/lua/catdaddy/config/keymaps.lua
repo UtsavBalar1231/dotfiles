@@ -194,8 +194,6 @@ keymap("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 keymap("n", "[q", "lua vim.cmd.cprev()<cr>", { desc = "Previous Quickfix" })
 keymap("n", "]q", "lua vim.cmd.cnext()<cr>", { desc = "Next Quickfix" })
 
--- Custom command to open URL under cursor
-vim.api.nvim_create_user_command("OpenUrl", Util.url.open_url, { desc = "Open the URL under the cursor" })
-
--- Keymap for opening URLs
-keymap("n", "<leader>mu", ":OpenUrl<CR>", { noremap = true, silent = true })
+-- BASH-style movement in insert mode
+keymap("i", "<C-a>", "<C-o>^", { noremap = true, silent = true, desc = "Move to Beginning of Line" })
+keymap("i", "<C-e>", "<C-o>$", { noremap = true, silent = true, desc = "Move to End of Line" })

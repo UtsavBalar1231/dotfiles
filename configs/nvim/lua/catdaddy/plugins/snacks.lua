@@ -492,7 +492,7 @@ return {
 				end,
 				desc = "LSP: Symbols",
 			},
-{
+			{
 				"<leader>sS",
 				function()
 					Snacks.picker.lsp_workspace_symbols()

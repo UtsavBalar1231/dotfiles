@@ -4,13 +4,15 @@ return {
 		cmd = "Copilot",
 		event = "InsertEnter",
 		enabled = true,
-		-- build = ":Copilot auth",
 		opts = {
 			suggestion = {
 				enabled = not vim.g.ai_cmp,
 				auto_trigger = true,
+				debounce = 75,
 				keymap = {
 					accept = "<C-g>",
+					accept_word = false,
+					accept_line = false,
 					next = "<M-]>",
 					prev = "<M-[>",
 				},
