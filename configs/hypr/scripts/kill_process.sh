@@ -1,43 +1,50 @@
 #!/usr/bin/env bash
 
-# Function to kill a process using fzf for selection
 kill_process() {
-    # Check if fzf is installed
-    if ! command -v fzf &> /dev/null; then
-        echo "Error: 'fzf' is not installed. Please install it to use this script."
-        return 1
-    fi
+	if ! command -v fzf &>/dev/null; then
+		echo "Error: 'fzf' is not installed. Please install it to use this script."
+		return 1
+	fi
 
-    # Get the list of processes (PID, command) and filter using fzf
-    local selected_process
-    selected_process=$(ps -eo pid,comm --no-headers | fzf --height 20% --preview 'echo {}' --prompt="Select a process to kill: ")
+	local process_name=$1
 
-    # Exit if no process is selected
-    if [[ -z "$selected_process" ]]; then
-        echo "No process selected. Exiting."
-        return 1
-    fi
+	if [[ -n "$process_name" ]]; then
+		local process_list
+		# shellcheck disable=SC2009
+		process_list=$(ps -eo pid,command | grep -i "$process_name" | grep -v grep)
 
-    # Extract the PID from the selected process
-    local pid
-    pid=$(echo "$selected_process" | awk '{print $1}')
+		if [[ -z "$process_list" ]]; then
+			echo "No matching processes found for: $process_name"
+			return 1
+		fi
 
-    # Confirm before killing the process
-    echo "Selected process:"
-    echo "$selected_process"
-    read -r -p "Are you sure you want to kill this process? (Y/n): " confirm
+		local selected_process
+		selected_process=$(echo "$process_list" | fzf --ansi --preview 'echo {}' --height ~20%)
+	else
 
-    if [[ "$confirm" =~ ^[Yy]$ ]]; then
-        # Attempt to kill the process
-        if kill -9 "$pid" 2>/dev/null; then
-            echo "Process $pid killed successfully."
-        else
-            echo "Failed to kill process $pid. You might need additional permissions."
-        fi
-    else
-        echo "Process not killed."
-    fi
+		local selected_process
+		selected_process=$(ps -eo pid,command --no-headers | fzf --height 20% --preview 'echo {}' --prompt="Select a process to kill: ")
+	fi
+
+	if [[ -z "$selected_process" ]]; then
+		echo "No process selected. Exiting."
+		return 1
+	fi
+
+	local pid
+	pid=$(echo "$selected_process" | awk '{print $1}')
+
+	echo "Selected process:"
+	echo "$selected_process"
+	read -r -p "Are you sure you want to kill this process? ([Y]/n): " confirm
+
+	confirm=${confirm:-Y}
+
+	if [[ "$confirm" =~ ^[Yy]$ ]]; then
+		kill -9 "$pid" 2>/dev/null && echo "Process $pid killed successfully." || echo "Failed to kill process $pid. You might need additional permissions."
+	else
+		echo "Process not killed."
+	fi
 }
 
-# Main script execution
-kill_process
+kill_process "$@"

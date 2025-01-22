@@ -151,6 +151,8 @@ alias grm='git remote'
 alias grst='git reset'
 alias grsth='git reset --hard'
 alias gs='git status'
+alias ga='git add'
+alias gaa='git add -A'
 
 # alias for sudo
 alias sudo='sudo '

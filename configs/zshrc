@@ -185,14 +185,28 @@ fi
 eval "$(starship init zsh)"
 
 get_latest_wallpaper() {
-	local log_file="$HOME/.cache/wallpaper_changer.log"
-	local regex="^(Wallpaper set using|Animating GIF wallpaper): "
+    local log_file="${XDG_CACHE_HOME}/wallpaper_changer.log"
+    local regex="(Set wallpaper:|Animating GIF:) .+" 
 
-	if [[ -f "$log_file" ]]; then
-		awk '"'"$regex"'" {latest=$0} END {if (latest) print latest; else print "No wallpaper set yet."}' "$log_file" | awk -F': ' '{print $2}'
-	else
-		echo "Log file not found: $log_file"
-	fi
+    [[ ! -f "$log_file" ]] && echo "No log file found" && return 1
+
+    # Extract last matching entry from log
+    local wallpaper
+    wallpaper=$(tac "$log_file" | awk -F'] ' '
+        $2 ~ /Set wallpaper:|Animating GIF:/ { 
+            sub(/ \(PID.*/, "", $2)  # Remove PID and any trailing garbage
+            split($2, parts, /: /)
+            print parts[2]
+            exit
+        }
+    ')
+
+    if [[ -n "$wallpaper" ]]; then
+        echo "$wallpaper"
+    else
+        echo "No wallpaper found in logs"
+        return 1
+    fi
 }
 
 # zprof

@@ -123,7 +123,7 @@ element {
 }
 
 element normal.normal {
-	background-color:            @transparent;
+	background-color:            transparent;
     text-color:                  @fg0;
 }
 

@@ -19,6 +19,7 @@ return {
 		"windwp/nvim-ts-autotag",
 	},
 	config = function()
+		vim.treesitter.language.register("bash", "zsh")
 		local configs = require("nvim-treesitter.configs")
 		vim.filetype.add({
 			extension = {
