@@ -11,10 +11,6 @@ g.mapleader = " "
 ---@diagnostic disable-next-line: inject-field
 g.maplocalleader = ","
 
--- Set bigfile size
----@diagnostic disable-next-line: inject-field
-g.bigfile_size = 1024 * 256
-
 -- Enable undo dir setup
 vim.o.undodir = vim.fn.stdpath("config") .. "/../../.vimdid"
 vim.o.undofile = true

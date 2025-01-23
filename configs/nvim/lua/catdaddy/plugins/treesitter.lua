@@ -31,8 +31,8 @@ return {
 			})
 
 			if not vim.bo.filetype == "bigfile" then
-				vim.o.foldmethod = "expr"
-				vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+				vim.wo.foldmethod = "expr"
+				vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
 			end
 
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()

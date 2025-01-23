@@ -89,6 +89,10 @@ return {
 				end
 			end,
 			providers = {
+				buffer = {
+					score_offset = 100,
+					max_items = 2,
+				},
 				path = {
 					opts = {
 						trailing_slash = false,
@@ -111,8 +115,6 @@ return {
 				return {}
 			end,
 		},
-
-		signature = { enabled = true },
 
 		completion = {
 			accept = { auto_brackets = { enabled = true } },
@@ -151,12 +153,6 @@ return {
 							highlight = function(ctx)
 								return require("colorful-menu").blink_components_highlight(ctx)
 							end,
-						},
-						kind_icon = {
-							-- text = function(ctx)
-							-- end,
-							-- highlight = function(ctx)
-							-- end,
 						},
 					},
 				},

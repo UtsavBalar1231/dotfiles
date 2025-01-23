@@ -1,28 +1,10 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
--- vim.api.nvim_set_hl(0, "URL", {
--- 	underline = true,
--- 	fg = "#7daea3",
--- 	cterm = {
--- 		underline = true,
--- 	},
--- 	ctermfg = 109,
--- })
---
--- autocmd({ "BufReadPost", "BufNewFile", "BufEnter", "WinEnter" }, {
--- 	group = augroup("URL", { clear = true }),
--- 	pattern = "*",
--- 	desc = "Highlight URLs",
--- 	callback = function()
--- 		vim.fn.matchadd("URL", Util.url.url_pattern)
--- 	end,
--- })
-
 vim.on_key(function(char)
 	if vim.fn.mode() == "n" then
 		local hlsearch_active = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
-		vim.opt.hlsearch = hlsearch_active
+		vim.opt_local.hlsearch = hlsearch_active
 	end
 end, vim.api.nvim_create_namespace("auto_hlsearch"))
 
@@ -100,17 +82,6 @@ autocmd("BufReadPost", {
 		end
 	end,
 	desc = "Restore last cursor position",
-})
-
-autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-	group = augroup("checktime", { clear = true }),
-	pattern = "*",
-	callback = function()
-		if vim.o.buftype ~= "nofile" then
-			vim.cmd("checktime")
-		end
-	end,
-	desc = "Check time on FocusGained, TermClose, TermLeave",
 })
 
 autocmd("VimResized", {

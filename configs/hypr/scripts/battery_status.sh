@@ -101,6 +101,9 @@ monitor_battery() {
 			"Full")
 				notify "low" "Battery Fully Charged" "Battery is fully charged at $capacity%\nConsider unplugging the charger." "$icon"
 				;;
+			"Not charging")
+				notify "low" "Not Charging" "Battery is not charging: $capacity%\nPlease check the charger connection." "$icon"
+				;;
 			esac
 			previous_status="$status"
 		fi

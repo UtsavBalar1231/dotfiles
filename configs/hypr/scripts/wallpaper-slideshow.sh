@@ -54,10 +54,8 @@ init() {
 		exit 1
 	}
 	get_pids
-}
 
-cleanup() {
-	rm -rf "${PATHS[state_dir]}"/*.pid
+	trap stop INT TERM
 }
 
 log() {
@@ -110,7 +108,7 @@ set_wall() {
 wallpaper_dir() {
 	case "${STATE[battery]}" in
 	"discharging") echo "${PATHS[static]}" ;;
-	"charging" | "full") echo "${PATHS[dynamic]}" ;;
+	"charging" | "full" | "not charging") echo "${PATHS[dynamic]}" ;;
 	*) echo "${PATHS[static]}" ;;
 	esac
 }
@@ -338,7 +336,7 @@ get_wallpaper() {
 # ========================
 
 manual_set() {
-	local wall_dir
+	local wall_dir fifo_ueberzug ueberzugpp_pid
 
 	wall_dir="$(wallpaper_dir)"
 	[[ -d "${wall_dir}" ]] || {
@@ -352,14 +350,37 @@ manual_set() {
 	}
 
 	local preview_cmd
-	if [[ -n $KITTY_WINDOW_ID && "${STATE[battery]}" == "discharging" ]]; then
-		preview_cmd="kitty icat --clear --transfer-mode=memory --unicode-placeholder --stdin=no --place=\${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES}@0x0 {}"
+	# Try ueberzugpp first if available
+	if command -v ueberzugpp >/dev/null; then
+		fifo_ueberzug="/tmp/ueberzugpp-${$}"
+		mkfifo "$fifo_ueberzug" 2>/dev/null || {
+			log ERROR "Failed to create FIFO for ueberzugpp"
+			return 1
+		}
+
+		# Start ueberzugpp layer
+		ueberzugpp layer -s "$fifo_ueberzug" -p bash >/dev/null &
+		ueberzugpp_pid=$!
+
+		# Cleanup on exit
+		trap '
+            ueberzugpp cmd -s "$fifo_ueberzug" -a clear >/dev/null 2>&1
+            kill "$ueberzugpp_pid" >/dev/null 2>&1
+            rm -f "$fifo_ueberzug" >/dev/null 2>&1
+        ' EXIT
+
+		preview_cmd="ueberzugpp cmd -s '$fifo_ueberzug' -a add -i preview -x 0 -y 0 \
+            -w \${FZF_PREVIEW_COLUMNS} -h \${FZF_PREVIEW_LINES} -f {}"
+
+	# Fallback to other preview tools
 	elif command -v chafa >/dev/null; then
-		preview_cmd="chafa --animate off --clear -s \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}"
+		preview_cmd="chafa --relative on --threads=28 --colors=none -s \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} --view-size=\${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}"
 	elif command -v viu >/dev/null; then
 		preview_cmd="viu {}"
+	elif [[ -n $KITTY_WINDOW_ID && "${STATE[battery]}" == "discharging" ]]; then
+		preview_cmd="kitty icat --clear --transfer-mode=memory --unicode-placeholder --stdin=no --place=\${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES}@0x0 {}"
 	else
-		log WARNING "No image preview tool (kitty icat, viu, or chafa) is installed. Preview will not be available."
+		log WARNING "No image preview tool (ueberzugpp, kitty icat, viu, or chafa) installed. Preview will not be available."
 		preview_cmd="echo 'Preview not available {}'"
 	fi
 
