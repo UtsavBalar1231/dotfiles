@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-readonly SCREENSHOT_DIR
 SCREENSHOT_DIR="$(xdg-user-dir PICTURES)/Screenshots"
 mkdir -p "$SCREENSHOT_DIR"
 

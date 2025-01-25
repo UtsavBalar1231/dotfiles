@@ -249,6 +249,13 @@ return {
 				desc = "Buffers",
 			},
 			{
+				"<leader>fB",
+				function()
+					Snacks.picker.buffers({ hidden = true, nofile = true })
+				end,
+				desc = "Buffers (all)",
+			},
+			{
 				"<leader>fc",
 				function()
 					Snacks.picker.files({ cwd = vim.fn.stdpath("config") })

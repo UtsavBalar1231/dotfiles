@@ -12,7 +12,6 @@ configuration {
 
 @import "colors/gruvbox.rasi"
 
-
 // Main //
 window {
     height:                      30em;
@@ -101,7 +100,7 @@ mode-switcher {
 button {
     cursor:                      pointer;
     border-radius:               3em;
-    background-color:            @bg0;
+    background-color:            @bg1;
     text-color:                  @fg0;
 }
 

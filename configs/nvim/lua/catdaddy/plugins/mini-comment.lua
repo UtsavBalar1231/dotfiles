@@ -1,7 +1,7 @@
 return {
 	{
 		"echasnovski/mini.comment",
-		lazy = true,
+		event = "VeryLazy",
 		opts = {
 			options = {
 				custom_commentstring = function()

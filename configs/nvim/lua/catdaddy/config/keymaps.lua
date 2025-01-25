@@ -155,25 +155,22 @@ keymap(
 	{ noremap = true, silent = true, desc = "LSP Format" }
 )
 
--- Map ss to split the current window horizontally
-keymap("n", "sw", "<cmd>:split<cr><C-w>w", { noremap = true, silent = true, desc = "Horizontal Split" })
--- Map sv to split the current window vertically
-keymap("n", "sv", "<cmd>:vsplit<cr><C-w>w", { noremap = true, silent = true, desc = "Vertical Split" })
--- Map sh to move to the left window
-keymap("n", "sh", "<C-w>h", { noremap = true, silent = true, desc = "Move Left" })
--- Map sl to move to the right window
-keymap("n", "sl", "<C-w>l", { noremap = true, silent = true, desc = "Move Right" })
--- Map sk to move to the top window
-keymap("n", "sk", "<C-w>k", { noremap = true, silent = true, desc = "Move Up" })
--- Map sj to move to the bottom window
-keymap("n", "sj", "<C-w>j", { noremap = true, silent = true, desc = "Move Down" })
+-- -- Map ss to split the current window horizontally
+-- keymap("n", "sw", "<cmd>:split<cr><C-w>w", { noremap = true, silent = true, desc = "Horizontal Split" })
+-- -- Map sv to split the current window vertically
+-- keymap("n", "sv", "<cmd>:vsplit<cr><C-w>w", { noremap = true, silent = true, desc = "Vertical Split" })
+-- -- Map sh to move to the left window
+-- keymap("n", "sh", "<C-w>h", { noremap = true, silent = true, desc = "Move Left" })
+-- -- Map sl to move to the right window
+-- keymap("n", "sl", "<C-w>l", { noremap = true, silent = true, desc = "Move Right" })
+-- -- Map sk to move to the top window
+-- keymap("n", "sk", "<C-w>k", { noremap = true, silent = true, desc = "Move Up" })
+-- -- Map sj to move to the bottom window
+-- keymap("n", "sj", "<C-w>j", { noremap = true, silent = true, desc = "Move Down" })
 
 -- Disable :help on <F1>
 keymap("n", "<F1>", "<ESC>", { noremap = true, silent = true, desc = "Disable Help" })
 keymap("i", "<F1>", "<ESC>", { noremap = true, silent = true, desc = "Disable Help" })
-
--- Set w!! to write the file with sudo permissions
-keymap("c", "w!!", "w !sudo tee > /dev/null %", { noremap = true, silent = true, desc = "Write with Sudo" })
 
 -- Set wq!! to write and quit with sudo permissions
 keymap("c", "wq!!", "wq! !sudo tee > /dev/null %", { noremap = true, silent = true, desc = "Write and Quit with Sudo" })

@@ -3,6 +3,21 @@ return {
 		"lambdalisue/suda.vim",
 		cmd = { "SudaRead", "SudaWrite" },
 		enabled = not vim.g.vscode,
+		opts = function()
+			vim.keymap.set(
+				"c",
+				"w!!",
+				":SudaWrite<CR>",
+				{ noremap = true, script = true, desc = "Write with sudo privillege" }
+			)
+
+			vim.keymap.set(
+				"c",
+				"wq!!",
+				":SudaWrite<CR>:q!<CR>",
+				{ noremap = true, script = true, desc = "Write and quit with sudo privillege" }
+			)
+		end,
 	},
 	{
 		"leath-dub/snipe.nvim",
