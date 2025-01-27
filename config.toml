@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "f1d96bc24451082e18fc8ecf1b7cd43433f5b27766c2e294acd615294e6d8f38"
+hash = "126cea96fd85e767d2b78551afd8ea51cfae869389c4fb9f139da2a067b9f401"
 conf_type = "Dir"
 
 [[configs]]
@@ -28,7 +28,7 @@ conf_type = "Dir"
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "ddaacff3173551490fd79a5174840bd480f525660b857c11d9bdce444d66c38e"
+hash = "f687795c7d2ca99a14374571650f72c2c8f6ef7ec49405e52bfe82fe90dc8c05"
 conf_type = "Dir"
 
 [[configs]]
@@ -118,7 +118,7 @@ conf_type = "Dir"
 [[configs]]
 name = "waybar"
 path = "$HOME/.config/waybar"
-hash = "281c0f0ec4feb321bd4d0e1dce09336c6ebefbf4dd38cc5b92ef7dd3374db87e"
+hash = "aaef70c810052bff6dc1cf4054eb6b688768656e1272ae1c9e3e776d1391650b"
 conf_type = "Dir"
 
 [[configs]]

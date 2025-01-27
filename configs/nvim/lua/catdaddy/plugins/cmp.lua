@@ -14,7 +14,6 @@ return {
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
-		"giuxtaposition/blink-cmp-copilot",
 		"xzbdmw/colorful-menu.nvim",
 	},
 
@@ -63,6 +62,13 @@ return {
 			preset = "luasnip",
 		},
 
+		signature = {
+			enabled = true,
+			window = {
+				border = Util.config.icons.border,
+			},
+		},
+
 		appearance = {
 			nerd_font_variant = "mono",
 			use_nvim_cmp_as_default = false,
@@ -91,17 +97,27 @@ return {
 			providers = {
 				buffer = {
 					score_offset = 100,
-					max_items = 2,
+					max_items = 3,
+					opts = {
+						get_bufnrs = function()
+							return vim.tbl_filter(function(bufnr)
+								return vim.bo[bufnr].buftype == ""
+							end, vim.api.nvim_list_bufs())
+						end,
+					},
 				},
 				path = {
 					opts = {
 						trailing_slash = false,
-						label_trailing_slash = true,
-						get_cwd = function(context)
-							return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
-						end,
 						show_hidden_files_by_default = true,
 					},
+				},
+
+				snippets = {
+					-- Whether to use show_condition for filtering snippets
+					-- use_show_condition = true,
+					-- Whether to show autosnippets in the completion list
+					-- show_autosnippets = true,
 				},
 			},
 			cmdline = function()
@@ -133,6 +149,7 @@ return {
 			documentation = {
 				auto_show = false,
 				auto_show_delay_ms = 150,
+				window = { border = Util.config.icons.border },
 			},
 			ghost_text = { enabled = true },
 			menu = {
@@ -142,7 +159,7 @@ return {
 				draw = {
 					treesitter = { "lsp" },
 					columns = {
-						{ "kind_icon", "label", "label_description", gap = 1 },
+						{ "kind_icon", "label", gap = 1 },
 						{ "kind", "source_name", gap = 1 },
 					},
 					components = {
