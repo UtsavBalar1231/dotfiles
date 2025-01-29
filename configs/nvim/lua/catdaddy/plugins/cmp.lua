@@ -15,6 +15,7 @@ return {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
 		"xzbdmw/colorful-menu.nvim",
+		"olimorris/codecompanion.nvim",
 	},
 
 	--- @module 'blink.cmp'
@@ -91,10 +92,16 @@ return {
 				then
 					return { "buffer" }
 				else
-					return { "lsp", "path", "snippets", "buffer" }
+					return { "lsp", "path", "snippets", "buffer", "codecompanion" }
 				end
 			end,
 			providers = {
+				codecompanion = {
+					name = "CodeCompanion",
+					module = "codecompanion.providers.completion.blink",
+					score_offset = 100,
+					enabled = true,
+				},
 				buffer = {
 					score_offset = 100,
 					max_items = 3,

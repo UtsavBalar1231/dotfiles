@@ -5,6 +5,7 @@
 ---@field health catdaddy.util.health
 ---@field lualine catdaddy.util.lualine
 ---@field lsp catdaddy.util.lsp
+---@field snacls catdaddy.util.snacks
 ---@field shebang catdaddy.util.shebang
 ---@field url catdaddy.util.url
 local M = {}

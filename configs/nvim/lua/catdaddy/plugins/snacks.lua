@@ -263,14 +263,14 @@ return {
 				desc = "Find Config File",
 			},
 			{
-				"<leader>ff",
+				"<leader>fF",
 				function()
-					Snacks.picker.files()
+					Util.snacks.file_browser()
 				end,
 				desc = "Find Files",
 			},
 			{
-				"<leader>fF",
+				"<leader>ff",
 				function()
 					Snacks.picker.files({ cwd = vim.fn.expand("%:p:h") })
 				end,
@@ -439,6 +439,7 @@ return {
 						items = Util.colorscheme.get_available_colorschemes(),
 						preview = "colorscheme",
 						format = "text",
+						title = " Colorschemes ",
 						preset = "vertical",
 						confirm = function(picker, item)
 							picker:close()

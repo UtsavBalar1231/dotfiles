@@ -21,7 +21,7 @@ return {
 	opts = {
 		suggestion = {
 			enabled = not vim.g.ai_cmp,
-			auto_trigger = false,
+			auto_trigger = true,
 			debounce = 75,
 			keymap = {
 				accept = "<C-g>",

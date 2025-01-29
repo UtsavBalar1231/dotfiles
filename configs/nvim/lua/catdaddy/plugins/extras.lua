@@ -7,15 +7,8 @@ return {
 			vim.keymap.set(
 				"c",
 				"w!!",
-				":SudaWrite<CR>",
+				":SudaWrite",
 				{ noremap = true, script = true, desc = "Write with sudo privillege" }
-			)
-
-			vim.keymap.set(
-				"c",
-				"wq!!",
-				":SudaWrite<CR>:q!<CR>",
-				{ noremap = true, script = true, desc = "Write and quit with sudo privillege" }
 			)
 		end,
 	},

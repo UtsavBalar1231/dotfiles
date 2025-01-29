@@ -168,6 +168,29 @@ return {
 			hyprls = {},
 			c3_lsp = {},
 			zls = {},
+			-- latex
+			texlab = {
+				settings = {
+					latex = {
+						build = {
+							args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+							executable = "latexmk",
+							forwardSearch = {
+								executable = "zathura",
+								args = { "--synctex-forward", "%l:1:%f", "%p" },
+							},
+							onSave = true,
+						},
+						chktex = { onEdit = true, onOpenAndSave = true },
+						lint = { onChange = true, onEdit = true, onSave = true },
+						latexindent = { enabled = true },
+						forwardSearch = {
+							executable = "zathura",
+							args = { "--synctex-forward", "%l:1:%f", "%p" },
+						},
+					},
+				},
+			},
 		}
 
 		for server, config in pairs(servers) do

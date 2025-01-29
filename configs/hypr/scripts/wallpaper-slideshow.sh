@@ -28,6 +28,8 @@ declare -gA STATE=(
 	[current_wallpaper]=""
 )
 
+declare -g LOG_LEVEL="INFO" # Default level: INFO (DEBUG|INFO|WARNING|ERROR)
+
 # ========================
 # Core Functions
 # ========================
@@ -60,8 +62,12 @@ init() {
 
 log() {
 	local level="$1" msg="$2"
+	declare -A levels=([DEBUG]=0 [INFO]=1 [WARNING]=2 [ERROR]=3)
+	[[ ${levels[$level]} -ge ${levels[$LOG_LEVEL]} ]] || return 0
+
 	[[ ! -e "${PATHS[log]}" ]] && touch "${PATHS[log]}"
-	printf "%(%Y-%m-%d %H:%M:%S)T [%s] %s\n" -1 "${level}" "${msg}" >>"${PATHS[log]}" 2>/dev/null || {
+	printf "%(%Y-%m-%d %H:%M:%S)T [%s] %s\n" -1 "${level}" "${msg}" \
+		>>"${PATHS[log]}" 2>/dev/null || {
 		printf "[%s] %s\n" "${level}" "${msg}" >&2
 	}
 }
@@ -101,7 +107,10 @@ set_wall() {
 	esac && {
 		STATE[tool]="${tool}"
 		# TEMP: disable feh logging for dynamic wallpapers (spams log file)
-		[[ "$tool" != "feh" || "${STATE[battery]}" == "discharging" ]] && set_current_wallpaper "${img}"
+		[[ "$tool" != "feh" || "${STATE[battery]}" == "discharging" ]] && {
+			set_current_wallpaper "${img}"
+			log DEBUG "Set wallpaper: ${img} (tool: ${tool})"
+		}
 	}
 }
 
@@ -209,7 +218,7 @@ slideshow() {
 	set_status running
 
 	(
-		while [[ -f "${PATHS[state_dir]}/status" && "$(<"${PATHS[state_dir]}/status")" == "running" ]]; do
+		while [[ "$(get_status)" == "running" ]]; do
 			local dir img
 
 			dir="$(wallpaper_dir)"
@@ -245,7 +254,7 @@ kill_tools() {
 	for tool in "${TOOLS[@]}"; do
 		if pgrep -f "${tool}" >/dev/null; then
 			pkill -f "${tool}"
-			log INFO "Killed ${tool}"
+			log DEBUG "Killed ${tool}"
 		fi
 	done
 }
@@ -276,7 +285,7 @@ pause() {
 	get_pids
 
 	[[ "$(get_status)" != "running" ]] && {
-		log ERROR "Cannot pause - not running"
+		log WARNING "Cannot pause - not running"
 		return 1
 	}
 	[[ -n "${STATE[pid]}" ]] && kill -STOP "${STATE[pid]}"
@@ -400,7 +409,7 @@ manual_set() {
 		return
 	}
 
-	log INFO "Manual wallpaper selection: ${selected}"
+	log DEBUG "Manual wallpaper selection: ${selected}"
 
 	# Stop any existing slideshow or manual set process
 	stop
@@ -427,7 +436,7 @@ log_environment() {
 
 	printf "\033[1;33m%-20s\033[0m %s\n" "Session Type:" "${XDG_SESSION_TYPE:-none}"
 	printf "\033[1;33m%-20s\033[0m %s\n" "Battery Status:" "${STATE[battery]:-none}"
-	printf "\033[1;33m%-20s\033[0m %s\n" "Current Status:" "${STATE[status]:-none}"
+	printf "\033[1;33m%-20s\033[0m %s\n" "Current Status:" "$(get_status)"
 	printf "\033[1;33m%-20s\033[0m %s\n" "Current Wallpaper:" "${STATE[current_wallpaper]:-none}"
 
 	printf "\n\033[1;36m========================================\n"
@@ -466,10 +475,9 @@ log_environment() {
 # ========================
 
 time_until_next_change() {
-	local log_file="${PATHS[log]}" status_file="${PATHS[state_dir]}/status"
+	local log_file="${PATHS[log]}"
 
-	# Check slideshow status
-	[[ ! -f "$status_file" || "$(cat "$status_file")" != "running" ]] && {
+	[[ "$(get_status)" != "running" ]] && {
 		echo "Slideshow not active"
 		return
 	}
@@ -532,8 +540,7 @@ resume) resume ;;
 set) manual_set ;;
 start) slideshow ;;
 status)
-	status=$(get_status)
-	printf "Slideshow status: %s\n" "${status}"
+	printf "Slideshow status: %s\n" "$(get_status)"
 	;;
 stop) stop ;;
 time) time_until_next_change ;;
