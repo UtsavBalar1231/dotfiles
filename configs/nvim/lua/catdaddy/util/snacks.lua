@@ -233,8 +233,10 @@ function M.file_browser(opts)
 	-- If the initial directory is invalid, close the picker and show an error message
 	uv.fs_stat(M.cwd, function(err, stat)
 		if err or not stat then
-			picker:close()
-			Snacks.notify(("Invalid initial directory: %s"):format(M.cwd), { level = "error" })
+			vim.schedule(function()
+				picker:close()
+				Snacks.notify(("Invalid initial directory: %s"):format(M.cwd), { level = "error" })
+			end)
 		end
 	end)
 end
