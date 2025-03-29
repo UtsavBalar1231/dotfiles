@@ -38,7 +38,7 @@ vim.g.neovide_light_radius = 5
 vim.g.neovide_floating_corner_radius = 12.0
 
 -- transparency
-vim.g.neovide_transparency = 0.85
+vim.g.neovide_opacity = 0.85
 vim.g.neovide_normal_opacity = 0.90
 
 -- animations

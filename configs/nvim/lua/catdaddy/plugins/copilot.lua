@@ -17,8 +17,10 @@ return {
 	"zbirenbaum/copilot.lua",
 	cmd = "Copilot",
 	event = "InsertEnter",
-	enabled = true,
 	opts = {
+		filetypes = {
+			markdown = true, -- Explicitly enable markdown
+		},
 		suggestion = {
 			enabled = not vim.g.ai_cmp,
 			auto_trigger = true,

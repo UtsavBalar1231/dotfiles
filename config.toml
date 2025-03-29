@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "a3129da27e21befdb2ceaf5a3a48cdc291beb21592099bd6509aa6c496e2fa1c"
+hash = "3049a749952ae43110ccb531855f91628ee37248df20c473f93e89bfac09e355"
 conf_type = "Dir"
 
 [[configs]]
@@ -46,7 +46,7 @@ conf_type = "File"
 [[configs]]
 name = "zshrc"
 path = "$HOME/.zshrc"
-hash = "58a6cf136d384efaf8bdbd632247fa4154bf2ba8064f9ff533f3ff757da3b4e2"
+hash = "ab77ea4e8f5ce05070bd97b9e2899bd7e12b24f0f1d382d20b2bd02f98811051"
 conf_type = "File"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "3c56f28018291725bafa313bffb65bbb79fc216d83e4ca8e9332381108e8f767"
+hash = "bf8ce148071c6c78cc33307f73329ef21df6713e3296b1c015e8d523717ac9b0"
 conf_type = "Dir"
 
 [[configs]]
@@ -100,7 +100,7 @@ conf_type = "Dir"
 [[configs]]
 name = "gtk-3.0"
 path = "$HOME/.config/gtk-3.0"
-hash = "94d0add136f48f2fb1a6e1d9497693c2b66fd94c6e1c9a2c5d2886d2458066e7"
+hash = "daf1bb375075204b119a5bf5710ffe001453507a0a64cb723a56a0e81740373c"
 conf_type = "Dir"
 
 [[configs]]
@@ -118,13 +118,13 @@ conf_type = "Dir"
 [[configs]]
 name = "waybar"
 path = "$HOME/.config/waybar"
-hash = "aaef70c810052bff6dc1cf4054eb6b688768656e1272ae1c9e3e776d1391650b"
+hash = "fdbc99ca3d0358a4d5ccdd7f3b30c51865da162ccfaac1b418858d459d9b6bc6"
 conf_type = "Dir"
 
 [[configs]]
 name = "wallpapers"
 path = "$HOME/Pictures/wallpapers"
-hash = "8a2aa33e4efe9cfa9290f6a6b238fd1ee782dceb6d3d9b9b6169eb9a28e32bf8"
+hash = "397a491bbaaa1383ef9bfdc29cf201fa51c11e6395afc949a1ba4704a7d5c751"
 conf_type = "Dir"
 
 [[configs]]
@@ -154,7 +154,7 @@ conf_type = "Dir"
 [[configs]]
 name = "pacman"
 path = "/etc/pacman.conf"
-hash = "d14d679f64fc44deb9622eeaebc75ecf9c14f84ca62a4a83bb810f2c7df35490"
+hash = "b364759ec8e06b5cc1b57485bc909c433ff4cc09dca2ccb75a3a7c46224b3beb"
 conf_type = "File"
 
 [[configs]]
@@ -166,7 +166,7 @@ conf_type = "Dir"
 [[configs]]
 name = "election-flags"
 path = "$HOME/.config/electron-flags.conf"
-hash = "44f70a9d3f7d342b6276915320e2181ecd773f533a59ab0b392157efb2eb4f94"
+hash = "7d35cf8e4e2b20fc2abdedf5710143bf63289df5b2a386615cf553123b97f96a"
 conf_type = "File"
 
 [[configs]]

@@ -211,4 +211,25 @@ get_latest_wallpaper() {
     fi
 }
 
+function debinstall() {
+	ar x $1 data.tar.xz
+	sudo mkdir /tmp/$1_dir
+	sudo tar -C /tmp/$1_dir -xf data.tar.xz
+	sudo rsync /tmp/$1_dir /
+	rm -f data.tar.xz
+	sudo rm -rf /tmp/$1_dir
+}
+
+export DOCKER_HOST=unix:///var/run/docker.sock
+
+function 0x0() {
+	local file_name="${1##*/}"
+	if [ -z "$file_name" ]; then
+		echo "Usage: 0x0 <file>"
+		return 1
+	fi
+
+	curl -F "file=@$1" https://0x0.st
+}
+
 # zprof

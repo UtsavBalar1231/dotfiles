@@ -24,7 +24,7 @@ map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Wi
 map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
 
 -- Map <leader>w to quick save
-map({ "i", "x", "n", "s" }, "<leader>w", "<cmd>:w<cr><esc>", { desc = "Quick Save File" })
+map({ "x", "n", "s" }, "<leader>w", "<cmd>:w<cr><esc>", { desc = "Quick Save File" })
 
 -- Map :wq to :x to save and close
 -- map("n", ":wq", ":x", { desc = "Save and Close" })
@@ -186,8 +186,19 @@ keymap("n", "<leader>l", "<cmd>Lazy<cr>", { noremap = true, silent = true, desc 
 keymap("n", "<leader>fn", "<cmd>enew<cr>", { noremap = true, silent = true, desc = "New File" })
 
 -- keymaps for quickfix list
-keymap("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
-keymap("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
+map("n", "<leader>xl", function()
+	local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
+	if not success and err then
+		vim.notify(err, vim.log.levels.ERROR)
+	end
+end, { desc = "Location List" })
+-- quickfix list
+map("n", "<leader>xq", function()
+	local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+	if not success and err then
+		vim.notify(err, vim.log.levels.ERROR)
+	end
+end, { desc = "Quickfix List" })
 keymap("n", "[q", "lua vim.cmd.cprev()<cr>", { desc = "Previous Quickfix" })
 keymap("n", "]q", "lua vim.cmd.cnext()<cr>", { desc = "Next Quickfix" })
 

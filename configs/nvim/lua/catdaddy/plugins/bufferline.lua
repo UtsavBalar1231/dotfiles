@@ -37,6 +37,9 @@ return {
 				highlight = "Directory",
 				text_align = "left",
 			},
+			{
+				filetype = "snacks_layout_box",
+			},
 		},
 		---@param opts bufferline.IconFetcherOpts
 		get_element_icon = function(opts)
@@ -45,6 +48,16 @@ return {
 		end,
 	},
 	config = function(_, opts)
+		require("bufferline").setup(opts)
+		-- Fix bufferline when restoring a session
+		vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
+			callback = function()
+				vim.schedule(function()
+					pcall(nvim_bufferline)
+				end)
+			end,
+		})
+
 		if (vim.g.colors_name or ""):find("catppuccin") then
 			opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
 		end

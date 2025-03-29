@@ -24,8 +24,8 @@
     "tray",
   ],
   "modules-center": [
+    "idle_inhibitor",
     "custom/swaync",
-    "custom/hyprsunset",
     "clock",
     "custom/weather",
   ],
@@ -103,8 +103,8 @@
     "format": "{}",
     "tooltip": true,
     "interval": 3600,
-    "on-click": "wttrbar --location Surat --nerd --custom-indicator \"{ICON} {FeelsLikeC}°C\"  && notify-send 'Updated weather!'",
-    "exec": "wttrbar --location Surat --nerd --custom-indicator \"{ICON} {FeelsLikeC}°C\"",
+    "on-click": "wttrbar --location Shillong --nerd --custom-indicator \"{ICON} {FeelsLikeC}°C\"  && notify-send 'Updated weather!'",
+    "exec": "wttrbar --location Shillong --nerd --custom-indicator \"{ICON} {FeelsLikeC}°C\"",
     "return-type": "json",
   },
   "memory": {
@@ -255,5 +255,15 @@
     "show-passive-items": false,
     "max-length": 6,
     "min-length": 6,
+  },
+  "idle_inhibitor": {
+    "tooltip": true,
+    "tooltip-format-activated": "Idle_inhibitor active",
+    "tooltip-format-deactivated": "Idle_inhibitor not active",
+    "format": "{icon}",
+    "format-icons": {
+      "activated": " ",
+      "deactivated": " ",
+    },
   },
 }

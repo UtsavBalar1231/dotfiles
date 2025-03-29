@@ -8,6 +8,14 @@ return {
 		opts = {
 			animate = { enabled = false },
 			bigfile = { enabled = true },
+			picker = {
+				sources = {
+					explorer = {
+						replace_netrw = true,
+						layout = { preset = "sidebar", preview = false },
+					},
+				},
+			},
 			dashboard = {
 				enabled = true,
 				formats = {
@@ -30,6 +38,12 @@ return {
 					{ section = "recent_files", cwd = true, limit = 8, padding = 1 },
 					{ title = "Bookmarks", padding = 1 },
 					{ section = "keys" },
+					{
+						icon = " ",
+						key = "p",
+						desc = "Projects",
+						action = ":lua Snacks.picker.projects()",
+					},
 				},
 			},
 			dim = { enabled = true },
@@ -66,7 +80,6 @@ return {
 					wo = { wrap = true },
 				},
 			},
-			picker = {},
 		},
 
 		keys = {
@@ -118,6 +131,13 @@ return {
 					Snacks.words.jump(-1, true)
 				end,
 				desc = "LSP word references jump ahead",
+			},
+			{
+				"<leader>cl",
+				function()
+					Snacks.picker.lsp_config()
+				end,
+				desc = "Lsp Info",
 			},
 			{
 				"<leader>dd",
@@ -265,14 +285,35 @@ return {
 			{
 				"<leader>fF",
 				function()
-					Util.snacks.file_browser()
+					Util.snacks.file_browser({})
 				end,
 				desc = "Find Files",
+			},
+			{
+				"<leader>fF",
+				function()
+					Snacks.picker.files()
+				end,
+				desc = "Find Files in Current Buffer Directory",
 			},
 			{
 				"<leader>ff",
 				function()
 					Snacks.picker.files({ cwd = vim.fn.expand("%:p:h") })
+				end,
+				desc = "Find Files",
+			},
+			{
+				"<leader>fe",
+				function()
+					Snacks.explorer({ cwd = Util.root() })
+				end,
+				desc = "Find Files in Current Buffer Directory",
+			},
+			{
+				"<leader>fE",
+				function()
+					Snacks.explorer({})
 				end,
 				desc = "Find Files in Current Buffer Directory",
 			},
@@ -303,6 +344,13 @@ return {
 					Snacks.picker.git_status()
 				end,
 				desc = "Git Status",
+			},
+			{
+				"<leader>gS",
+				function()
+					Snacks.picker.git_stash()
+				end,
+				desc = "Git Stash",
 			},
 			{
 				"<leader>sb",
@@ -349,6 +397,13 @@ return {
 				desc = "Registers",
 			},
 			{
+				"<leader>s/",
+				function()
+					Snacks.picker.search_history()
+				end,
+				desc = "Search History",
+			},
+			{
 				"<leader>sa",
 				function()
 					Snacks.picker.autocmds()
@@ -370,11 +425,18 @@ return {
 				desc = "Commands",
 			},
 			{
-				"<leader>fd",
+				"<leader>sd",
 				function()
 					Snacks.picker.diagnostics()
 				end,
 				desc = "Diagnostics",
+			},
+			{
+				"<leader>sD",
+				function()
+					Snacks.picker.diagnostics_buffer()
+				end,
+				desc = "Buffer Diagnostics",
 			},
 			{
 				"<leader>sh",
@@ -444,10 +506,9 @@ return {
 				function()
 					local opts = {
 						items = Util.colorscheme.get_available_colorschemes(),
-						preview = "colorscheme",
 						format = "text",
 						title = " Colorschemes ",
-						preset = "vertical",
+						preview = "colorscheme",
 						confirm = function(picker, item)
 							picker:close()
 							if item then
@@ -610,6 +671,18 @@ return {
 					})
 				end,
 			})
+
+			vim.api.nvim_create_autocmd("BufEnter", {
+				group = vim.api.nvim_create_augroup("snacks_explorer_start_directory", { clear = true }),
+				desc = "Start Snacks Explorer with directory",
+				once = true,
+				callback = function()
+					local dir = vim.fn.argv(0) --[[@as string]]
+					if dir ~= "" and vim.fn.isdirectory(dir) == 1 then
+						Snacks.picker.explorer({ cwd = dir })
+					end
+				end,
+			})
 		end,
 	},
 	{
@@ -620,11 +693,15 @@ return {
 			opts = function(_, opts)
 				return vim.tbl_deep_extend("force", opts or {}, {
 					picker = {
-						actions = require("trouble.sources.snacks").actions,
+						actions = {
+							trouble_open = function(...)
+								return require("trouble.sources.snacks").actions.trouble_open.action(...)
+							end,
+						},
 						win = {
 							input = {
 								keys = {
-									["<c-t>"] = {
+									["<a-t>"] = {
 										"trouble_open",
 										mode = { "n", "i" },
 									},

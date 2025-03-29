@@ -15,7 +15,6 @@ return {
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
 		"xzbdmw/colorful-menu.nvim",
-		"olimorris/codecompanion.nvim",
 	},
 
 	--- @module 'blink.cmp'
@@ -59,15 +58,11 @@ return {
 			["<C-down>"] = { "scroll_documentation_down", "fallback" },
 		},
 
-		snippets = {
-			preset = "luasnip",
-		},
+		snippets = { preset = "luasnip" },
 
 		signature = {
 			enabled = true,
-			window = {
-				border = Util.config.icons.border,
-			},
+			window = { border = Util.config.icons.border },
 		},
 
 		appearance = {
@@ -77,49 +72,30 @@ return {
 		},
 
 		sources = {
-			min_keyword_length = function(ctx)
-				if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
-					return 2
-				end
-				return 0
-			end,
 			default = function()
-				local success, node = pcall(vim.treesitter.get_node)
-				if
-					success
-					and node
-					and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type())
-				then
-					return { "buffer" }
-				else
-					return { "lsp", "path", "snippets", "buffer", "codecompanion" }
-				end
+				return { "lsp", "path", "snippets", "buffer" }
 			end,
 			providers = {
-				codecompanion = {
-					name = "CodeCompanion",
-					module = "codecompanion.providers.completion.blink",
-					score_offset = 100,
-					enabled = true,
+				cmdline = {
+					-- ignores cmdline completions when executing shell commands
+					enabled = function()
+						return vim.fn.getcmdtype() ~= ":" or not vim.fn.getcmdline():match("^[%%0-9,'<>%-]*!")
+					end,
 				},
 				buffer = {
 					score_offset = 100,
 					max_items = 3,
-					opts = {
-						get_bufnrs = function()
-							return vim.tbl_filter(function(bufnr)
-								return vim.bo[bufnr].buftype == ""
-							end, vim.api.nvim_list_bufs())
-						end,
-					},
+					enabled = true,
 				},
 				path = {
 					opts = {
+						get_cwd = function(_)
+							return vim.fn.getcwd()
+						end,
 						trailing_slash = false,
 						show_hidden_files_by_default = true,
 					},
 				},
-
 				snippets = {
 					-- Whether to use show_condition for filtering snippets
 					-- use_show_condition = true,
@@ -127,16 +103,6 @@ return {
 					-- show_autosnippets = true,
 				},
 			},
-			cmdline = function()
-				local type = vim.fn.getcmdtype()
-				if type == "/" or type == "?" then
-					return { "buffer" }
-				end
-				if type == ":" then
-					return { "cmdline" }
-				end
-				return {}
-			end,
 		},
 
 		completion = {

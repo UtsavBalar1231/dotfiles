@@ -22,7 +22,7 @@ HoldPkg     = pacman glibc
 Architecture = auto
 
 # Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup
-#IgnorePkg   =
+IgnorePkg   = telegram-desktop-dev-bin
 #IgnoreGroup =
 
 #NoUpgrade   =
@@ -76,9 +76,6 @@ LocalFileSigLevel = Optional
 Include = /etc/pacman.d/mirrorlist
 
 [gnome-unstable]
-Include = /etc/pacman.d/mirrorlist
-
-[testing]
 Include = /etc/pacman.d/mirrorlist
 
 [core-testing]
