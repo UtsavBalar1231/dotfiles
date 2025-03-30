@@ -12,7 +12,6 @@ return {
 	build = "cargo build --release",
 
 	dependencies = {
-		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
 		"xzbdmw/colorful-menu.nvim",
 	},
@@ -62,7 +61,7 @@ return {
 
 		signature = {
 			enabled = true,
-			window = { border = Util.config.icons.border },
+			-- window = { border = Util.config.icons.border },
 		},
 
 		appearance = {
@@ -73,7 +72,7 @@ return {
 
 		sources = {
 			default = function()
-				return { "lsp", "path", "snippets", "buffer" }
+				return { "buffer", "lsp", "path", "snippets" }
 			end,
 			providers = {
 				cmdline = {
@@ -83,24 +82,34 @@ return {
 					end,
 				},
 				buffer = {
-					score_offset = 100,
-					max_items = 3,
+					name = "Buffer",
 					enabled = true,
+					max_items = 3,
+					module = "blink.cmp.sources.buffer",
+					min_keyword_length = 3,
+					score_offset = 100,
+				},
+				lsp = {
+					name = "lsp",
+					enabled = true,
+					module = "blink.cmp.sources.lsp",
+					min_keyword_length = 2,
+					score_offset = 80,
 				},
 				path = {
+					name = "Path",
+					module = "blink.cmp.sources.path",
+					score_offset = 25,
+					fallbacks = { "snippets", "buffer" },
 					opts = {
-						get_cwd = function(_)
-							return vim.fn.getcwd()
+						get_cwd = function(context)
+							-- return vim.fn.getcwd()
+							return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
 						end,
 						trailing_slash = false,
 						show_hidden_files_by_default = true,
+						label_trailing_slash = true,
 					},
-				},
-				snippets = {
-					-- Whether to use show_condition for filtering snippets
-					-- use_show_condition = true,
-					-- Whether to show autosnippets in the completion list
-					-- show_autosnippets = true,
 				},
 			},
 		},
@@ -122,13 +131,14 @@ return {
 			documentation = {
 				auto_show = false,
 				auto_show_delay_ms = 150,
-				window = { border = Util.config.icons.border },
+				-- window = { border = Util.config.icons.border },
 			},
 			ghost_text = { enabled = true },
 			menu = {
 				auto_show = function(ctx)
 					return ctx.mode ~= "cmdline" or not vim.tbl_contains({ "/", "?" }, vim.fn.getcmdtype())
 				end,
+				-- border = Util.config.icons.border,
 				draw = {
 					treesitter = { "lsp" },
 					columns = {
@@ -150,8 +160,5 @@ return {
 		},
 	},
 
-	opts_extend = {
-		"sources.cmdline",
-		"sources.default",
-	},
+	opts_extend = { "sources.default", "cmdline.sources", "term.sources" },
 }

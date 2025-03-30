@@ -10,5 +10,9 @@ return {
 	opts = {
 		history = true,
 		delete_check_events = "TextChanged",
+		region_check_events = "CursorMoved",
+	},
+	specs = {
+		{ "Saghen/blink.cmp", optional = true, opts = { snippets = { preset = "luasnip" } } },
 	},
 }

@@ -185,13 +185,18 @@ keymap("n", "<leader>l", "<cmd>Lazy<cr>", { noremap = true, silent = true, desc 
 -- keymap to open new file
 keymap("n", "<leader>fn", "<cmd>enew<cr>", { noremap = true, silent = true, desc = "New File" })
 
--- keymaps for quickfix list
+-- location list
 map("n", "<leader>xl", function()
 	local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
 	if not success and err then
 		vim.notify(err, vim.log.levels.ERROR)
 	end
 end, { desc = "Location List" })
+keymap("n", "[l", "lua vim.cmd.lprev()<cr>", { desc = "Previous loclist" })
+keymap("n", "]l", "lua vim.cmd.lnext()<cr>", { desc = "Next loclist" })
+keymap("n", "]L", "lua vim.cmd.lfirst()<cr>", { desc = "First loclist" })
+keymap("n", "[L", "lua vim.cmd.llast()<cr>", { desc = "Last loclist" })
+
 -- quickfix list
 map("n", "<leader>xq", function()
 	local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
@@ -201,6 +206,9 @@ map("n", "<leader>xq", function()
 end, { desc = "Quickfix List" })
 keymap("n", "[q", "lua vim.cmd.cprev()<cr>", { desc = "Previous Quickfix" })
 keymap("n", "]q", "lua vim.cmd.cnext()<cr>", { desc = "Next Quickfix" })
+keymap("n", "]Q", "lua vim.cmd.cfirst()<cr>", { desc = "First Quickfix" })
+keymap("n", "[Q", "lua vim.cmd.clast()<cr>", { desc = "Last Quickfix" })
+
 
 -- BASH-style movement in insert mode
 keymap("i", "<C-a>", "<C-o>^", { noremap = true, silent = true, desc = "Move to Beginning of Line" })

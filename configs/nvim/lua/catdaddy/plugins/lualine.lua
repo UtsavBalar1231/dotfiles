@@ -3,7 +3,7 @@ return {
 	event = { "BufReadPost", "BufNewFile", "BufWritePre" },
 	lazy = true,
 	dependencies = {
-		{ "AndreM222/copilot-lualine" },
+		-- { "AndreM222/copilot-lualine" },
 	},
 	init = function()
 		-- Show the current document symbols location from Trouble in lualine
@@ -154,7 +154,7 @@ return {
 				},
 				lualine_z = {
 					Snacks.profiler.status(),
-					"copilot",
+				-- 	"copilot",
 				},
 			},
 			inactive_sections = {

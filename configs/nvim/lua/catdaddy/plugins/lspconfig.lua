@@ -5,6 +5,24 @@ return {
 	dependencies = {
 		"saghen/blink.cmp",
 	},
+	opts = {
+		features = {
+			codelens = true,
+			inlay_hints = false,
+			semantic_tokens = true,
+		},
+		defaults = {
+			hover = {
+				border = Util.config.icons.border,
+				silent = true,
+			},
+			signature_help = {
+				border = Util.config.icons.border,
+				silent = true,
+				focusable = false,
+			},
+		},
+	},
 	config = function()
 		local lspconfig = require("lspconfig")
 		local capabilities = require("blink.cmp").get_lsp_capabilities({
@@ -25,6 +43,13 @@ return {
 		vim.diagnostic.config({
 			underline = true,
 			update_in_insert = false,
+			float = {
+				focused = false,
+				style = "minimal",
+				source = true,
+				header = "",
+				prefix = "",
+			},
 			virtual_text = {
 				spacing = 4,
 				source = "if_many",
@@ -98,6 +123,16 @@ return {
 					desc = "LSP Format buffer",
 				},
 				{ mode = "n", lhs = "<C-k>", rhs = vim.lsp.buf.signature_help, desc = "LSP Signature help" },
+				{ mode = "n", lhs = "gra", rhs = vim.lsp.buf.code_action, desc = "LSP: Code action" },
+				{ mode = "n", lhs = "grr", rhs = vim.lsp.buf.references, desc = "LSP: Find references" },
+				{
+					mode = "n",
+					lhs = "gri",
+					rhs = vim.lsp.buf.implementation,
+					desc = "LSP: Go to implementation",
+				},
+				{ mode = "n", lhs = "grn", rhs = vim.lsp.buf.rename, desc = "LSP: Rename" },
+				{ mode = "n", lhs = "g0", rhs = vim.lsp.buf.document_symbol, desc = "LSP: Document symbols" },
 			}
 
 			for _, map in ipairs(mappings) do
@@ -198,11 +233,6 @@ return {
 			config.on_attach = on_attach
 			lspconfig[server].setup(config)
 		end
-
-		-- Hover window border customization
-		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-			border = Util.config.icons.border,
-		})
 
 		-- Custom configuration for c3_lsp
 		local lsp_configurations = require("lspconfig.configs")

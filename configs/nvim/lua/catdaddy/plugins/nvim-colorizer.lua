@@ -1,9 +1,15 @@
 return {
 	"catgoose/nvim-colorizer.lua",
-	event = "VeryLazy",
+	event = "InsertEnter",
+	cmd = "HighlightColors",
 	opts = {
 		lazy_load = true,
+		enable_named_colors = false,
+		virtual_symbol = "󱓻",
 		filetypes = { "*" },
+		exclude_buffer = function()
+			return vim.bo.filetype == "bigfile"
+		end,
 		user_default_options = {
 			names = true, -- "Name" codes like Blue or blue
 			names_custom = nil, -- Extra names to be highlighted: table|function|nil

@@ -202,10 +202,12 @@ vim.opt.diffopt = {
 vim.o.inccommand = "nosplit"
 
 -- Show short messages
-vim.opt.shortmess:append("c") -- for nvim-cmp
+vim.opt.shortmess:append("C") -- for completion messages
+vim.opt.shortmess:append("c") -- for completion messages
 vim.opt.shortmess:append("I") -- Hide the startup screen
-vim.opt.shortmess:append("A") -- Ignore swap file messages
-vim.opt.shortmess:append("a") -- Shorter message formats
+vim.opt.shortmess:append("s") -- Do not show search count
+-- vim.opt.shortmess:append("A") -- Ignore swap file messages
+-- vim.opt.shortmess:append("a") -- Shorter message formats
 
 -- built-in ftplugins should not change my keybindings
 vim.g.no_plugin_maps = true

@@ -8,7 +8,14 @@ return {
 		opts = {
 			animate = { enabled = false },
 			bigfile = { enabled = true },
+			explorer = {
+				enabled = true,
+				preview = true,
+				layout = { preset = "sidebar", preview = true },
+			},
+			image = { enabled = true },
 			picker = {
+				ui_select = true,
 				sources = {
 					explorer = {
 						replace_netrw = true,
@@ -47,22 +54,16 @@ return {
 				},
 			},
 			dim = { enabled = true },
+			scope = { enabled = true },
 			indent = {
+				scope = { enabled = true },
 				enabled = true,
-				hl = {
-					"SnacksIndent1",
-					"SnacksIndent2",
-					"SnacksIndent3",
-					"SnacksIndent4",
-					"SnacksIndent5",
-					"SnacksIndent6",
-					"SnacksIndent7",
-					"SnacksIndent8",
-				},
 				only_scope = true,
-				scope = {
-					enabled = true,
-				},
+				filter = function(bufnr)
+					return vim.bo.filetype ~= "bigfile"
+						and vim.g.snacks_indent ~= false
+						and vim.b[bufnr].snacks_indent ~= false
+				end,
 			},
 			input = { enabled = true },
 			notifier = {
