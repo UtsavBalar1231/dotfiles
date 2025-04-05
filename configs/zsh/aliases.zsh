@@ -225,3 +225,6 @@ command -v yazi >/dev/null 2>&1 && alias y='yazi'
 
 # alias for nvim as sudo editor
 command -v nvim >/dev/null 2>&1 && export SUDO_EDITOR=$(which nvim)
+
+# alias for zathura
+command -v zathura >/dev/null 2>&1 && alias zat='zathura'

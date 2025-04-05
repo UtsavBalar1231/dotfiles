@@ -16,14 +16,14 @@ return {
 		"leath-dub/snipe.nvim",
 		keys = {
 			{
-				"bb",
+				"Bb",
 				function()
 					require("snipe").open_buffer_menu()
 				end,
 				desc = "Open Snipe buffer menu",
 			},
 			{
-				"ss",
+				"Ss",
 				function()
 					require("snipe").open_buffer_menu()
 				end,

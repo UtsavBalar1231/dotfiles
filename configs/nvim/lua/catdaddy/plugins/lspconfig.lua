@@ -203,6 +203,11 @@ return {
 			hyprls = {},
 			c3_lsp = {},
 			zls = {},
+			qmlls = {
+				cmd = {
+					"qmlls6",
+				},
+			},
 			-- latex
 			texlab = {
 				settings = {

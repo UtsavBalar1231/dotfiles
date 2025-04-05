@@ -162,7 +162,7 @@ vim.o.showcmd = true
 vim.o.showmode = false
 -- Show nbsp, extends, precedes and trailing spaces
 vim.o.list = false
-vim.o.listchars = "nbsp:¬,extends:»,precedes:«,trail:•"
+vim.o.listchars = "nbsp:¬,extends:»,precedes:«,trail:•,tab:»·"
 -- Better display for messages
 vim.o.cmdheight = 1
 -- Show cursor line
