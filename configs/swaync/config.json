@@ -6,18 +6,18 @@
 	"layer-shell": true,
 	"control-center-layer": "top",
 	"cssPriority": "user",
-	"control-center-width": 480,
-	"control-center-height": 860,
+	"control-center-width": 600,
+	"control-center-height": 1000,
 	"control-center-margin-top": 8,
-	"control-center-margin-bottom": 160,
-	"control-center-margin-right": 500,
-	"control-center-margin-left": 0,
+	"control-center-margin-bottom": 8,
+	"control-center-margin-right": 8,
+	"control-center-margin-left": 8,
 	"notification-2fa-action": true,
 	"notification-inline-replies": true,
 	"notification-window-width": 600,
-	"notification-icon-size": 48,
-	"notification-body-image-height": 160,
-	"notification-body-image-width": 200,
+	"notification-icon-size": 64,
+	"notification-body-image-height": 200,
+	"notification-body-image-width": 300,
 	"timeout": 4,
 	"timeout-low": 2,
 	"timeout-critical": 6,
@@ -59,8 +59,8 @@
 			"text": " "
 		},
 		"mpris": {
-			"image-size": 96,
-			"image-radius": 20
+			"image-size": 128,
+			"image-radius": 24
 		},
 		"backlight": {
 			"label": "󰃟 ",
@@ -73,7 +73,7 @@
 			"collapse-button-label": "",
 			"show-per-app": true,
 			"show-per-app-icon": true,
-			"show-per-app-label": false
+			"show-per-app-label": true
 		},
 		"buttons-grid": {
 			"actions": [

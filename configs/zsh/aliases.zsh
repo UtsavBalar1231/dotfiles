@@ -101,6 +101,7 @@ if command -v rg >/dev/null 2>&1; then
 	# alias rg='rg --smart-case'
 	alias rgf='rg --files'
 	alias rgd='rg --files-with-matches'
+	alias rg='rg -i --smart-case --color=always'
 else
 	install_package 'ripgrep' 'ripgrep' 'ripgrep'
 fi

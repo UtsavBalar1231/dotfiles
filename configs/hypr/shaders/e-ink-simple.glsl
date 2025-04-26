@@ -3,7 +3,6 @@ precision mediump int;
 
 uniform sampler2D tex;
 uniform float iTime;
-uniform sampler2D previousFrame; // For ghosting effect
 varying vec2 v_texcoord;
 
 // Forward declarations
@@ -37,7 +36,6 @@ float getEInkLevel(float value, int levels) {
 void main() {
     vec2 uv = v_texcoord;
     vec4 color = texture2D(tex, uv);
-    vec4 prevColor = texture2D(previousFrame, uv);
     
     // Convert to grayscale
     float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
@@ -52,9 +50,10 @@ void main() {
     // Apply paper texture and grain
     gray = gray + paperGrain + noise1 - noise2;
     
-    // Add ghosting/persistence from previous frame (e-ink characteristic)
-    float ghostStrength = 0.15; // How strong the ghosting effect is
-    gray = mix(gray, dot(prevColor.rgb, vec3(0.299, 0.587, 0.114)), ghostStrength);
+    // Simulate ghosting with a time-based noise pattern
+    // This creates a subtle shift that resembles ghosting
+    float pseudoGhosting = noise(uv * 300.0 + vec2(iTime * 0.05, 0.0)) * 0.08;
+    gray = mix(gray, pseudoGhosting, 0.1);
     
     // Apply multiple grayscale levels (simulate real e-ink resolution)
     int levels = 4; // Most e-ink displays have 4-16 grayscale levels
@@ -65,8 +64,8 @@ void main() {
     e_ink = clamp(e_ink + randomVar, 0.0, 1.0);
     
     // Additional tweaks for better realism
-    // Using fixed pixel size instead of textureSize for compatibility
-    vec2 pixelSize = vec2(0.001, 0.001); // Small fixed value for pixel size
+    // Using fixed pixel size
+    vec2 pixelSize = vec2(0.001, 0.001);
     float neighbor1 = texture2D(tex, uv + pixelSize).r;
     float neighbor2 = texture2D(tex, uv - pixelSize).r;
     
@@ -74,5 +73,9 @@ void main() {
     float edgeEnhance = abs(neighbor1 - neighbor2) * 0.15;
     e_ink = clamp(e_ink + edgeEnhance, 0.0, 1.0);
     
+    // Add very subtle refresh anomalies (occasional lines)
+    float refreshLine = step(0.995, fract(uv.y * 50.0 + iTime * 0.1)) * 0.05;
+    e_ink = mix(e_ink, 1.0, refreshLine);
+    
     gl_FragColor = vec4(vec3(e_ink), 1.0);
-}
+} 

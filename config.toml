@@ -4,13 +4,13 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "add2515bda1b3d3b5d705ed11956573f31701ba792bb173f5b3606bc68a9afad"
+hash = "28e00a4974d88e4709ae942a2d8efd3ce43ff50f72c8067e0c56cf6cbb389106"
 conf_type = "Dir"
 
 [[configs]]
 name = "polybar"
 path = "$HOME/.config/polybar/"
-hash = "3a0019e8388b54962a1268c780c97eee3f5f950ff19f39bc87a3de3dbd88d85c"
+hash = "4826c910a010ac968d1b874655d9560a0120f705675d4ceb5b2d5499e5bbee03"
 conf_type = "Dir"
 
 [[configs]]
@@ -22,7 +22,7 @@ conf_type = "Dir"
 [[configs]]
 name = "zsh"
 path = "$HOME/.config/zsh/"
-hash = "f6e9ae1aa171d3a54a4b4d12a2d4cd9b698143867fcc8094afec2fe708a41283"
+hash = "ee472f8319b7a4a66e2a20e4c3b5a701931075e05c2765da3b6698aa9aeb4ec9"
 conf_type = "Dir"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "819718cb1fd06ce4b8a2f201a6eccca7b4796778fee54158e84bccf0902955cb"
+hash = "02b498945b11401a3a458d1fa00f2cc9fbe7079de18f59fd5b992930f3534605"
 conf_type = "Dir"
 
 [[configs]]
@@ -148,7 +148,7 @@ conf_type = "Dir"
 [[configs]]
 name = "ly"
 path = "$HOME/.config/ly"
-hash = "2e636057211a63e88186c3a07c55c15e4214c77f3358300e296be1e00027d36d"
+hash = "e88400e536fa69a6ef5a23500aacd13c63ebb197031be3e0ddb84eb5b52f0d61"
 conf_type = "Dir"
 
 [[configs]]
@@ -160,7 +160,7 @@ conf_type = "File"
 [[configs]]
 name = "swaync"
 path = "$HOME/.config/swaync"
-hash = "c78c1096bc0786ef0ab1e97ce6a0d76a8b02f4f94240884a8b53b81608bf964b"
+hash = "94207fdcb588c40cdd5080733b16a28c40e5cca15a0ea76c10641f4ac8339bb8"
 conf_type = "Dir"
 
 [[configs]]

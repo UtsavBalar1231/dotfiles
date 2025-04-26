@@ -8,18 +8,18 @@ return {
 		opts = {
 			animate = { enabled = false },
 			bigfile = { enabled = true },
-			explorer = {
-				enabled = true,
-				preview = true,
-				layout = { preset = "sidebar", preview = true },
-			},
+			-- explorer = {
+			-- 	enabled = true,
+			-- 	preview = true,
+			-- 	layout = { preset = "sidebar", preview = true },
+			-- },
 			image = { enabled = true },
 			picker = {
 				ui_select = true,
 				sources = {
 					explorer = {
 						replace_netrw = true,
-						layout = { preset = "sidebar", preview = false },
+						layout = { preset = "sidebar", preview = true },
 					},
 				},
 			},
