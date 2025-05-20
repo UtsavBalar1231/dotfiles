@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 fetch_updates() {
 	local pacman_updates aur_updates total_updates tooltip output
 
-	pacman_updates=$(pacman -Qu 2>/dev/null | wc -l)
-	aur_updates=$(pacman -Qm 2>/dev/null | aur vercmp 2>/dev/null | wc -l)
+	pacman_updates="$(pacman -Qu 2>/dev/null | wc -l)"
+	# If aur vercmp is not available, fallback to 0
+	if command -v aur &>/dev/null; then
+		aur_updates="$(pacman -Qm 2>/dev/null | aur vercmp 2>/dev/null | wc -l)"
+	else
+		aur_updates=0
+	fi
 	total_updates=$((pacman_updates + aur_updates))
 	tooltip="There are $total_updates updates available."
 
-	output=$(jq --unbuffered --compact-output \
+	output="$(jq --unbuffered --compact-output \
 		--arg text "$total_updates" \
 		--arg tooltip "$tooltip" \
-		'{text: $text, tooltip: $tooltip}')
+		'{text: $text, tooltip: $tooltip}')"
 
 	echo "$output"
 }

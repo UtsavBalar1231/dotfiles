@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-color=$(hyprpicker --format=hex)
+set -euo pipefail
 
-if ! command -v wl-copy &>/dev/null; then
-	notify-send -i "color-picker" "Hyprpicker" "No clipboard manager found. Install wl-clipboard for clipboard support."
-fi
+main() {
+	local color
+	color="$(hyprpicker --format=hex)"
 
-echo -n "$color" | wl-copy
+	if ! command -v wl-copy &>/dev/null; then
+		notify-send -i "color-picker" "Hyprpicker" "No clipboard manager found. Install wl-clipboard for clipboard support."
+	fi
 
-notify-send -i "color-picker" "Hyprpicker" "Color copied: $color"
+	echo -n "$color" | wl-copy
+
+	notify-send -i "color-picker" "Hyprpicker" "Color copied: $color"
+}
+
+main "$@"

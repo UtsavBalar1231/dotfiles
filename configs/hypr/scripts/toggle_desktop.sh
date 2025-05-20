@@ -3,7 +3,8 @@
 set -euo pipefail
 
 get_option() {
-	hyprctl getoption "decoration:$1" | awk 'NR==1{print $2}'
+	local opt="$1"
+	hyprctl getoption "decoration:$opt" | awk 'NR==1{print $2}'
 }
 
 set_opacity() {
@@ -21,9 +22,9 @@ toggle_blur() {
 main() {
 	local active_opacity inactive_opacity blur_enabled
 
-	active_opacity=$(get_option active_opacity)
-	inactive_opacity=$(get_option inactive_opacity)
-	blur_enabled=$(hyprctl getoption decoration:blur:enabled | awk 'NR==2{print $2}')
+	active_opacity="$(get_option active_opacity)"
+	inactive_opacity="$(get_option inactive_opacity)"
+	blur_enabled="$(hyprctl getoption decoration:blur:enabled | awk 'NR==2{print $2}')"
 
 	if [[ "$active_opacity" == "1.000000" && "$inactive_opacity" == "1.000000" ]]; then
 		[[ "$blur_enabled" == "true" ]] && toggle_blur no
@@ -34,4 +35,4 @@ main() {
 	fi
 }
 
-main
+main "$@"

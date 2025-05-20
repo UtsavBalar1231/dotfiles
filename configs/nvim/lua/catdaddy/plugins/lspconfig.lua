@@ -144,6 +144,7 @@ return {
 		-- Language server configurations
 		local servers = {
 			asm_lsp = {},
+			astro = {},
 			bashls = { filetypes = { "sh", "zsh" } },
 			clangd = {
 				cmd = {

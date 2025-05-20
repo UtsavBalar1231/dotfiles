@@ -10,26 +10,28 @@ generate_filename() {
 }
 
 notify() {
-	local -r file="$1"
+	local file="$1"
 	notify-send "Screenshot saved" "$file" --icon=dialog-information
 }
 
 copy_to_clipboard_x11() {
-	xclip -selection clipboard -t image/png -i "$1"
+	local file="$1"
+	xclip -selection clipboard -t image/png -i "$file"
 }
 
 copy_to_clipboard_wayland() {
-	wl-copy <"$1"
+	local file="$1"
+	wl-copy <"$file"
 }
 
 capture_entire() {
 	local file
-	file=$(generate_filename)
+	file="$(generate_filename)"
 
-	if [[ -n "$WAYLAND_DISPLAY" ]]; then
+	if [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
 		grim "$file"
 		copy_to_clipboard_wayland "$file"
-	elif [[ -n "$DISPLAY" ]]; then
+	elif [[ -n "${DISPLAY:-}" ]]; then
 		import -window root "$file"
 		copy_to_clipboard_x11 "$file"
 	else
@@ -42,12 +44,12 @@ capture_entire() {
 
 capture_partial() {
 	local file
-	file=$(generate_filename)
+	file="$(generate_filename)"
 
-	if [[ -n "$WAYLAND_DISPLAY" ]]; then
+	if [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
 		grim -g "$(slurp)" "$file"
 		copy_to_clipboard_wayland "$file"
-	elif [[ -n "$DISPLAY" ]]; then
+	elif [[ -n "${DISPLAY:-}" ]]; then
 		import "$file"
 		copy_to_clipboard_x11 "$file"
 	else

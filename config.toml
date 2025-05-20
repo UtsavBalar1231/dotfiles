@@ -4,7 +4,7 @@ Local = "$HOME/dotfiles/configs/"
 [[configs]]
 name = "nvim"
 path = "$HOME/.config/nvim/"
-hash = "28e00a4974d88e4709ae942a2d8efd3ce43ff50f72c8067e0c56cf6cbb389106"
+hash = "b37933570436faf2527ee276d972218330a42de484e12ad19ec2946d6a234181"
 conf_type = "Dir"
 
 [[configs]]
@@ -28,7 +28,7 @@ conf_type = "Dir"
 [[configs]]
 name = "kitty"
 path = "$HOME/.config/kitty/"
-hash = "f687795c7d2ca99a14374571650f72c2c8f6ef7ec49405e52bfe82fe90dc8c05"
+hash = "4615d8b15be5998759347d275f7f6966837b533305691ebe5f59b3d4cae6e2ba"
 conf_type = "Dir"
 
 [[configs]]
@@ -76,7 +76,7 @@ conf_type = "Dir"
 [[configs]]
 name = "i3wm"
 path = "$HOME/.config/i3"
-hash = "314e4cf121579181bc918865eeb380d3a2c512f24d1a1952f299c84814317860"
+hash = "35ccff1c2992742d053c05c73152a048b164502f4359f1560962e5cb356a6de6"
 conf_type = "Dir"
 
 [[configs]]
@@ -88,7 +88,7 @@ conf_type = "File"
 [[configs]]
 name = "hypr"
 path = "$HOME/.config/hypr"
-hash = "02b498945b11401a3a458d1fa00f2cc9fbe7079de18f59fd5b992930f3534605"
+hash = "a9a45a13e1c517c95646f58c5d86c2f97dced602c7b70ce28ffb09f58b04f90f"
 conf_type = "Dir"
 
 [[configs]]
@@ -106,19 +106,13 @@ conf_type = "Dir"
 [[configs]]
 name = "gtk-4.0"
 path = "$HOME/.config/gtk-4.0"
-hash = "8133869b94f78e0a4a09ac87a79cfec94677fbf04c26a3a8e09d62a58499c206"
-conf_type = "Dir"
-
-[[configs]]
-name = "wal"
-path = "$HOME/.config/wal"
-hash = "8554a94d54ae6065a5c46da55b9e12f8d4144504dd3d623690012e933d70097c"
+hash = "db76e4dd2efd15eb3588e940c4a9010c77637df25c1db4b9f9d6254ee5e29838"
 conf_type = "Dir"
 
 [[configs]]
 name = "waybar"
 path = "$HOME/.config/waybar"
-hash = "fdbc99ca3d0358a4d5ccdd7f3b30c51865da162ccfaac1b418858d459d9b6bc6"
+hash = "73fe46ec4222c68773c9ece636c8a8c9b544755e18a9cb228a5f5fe556e6db69"
 conf_type = "Dir"
 
 [[configs]]
@@ -142,7 +136,7 @@ conf_type = "Dir"
 [[configs]]
 name = "anyrun"
 path = "$HOME/.config/anyrun"
-hash = "d1e114d82be493aec0230fc4d1e98464d8abf8083b5bebdc6c2af1ed3a95fea3"
+hash = "9fc63defa66f82c099db36760c872f051548881c79bb1b0f737915ba7a9e6fda"
 conf_type = "Dir"
 
 [[configs]]

@@ -1,29 +1,28 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 kill_process() {
 	if ! command -v fzf &>/dev/null; then
 		echo "Error: 'fzf' is not installed. Please install it to use this script."
 		return 1
 	fi
 
-	local process_name=$1
+	local process_name selected_process process_list pid confirm
 
-	if [[ -n "$process_name" ]]; then
-		local process_list
+	if [[ -n "${1:-}" ]]; then
+		process_name="$1"
 		# shellcheck disable=SC2009
-		process_list=$(ps -eo pid,command | grep -i "$process_name" | grep -v grep)
+		process_list="$(ps -eo pid,command | grep -i "$process_name" | grep -v grep)"
 
 		if [[ -z "$process_list" ]]; then
 			echo "No matching processes found for: $process_name"
 			return 1
 		fi
 
-		local selected_process
-		selected_process=$(echo "$process_list" | fzf --ansi --preview 'echo {}' --height ~20%)
+		selected_process="$(echo "$process_list" | fzf --ansi --preview 'echo {}' --height ~20%)"
 	else
-
-		local selected_process
-		selected_process=$(ps -eo pid,command --no-headers | fzf --height 20% --preview 'echo {}' --prompt="Select a process to kill: ")
+		selected_process="$(ps -eo pid,command --no-headers | fzf --height 20% --preview 'echo {}' --prompt="Select a process to kill: ")"
 	fi
 
 	if [[ -z "$selected_process" ]]; then
@@ -31,8 +30,7 @@ kill_process() {
 		return 1
 	fi
 
-	local pid
-	pid=$(echo "$selected_process" | awk '{print $1}')
+	pid="$(echo "$selected_process" | awk '{print $1}')"
 
 	echo "Selected process:"
 	echo "$selected_process"

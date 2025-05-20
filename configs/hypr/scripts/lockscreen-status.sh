@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2155
 
+set -euo pipefail
+
 ICON_WIFI=" "
 ICON_ETHERNET="󰈀 "
 ICON_DISCONNECTED="󰖪 "
@@ -15,16 +17,16 @@ ICON_PAUSED="󰏤 "
 ICON_STOPPED="󰐊 "
 
 get_network_details() {
-	local wifi_status="" ethernet_status=""
-	local interfaces=$(ip link show | awk '/^[0-9]+: / {print $2}')
+	local wifi_status="" ethernet_status="" interfaces ip_address essid
+	interfaces="$(ip link show | awk '/^[0-9]+: / {print $2}')"
 
 	for interface in $interfaces; do
-		interface=${interface%:} # Remove trailing colon
-		local ip_address=$(ip addr show "$interface" 2>/dev/null | awk '/inet / {print $2}' | cut -d/ -f1)
+		interface="${interface%:}"
+		ip_address="$(ip addr show "$interface" 2>/dev/null | awk '/inet / {print $2}' | cut -d/ -f1)"
 
 		if [[ -n "$ip_address" ]]; then
 			if [[ "$interface" =~ ^w ]]; then
-				local essid=$(iw dev "$interface" link 2>/dev/null | awk '/SSID/ {for (i=2; i<=NF; i++) printf "%s ", $i; print ""}')
+				essid="$(iw dev "$interface" link 2>/dev/null | awk '/SSID/ {for (i=2; i<=NF; i++) printf "%s ", $i; print ""}')"
 				wifi_status="$ICON_WIFI $essid"
 			elif [[ "$interface" =~ ^e ]]; then
 				ethernet_status="$ICON_ETHERNET $ip_address"
@@ -44,11 +46,10 @@ get_network_details() {
 }
 
 get_battery_percentage() {
-	local battery_percentage=-1
-	local battery_capacity="/sys/class/power_supply/BAT1/capacity"
+	local battery_percentage=-1 battery_capacity="/sys/class/power_supply/BAT1/capacity"
 
 	if [[ -f "$battery_capacity" ]]; then
-		battery_percentage=$(cat "$battery_capacity")
+		battery_percentage="$(cat "$battery_capacity")"
 	else
 		echo "󰂎 Error: Battery information not found."
 		exit 1
@@ -72,8 +73,9 @@ get_which_song() {
 		return
 	fi
 
-	local music_status=$(mpc status 2>/dev/null | awk '/^\[.*\]/ {print $1}')
-	local which_song=$(mpc current 2>/dev/null)
+	local music_status which_song
+	music_status="$(mpc status 2>/dev/null | awk '/^\[.*\]/ {print $1}')"
+	which_song="$(mpc current 2>/dev/null)"
 
 	case "$music_status" in
 	"[playing]")
@@ -92,7 +94,7 @@ get_which_song() {
 }
 
 main() {
-	case "$1" in
+	case "${1:-}" in
 	"network")
 		get_network_details
 		;;

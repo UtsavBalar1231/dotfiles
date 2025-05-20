@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-declare -g config_name="~/.config/hypr/conf/nvidia.conf"
-[[ ! -e ${config_name} ]] && touch "${config_name}"
+set -euo pipefail
+
+declare -g config_name="$HOME/.config/hypr/conf/nvidia.conf"
+[[ ! -e "$config_name" ]] && touch "$config_name"
 
 if lspci | grep -qi "NVIDIA"; then
-	cat <<-EOF >"${config_name}"
+	cat <<-EOF >"$config_name"
 		env = AQ_DRM_DEVICES, /dev/dri/card0:/dev/dri/card1
 		env = GBM_BACKEND, nvidia-drm
 		env = LIBVA_DRIVER_NAME, nvidia

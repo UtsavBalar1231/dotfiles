@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 readonly PROCESS_NAME="hypridle"
 readonly LOCK_CMD="hyprlock"  # Replace with your actual lock command
 
@@ -37,19 +39,19 @@ toggle_inhibitor() {
     if process_running; then
         pkill -x "${PROCESS_NAME}"
     else
-        command -v "${PROCESS_NAME}" >/dev/null || {
+        if ! command -v "${PROCESS_NAME}" >/dev/null; then
             echo "Error: ${PROCESS_NAME} not found" >&2
             exit 2
-        }
+        fi
         "${PROCESS_NAME}" &
     fi
 }
 
 lock_screen() {
-    command -v "${LOCK_CMD}" >/dev/null || {
+    if ! command -v "${LOCK_CMD}" >/dev/null; then
         echo "Error: ${LOCK_CMD} not found" >&2
         exit 3
-    }
+    fi
     "${LOCK_CMD}"
 }
 

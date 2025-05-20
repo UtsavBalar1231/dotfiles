@@ -13,6 +13,7 @@ PORTAL_PROCESSES=(
 )
 
 kill_portals() {
+	local process
 	for process in "${PORTAL_PROCESSES[@]}"; do
 		if pgrep -x "$process" >/dev/null; then
 			echo "Killing $process..."
@@ -24,7 +25,7 @@ kill_portals() {
 start_portal() {
 	local portal_path="$1"
 	if [[ -f "$portal_path" ]]; then
-		echo "Starting $portal_path..." 
+		echo "Starting $portal_path..."
 		"$portal_path" &
 		sleep 1
 	fi
@@ -37,4 +38,4 @@ main() {
 	start_portal "/usr/lib/xdg-desktop-portal"
 }
 
-main
+main "$@"

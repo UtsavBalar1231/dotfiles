@@ -7,13 +7,13 @@
 set -euo pipefail
 
 # Configuration
-readonly BATTERY=$(basename "$(find /sys/class/power_supply/ -name 'BAT*' | head -n 1)") # Automatically detect battery name
+readonly BATTERY="$(basename "$(find /sys/class/power_supply/ -name 'BAT*' | head -n 1)")" # Automatically detect battery name
 readonly CHECK_INTERVAL=1                                                                # Time in seconds between checks
 readonly LOW_BATTERY_THRESHOLD=20                                                        # Battery percentage for low battery warning
 readonly CRITICAL_BATTERY_THRESHOLD=10                                                   # Battery percentage for critical battery warning
 
 # Get the current GTK icon theme
-readonly GTK_ICON_THEME=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | sed "s/'//g")
+readonly GTK_ICON_THEME="$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | sed "s/'//g")"
 
 # Default icon paths
 readonly DEFAULT_ICON_PATHS=(
@@ -44,7 +44,7 @@ fi
 
 # Functions
 get_icon_for_capacity() {
-	local -r capacity=$1
+	local capacity="$1"
 	[[ -z $ICON_PATH ]] && return
 
 	case $capacity in
@@ -63,10 +63,7 @@ get_icon_for_capacity() {
 }
 
 notify() {
-	local -r urgency="$1"
-	local -r title="$2"
-	local -r message="$3"
-	local -r icon="$4"
+	local urgency="$1" title="$2" message="$3" icon="$4"
 	notify-send -u "$urgency" -i "$icon" "$title" "$message"
 }
 
@@ -85,9 +82,9 @@ monitor_battery() {
 	while true; do
 		local status capacity icon
 
-		status=$(get_battery_status)
-		capacity=$(get_battery_capacity)
-		icon=$(get_icon_for_capacity "$capacity")
+		status="$(get_battery_status)"
+		capacity="$(get_battery_capacity)"
+		icon="$(get_icon_for_capacity "$capacity")"
 
 		# Trigger notifications on status change
 		if [[ "$status" != "$previous_status" ]]; then

@@ -8,7 +8,7 @@ set $mod Mod4
 # Default fonts
 font pango:Iosevka Nerd Font 14
 font pango:JetBrainsMono Nerd Font 14
-font pango:Fira Code Nerd Font 14
+font pango:AdwaitaMono Nerd Font 14
 
 # Center window title
 title_align center
