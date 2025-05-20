@@ -129,7 +129,7 @@ build_zsh_from_source() {
         if ! run_with_sudo make -j"${cpu_count}" install; then
             error "Failed to install ZSH"
             return 1
-        }
+        fi
     ) || {
         error "Failed to build and install ZSH"
         rm -rf "${temp_dir}"

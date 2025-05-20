@@ -239,54 +239,13 @@ install_neovim() {
 install_nodejs() {
     info "Installing Node.js"
     
-    if has_command node && has_command npm; then
-        local node_version
-        node_version=$(node --version)
-        info "Node.js ${node_version} is already installed"
-        return 0
-    fi
-    
-    # Get Ubuntu version
-    local ubuntu_version
-    ubuntu_version=$(get_ubuntu_version)
-    
-    info "Detected Ubuntu version: ${ubuntu_version}"
-    
-    # Install Node.js
-    if [[ "${ubuntu_version}" -lt 22 ]]; then
-        info "Using NodeSource repository for older Ubuntu"
-        
-        if has_command curl; then
-            if ! run_cmd curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -; then
-                error "Failed to add NodeSource repository"
-                return 1
-            fi
-        elif has_command wget; then
-            if ! run_cmd wget -qO- https://deb.nodesource.com/setup_19.x | sudo -E bash -; then
-                error "Failed to add NodeSource repository"
-                return 1
-            fi
-        else
-            error "Neither curl nor wget is available to download Node.js setup script"
-            return 1
-        fi
-    fi
-    
-    # Install nodejs and npm
-    if ! run_with_sudo apt-get install -y nodejs npm; then
-        error "Failed to install Node.js"
+    # Use the setup_nodejs function from setup_env.sh
+    if ! bash "${SCRIPT_DIR}/scripts/setup_env.sh" setup_nodejs; then
+        error "Failed to install Node.js using nvm"
         return 1
     fi
     
-    # Verify installation
-    if ! has_command node || ! has_command npm; then
-        error "Node.js installation verification failed"
-        return 1
-    fi
-    
-    local node_version
-    node_version=$(node --version)
-    info "Node.js ${node_version} installed successfully"
+    info "Node.js installed successfully via nvm"
     return 0
 }
 

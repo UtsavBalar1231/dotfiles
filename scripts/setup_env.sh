@@ -560,70 +560,109 @@ setup_btop() {
 
 # Setup Node.js environment
 setup_nodejs() {
-    info "Setting up Node.js environment"
+    info "Setting up Node.js environment using nvm"
     
-    if has_command node && has_command npm; then
-        local node_version
-        node_version=$(node --version)
-        info "Node.js ${node_version} is already installed"
-        return 0
+    # Check if nvm is already installed
+    if [[ -d "${HOME}/.nvm" ]] && [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
+        info "nvm is already installed, sourcing it"
+        # shellcheck disable=SC1091
+        source "${HOME}/.nvm/nvm.sh"
+    else
+        info "Installing nvm"
+        
+        # Install nvm
+        if has_command curl; then
+            if ! run_cmd curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash; then
+                error "Failed to install nvm via curl"
+                return 1
+            fi
+        elif has_command wget; then
+            if ! run_cmd wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash; then
+                error "Failed to install nvm via wget"
+                return 1
+            fi
+        else
+            error "Neither curl nor wget is available to download nvm"
+            return 1
+        fi
+        
+        # Source nvm
+        export NVM_DIR="$HOME/.nvm"
+        # shellcheck disable=SC1091
+        if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+            source "$NVM_DIR/nvm.sh"
+        else
+            error "Failed to source nvm.sh after installation"
+            return 1
+        fi
     fi
     
-    local distro
-    distro=$(detect_distro)
+    # Verify nvm installation
+    if ! command -v nvm >/dev/null 2>&1; then
+        error "nvm installation verification failed"
+        return 1
+    fi
     
-    case "${distro}" in
-        arch)
-            info "Installing Node.js via pacman"
-            if ! run_with_sudo pacman -S --noconfirm nodejs npm; then
-                error "Failed to install Node.js via pacman"
-                return 1
-            fi
-            ;;
-            
-        ubuntu|debian)
-            local ubuntu_version
-            ubuntu_version=$(get_ubuntu_version)
-            
-            if [[ "${ubuntu_version}" -lt 22 ]]; then
-                info "Using NodeSource repository for Ubuntu ${ubuntu_version}"
-                
-                if has_command curl; then
-                    if ! run_cmd curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -; then
-                        error "Failed to add NodeSource repository"
-                        return 1
-                    fi
-                elif has_command wget; then
-                    if ! run_cmd wget -qO- https://deb.nodesource.com/setup_19.x | sudo -E bash -; then
-                        error "Failed to add NodeSource repository"
-                        return 1
-                    fi
-                else
-                    error "Neither curl nor wget is available to download Node.js setup script"
-                    return 1
-                fi
-            fi
-            
-            info "Installing Node.js via apt"
-            if ! run_with_sudo apt-get install -y nodejs npm; then
-                error "Failed to install Node.js via apt"
-                return 1
-            fi
-            ;;
-            
-        *)
-            error "Unsupported distribution for Node.js installation: ${distro}"
-            return 1
-            ;;
-    esac
+    # Install latest LTS version of Node.js
+    info "Installing latest LTS version of Node.js"
+    if ! nvm install --lts; then
+        error "Failed to install LTS version of Node.js"
+        return 1
+    fi
+    
+    # Set the installed version as default
+    if ! nvm alias default "lts/*"; then
+        warning "Failed to set LTS Node.js as default, but installation succeeded"
+    fi
     
     # Verify installation
-    if ! has_command node || ! has_command npm; then
+    if ! command -v node >/dev/null 2>&1; then
         error "Node.js installation verification failed"
         return 1
     fi
     
-    info "Node.js environment setup completed successfully"
+    # Install essential global packages
+    info "Installing essential npm global packages"
+    local global_packages=(
+        "npm"           # Latest npm
+        "yarn"          # Yarn package manager
+        "pnpm"          # pnpm package manager
+        "typescript"    # TypeScript
+        "ts-node"       # TypeScript execution
+    )
+    
+    for pkg in "${global_packages[@]}"; do
+        info "Installing ${pkg} globally"
+        if ! npm install -g "${pkg}"; then
+            warning "Failed to install ${pkg} globally, but continuing"
+        fi
+    done
+    
+    local node_version
+    node_version=$(node --version)
+    info "Node.js ${node_version} setup completed successfully"
+    
+    # Add nvm initialization to shell startup files if needed
+    if ! grep -q "nvm.sh" "${HOME}/.bashrc" 2>/dev/null; then
+        info "Adding nvm initialization to .bashrc"
+        {
+            echo "# NVM initialization"
+            echo 'export NVM_DIR="$HOME/.nvm"'
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'
+            echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion'
+        } >> "${HOME}/.bashrc"
+    fi
+    
+    if [[ -f "${HOME}/.zshrc" ]] && ! grep -q "nvm.sh" "${HOME}/.zshrc" 2>/dev/null; then
+        info "Adding nvm initialization to .zshrc"
+        {
+            echo "# NVM initialization"
+            echo 'export NVM_DIR="$HOME/.nvm"'
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'
+            echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion'
+        } >> "${HOME}/.zshrc"
+    fi
+    
     return 0
 }
 
