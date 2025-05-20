@@ -1,153 +1,366 @@
 #!/usr/bin/env bash
+# ====================================================================
+# setup-linux.sh - Ubuntu/Debian specific setup
+# ====================================================================
 
-CMD=$(realpath "${0}")
-CUR_DIR=$(dirname "${CMD}")
+# Strict mode to catch errors early
+set -euo pipefail
 
-# shellcheck source=scripts/utils.sh
-source "${CUR_DIR}"/scripts/utils.sh
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# shellcheck source=scripts/setup_shell.sh
-bash "${CUR_DIR}"/scripts/setup_env.sh
+# Source utility functions
+# shellcheck disable=SC1091
+source "${SCRIPT_DIR}/scripts/utils.sh"
 
-# Build and install zsh from source
-echo "Building ZSH from source, have patience!..."
-git clone --depth=1 https://github.com/zsh-users/zsh /tmp/zsh
-pushd /tmp/zsh
-./Util/preconfig
-./configure --enable-cflags=-O3
-make -j$(nproc)
-echo "Installing zsh..."
-sudo make -j$(nproc) install
+# ---------------------------------------------------------------------
+# Ubuntu/Debian-specific Setup Functions
+# ---------------------------------------------------------------------
 
-# Install kitty
-echo "Installing kitty..."
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin installer=nightly && pkill kitty
-if [ ! -d ~/.local/bin ]; then
-    mkdir -p ~/.local/bin
-fi
-# Create symbolic links to add kitty and kitten to PATH (assuming ~/.local/bin is in
-# your system-wide PATH)
-ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
-# Place the kitty.desktop file somewhere it can be found by the OS
-cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
-# If you want to open text files and images in kitty via your file manager also add the kitty-open.desktop file
-cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
-# Update the paths to the kitty and its icon in the kitty desktop file(s)
-sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
-sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
-# Make xdg-terminal-exec (and hence desktop environments that support it use kitty)
-echo 'kitty.desktop' > ~/.config/xdg-terminals.list
-
-# Install vim
-echo "Installing Vim..."
-sudo apt install vim -y
-
-# Install neovim
-echo "Installing Neovim..."
-if ! command -v add-apt-repository >/dev/null 2>&1; then
-    sudo apt-get install software-properties-common
-fi
-sudo add-apt-repository -y ppa:neovim-ppa/stable
-sudo apt-get update -y
-sudo apt-get install neovim -y
-
-
-# Check if cargo is found
-if ! command -v cargo >/dev/null 2>&1; then
-    if [ -f ~/.cargo/env ]; then
-        source ~/.cargo/env
+# Setup environment
+setup_env() {
+    info "Setting up development environment"
+    
+    # Run the environment setup script
+    if ! bash "${SCRIPT_DIR}/scripts/setup_env.sh"; then
+        error "Failed to set up development environment"
+        return 1
     fi
-fi
+    
+    info "Development environment setup completed successfully"
+    return 0
+}
 
-if command -v eza &>/dev/null; then
-    echo "Installing eza..."
-	cargo install eza 
-fi
+# Setup shell
+setup_shell() {
+    info "Setting up ZSH shell"
+    
+    # Run the shell setup script
+    if ! bash "${SCRIPT_DIR}/scripts/setup_shell.sh"; then
+        error "Failed to set up ZSH shell"
+        return 1
+    fi
+    
+    info "ZSH shell setup completed successfully"
+    return 0
+}
 
-if command -v bat &>/dev/null; then
-    echo "Installing bat..."
-	cargo install bat
-fi
+# Install kitty terminal
+install_kitty() {
+    info "Installing kitty terminal"
+    
+    if has_command kitty; then
+        info "kitty is already installed"
+        return 0
+    fi
+    
+    # Install kitty via installer script
+    info "Installing kitty via installer script"
+    
+    if has_command curl; then
+        if ! run_cmd curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin installer=nightly; then
+            error "Failed to install kitty via curl"
+            return 1
+        fi
+    elif has_command wget; then
+        if ! run_cmd wget -O- https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin installer=nightly; then
+            error "Failed to install kitty via wget"
+            return 1
+        fi
+    else
+        error "Neither curl nor wget is available to download kitty installer"
+        return 1
+    fi
+    
+    # Kill any running kitty instances
+    if pgrep kitty >/dev/null; then
+        info "Terminating running kitty instances"
+        pkill kitty || warning "Failed to terminate kitty instances"
+    fi
+    
+    # Create symlinks
+    info "Creating kitty symlinks"
+    
+    # Create local bin directory if it doesn't exist
+    make_dir "${HOME}/.local/bin"
+    
+    # Create symlinks for kitty and kitten
+    if ! create_symlink "${HOME}/.local/kitty.app/bin/kitty" "${HOME}/.local/bin/kitty"; then
+        warning "Failed to create kitty symlink"
+    fi
+    
+    if ! create_symlink "${HOME}/.local/kitty.app/bin/kitten" "${HOME}/.local/bin/kitten"; then
+        warning "Failed to create kitten symlink"
+    fi
+    
+    # Install desktop files
+    info "Installing kitty desktop files"
+    
+    make_dir "${HOME}/.local/share/applications"
+    
+    if ! create_symlink "${HOME}/.local/kitty.app/share/applications/kitty.desktop" "${HOME}/.local/share/applications/kitty.desktop"; then
+        warning "Failed to create kitty.desktop symlink"
+    fi
+    
+    if ! create_symlink "${HOME}/.local/kitty.app/share/applications/kitty-open.desktop" "${HOME}/.local/share/applications/kitty-open.desktop"; then
+        warning "Failed to create kitty-open.desktop symlink"
+    fi
+    
+    # Update desktop file paths
+    info "Updating desktop file paths"
+    
+    local icon_path
+    icon_path=$(readlink -f "${HOME}")/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png
+    local bin_path
+    bin_path=$(readlink -f "${HOME}")/.local/kitty.app/bin/kitty
+    
+    if ! run_cmd sed -i "s|Icon=kitty|Icon=${icon_path}|g" "${HOME}/.local/share/applications/kitty"*.desktop; then
+        warning "Failed to update kitty icon path"
+    fi
+    
+    if ! run_cmd sed -i "s|Exec=kitty|Exec=${bin_path}|g" "${HOME}/.local/share/applications/kitty"*.desktop; then
+        warning "Failed to update kitty executable path"
+    fi
+    
+    # Make kitty the default terminal
+    info "Setting kitty as default terminal"
+    
+    if ! run_cmd mkdir -p "${HOME}/.config"; then
+        warning "Failed to create config directory"
+    fi
+    
+    if ! echo 'kitty.desktop' > "${HOME}/.config/xdg-terminals.list"; then
+        warning "Failed to set kitty as default terminal"
+    fi
+    
+    # Verify installation
+    if ! has_command kitty; then
+        warning "kitty installation verification failed"
+        
+        # Check if it's installed but not in PATH
+        if [[ -f "${HOME}/.local/kitty.app/bin/kitty" ]]; then
+            warning "kitty is installed but not in PATH"
+            return 0
+        else
+            error "kitty installation failed"
+            return 1
+        fi
+    fi
+    
+    info "kitty terminal setup completed successfully"
+    return 0
+}
 
-if command -v fd &>/dev/null; then
-    echo "Installing fd-find..."
-	cargo install fd-find
-fi
+# Install Vim
+install_vim() {
+    info "Installing Vim"
+    
+    if has_command vim; then
+        info "Vim is already installed"
+        return 0
+    fi
+    
+    # Install vim via apt
+    if ! run_with_sudo apt-get update -y; then
+        error "Failed to update package lists"
+        return 1
+    fi
+    
+    if ! run_with_sudo apt-get install -y vim; then
+        error "Failed to install vim"
+        return 1
+    fi
+    
+    # Verify installation
+    if ! has_command vim; then
+        error "Vim installation verification failed"
+        return 1
+    fi
+    
+    info "Vim installed successfully"
+    return 0
+}
 
-if command -v rg &>/dev/null; then
-    echo "Installing ripgrep..."
-	cargo install ripgrep
-fi
+# Install Neovim
+install_neovim() {
+    info "Installing Neovim"
+    
+    if has_command nvim; then
+        info "Neovim is already installed"
+        return 0
+    fi
+    
+    # Install software-properties-common if needed for add-apt-repository
+    if ! has_command add-apt-repository; then
+        info "Installing software-properties-common"
+        
+        if ! run_with_sudo apt-get update -y; then
+            error "Failed to update package lists"
+            return 1
+        fi
+        
+        if ! run_with_sudo apt-get install -y software-properties-common; then
+            error "Failed to install software-properties-common"
+            return 1
+        fi
+    fi
+    
+    # Add Neovim repository
+    info "Adding Neovim repository"
+    
+    if ! run_with_sudo add-apt-repository -y ppa:neovim-ppa/stable; then
+        error "Failed to add Neovim repository"
+        return 1
+    fi
+    
+    # Update package lists
+    if ! run_with_sudo apt-get update -y; then
+        error "Failed to update package lists"
+        return 1
+    fi
+    
+    # Install Neovim
+    if ! run_with_sudo apt-get install -y neovim; then
+        error "Failed to install Neovim"
+        return 1
+    fi
+    
+    # Verify installation
+    if ! has_command nvim; then
+        error "Neovim installation verification failed"
+        return 1
+    fi
+    
+    info "Neovim installed successfully"
+    return 0
+}
 
-if ! command -v cargo-update >/dev/null 2>&1; then
-    echo "Installing cargo update..."
-	cargo install cargo-update
-fi
+# Install Node.js
+install_nodejs() {
+    info "Installing Node.js"
+    
+    if has_command node && has_command npm; then
+        local node_version
+        node_version=$(node --version)
+        info "Node.js ${node_version} is already installed"
+        return 0
+    fi
+    
+    # Get Ubuntu version
+    local ubuntu_version
+    ubuntu_version=$(get_ubuntu_version)
+    
+    info "Detected Ubuntu version: ${ubuntu_version}"
+    
+    # Install Node.js
+    if [[ "${ubuntu_version}" -lt 22 ]]; then
+        info "Using NodeSource repository for older Ubuntu"
+        
+        if has_command curl; then
+            if ! run_cmd curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -; then
+                error "Failed to add NodeSource repository"
+                return 1
+            fi
+        elif has_command wget; then
+            if ! run_cmd wget -qO- https://deb.nodesource.com/setup_19.x | sudo -E bash -; then
+                error "Failed to add NodeSource repository"
+                return 1
+            fi
+        else
+            error "Neither curl nor wget is available to download Node.js setup script"
+            return 1
+        fi
+    fi
+    
+    # Install nodejs and npm
+    if ! run_with_sudo apt-get install -y nodejs npm; then
+        error "Failed to install Node.js"
+        return 1
+    fi
+    
+    # Verify installation
+    if ! has_command node || ! has_command npm; then
+        error "Node.js installation verification failed"
+        return 1
+    fi
+    
+    local node_version
+    node_version=$(node --version)
+    info "Node.js ${node_version} installed successfully"
+    return 0
+}
 
-if ! command -v git-delta >/dev/null 2>&1; then
-	cargo install git-delta
-fi
+# Main Ubuntu/Debian setup function
+setup_ubuntu() {
+    info "Setting up Ubuntu/Debian environment"
+    local errors=0
+    
+    # Step 1: Set up development environment
+    if ! setup_env; then
+        error "Failed to set up development environment"
+        ((errors++))
+    fi
+    
+    # Step 2: Install kitty terminal
+    if ! install_kitty; then
+        error "Failed to install kitty terminal"
+        ((errors++))
+    fi
+    
+    # Step 3: Install Vim
+    if ! install_vim; then
+        error "Failed to install Vim"
+        ((errors++))
+    fi
+    
+    # Step 4: Install Neovim
+    if ! install_neovim; then
+        error "Failed to install Neovim"
+        ((errors++))
+    fi
+    
+    # Step 5: Install Node.js
+    if ! install_nodejs; then
+        error "Failed to install Node.js"
+        ((errors++))
+    fi
+    
+    # Step 6: Set up ZSH shell (should be last because it might change the shell)
+    if ! setup_shell; then
+        error "Failed to set up ZSH shell"
+        ((errors++))
+    fi
+    
+    if [[ ${errors} -gt 0 ]]; then
+        warning "Ubuntu/Debian setup completed with ${errors} errors"
+        return 1
+    fi
+    
+    info "Ubuntu/Debian setup completed successfully"
+    return 0
+}
 
-if ! command -v zoxide >/dev/null 2>&1; then
-	cargo install zoxide
-fi
+# ---------------------------------------------------------------------
+# Main Script Logic
+# ---------------------------------------------------------------------
 
-if ! command -v tree-sitter >/dev/null 2>&1; then
-	cargo install tree-sitter-cli
-fi
+# Set script name for logging
+SCRIPT_NAME=$(basename "${0}")
 
-# Install diff-so-fancy: {{{
-if ! command -v diff-so-fancy >/dev/null 2>&1; then
-	echo "Installing diff-so-fancy..."
-	diff_so_fancy_version=$(get_git_version "so-fancy/diff-so-fancy")
+# Initialize
+info "Starting Ubuntu/Debian setup"
+info "System: $(uname -a)"
+info "User: $(whoami)"
 
-	curl -sLo ./diff-so-fancy https://github.com/so-fancy/diff-so-fancy/releases/download/"${diff_so_fancy_version}"/diff-so-fancy
+# Run setup
+setup_ubuntu
+exit_code=$?
 
-	chmod a+x ./diff-so-fancy
-
-	sudo mv ./diff-so-fancy /usr/local/bin/diff-so-fancy
-fi
-# }}}
-
-# Install btop
-ARCH=$(uname -m)
-if ! command -v btop &>/dev/null; then
-    echo "Installing btop..."
-	if [[ $(get_ubuntu_version) -lt 23 ]]; then
-		if [ "${ARCH}" = "x86_64" ]; then
-			sudo cp -f "${CUR_DIR}"/prebuilts/btop-x86_64 /usr/local/bin/btop
-		elif [ "${ARCH}" = "aarch64" ]; then
-			sudo cp -f "${CUR_DIR}"/prebuilts/btop-aarch64 /usr/local/bin/btop
-		else
-			echo "btop not available for $(get_ubuntu_version) ${ARCH}"
-		fi
-	else
-		sudo apt install -y btop
-	fi
-fi
-
-# Configure zsh: {{{
-echo "Setting up zsh..."
-sudo chsh -s "$(which zsh)" $(whoami)
-sudo chsh -s "$(which zsh)"
-
-$(which zsh)
-# }}}
-
-# Setup fonts: {{{
-curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash -s -- --silent
-
-if [ -f ~/.local/bin/getnf ]; then
-    ~/.local/bin/getnf -i "FiraCode","IBMPlexMono","IntelOneMono","Iosevka","JetBrainsMono","NerdFontsSymbolsOnly"
+# Final status
+if [[ ${exit_code} -ne 0 ]]; then
+    warning "Ubuntu/Debian setup completed with errors"
+    exit ${exit_code}
 else
-    echo "Failed to install nerd fonts..."
-fi
-# }}}
-
-# Install nodejs
-if [[ $(get_ubuntu_version) -lt 22 ]]; then
-	curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
-	sudo apt-get install -y nodejs npm
-else
-	sudo apt-get install -y nodejs npm
+    info "Ubuntu/Debian setup completed successfully"
+    exit 0
 fi

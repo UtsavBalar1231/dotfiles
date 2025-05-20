@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-
+# ====================================================================
+# install_arch_pkgs - Legacy wrapper for package_manager.sh
+# ====================================================================
+# This script is maintained for backward compatibility with the old
+# setup-arch.sh script. New code should use package_manager.sh directly.
+#
 # Author: UtsavBalar1231 <utsavbalar1231@gmail.com>
 # LICENCE: MIT
 # Description:
@@ -10,131 +15,65 @@
 #       Usage: ./install_arch_pkgs <file1> [<file2> ...]
 #               `<file>`: A file containing a list of package names separated by newlines.
 
-CACHE_DIR="$HOME/.cache/pkg_check"
-DEFAULT_CACHE="$CACHE_DIR/default_pkgs.cache"
-AUR_CACHE="$CACHE_DIR/aur_pkgs.cache"
-GROUP_CACHE="$CACHE_DIR/pkg_groups.cache"
-CACHE_EXPIRY=3600 # 1 hr expiry
+# Strict mode to catch errors early
+set -euo pipefail
 
-# Default AUR helper
-AUR_HELPER="paru"
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Ensure AUR helper is installed
-check_aur_helper() {
-	if ! command -v "$AUR_HELPER" &>/dev/null; then
-		echo "Error: AUR helper '$AUR_HELPER' is not installed."
-		echo "Please install '$AUR_HELPER' or set a different helper."
-		exit 1
-	fi
-}
-
-# Fetch or load default Arch Linux repository packages
-fetch_default_pkgs() {
-	if [[ -f "$DEFAULT_CACHE" && $(($(date +%s) - $(stat -c %Y "$DEFAULT_CACHE"))) -lt $CACHE_EXPIRY ]]; then
-		cat "$DEFAULT_CACHE"
-	else
-		echo "Fetching default packages..."
-		pacman -Ssq >"$DEFAULT_CACHE"
-		cat "$DEFAULT_CACHE"
-	fi
-}
-
-# Fetch or load AUR package list
-fetch_aur_pkgs() {
-	if [[ -f "$AUR_CACHE" && $(($(date +%s) - $(stat -c %Y "$AUR_CACHE"))) -lt $CACHE_EXPIRY ]]; then
-		cat "$AUR_CACHE"
-	else
-		echo "Fetching AUR packages..."
-		curl -s "https://aur.archlinux.org/packages.gz" | gunzip >"$AUR_CACHE"
-		cat "$AUR_CACHE"
-	fi
-}
-
-# Fetch or load Arch Linux package groups
-fetch_pkg_groups() {
-	if [[ -f "$GROUP_CACHE" && $(($(date +%s) - $(stat -c %Y "$GROUP_CACHE"))) -lt $CACHE_EXPIRY ]]; then
-		cat "$GROUP_CACHE"
-	else
-		echo "Fetching package groups..."
-		pacman -Sg | awk '{print $1}' | sort -u >"$GROUP_CACHE"
-		cat "$GROUP_CACHE"
-	fi
-}
-
-# Parse and install packages from files
-install_packages() {
-	local file="$1"
-	echo "Processing file: $file"
-
-	if [[ ! -f "$file" ]]; then
-		echo "Error: File '$file' not found!"
-		return 1
-	fi
-
-	# Load caches
-	default_pkgs=$(fetch_default_pkgs)
-	aur_pkgs=$(fetch_aur_pkgs)
-	pkg_groups=$(fetch_pkg_groups)
-
-	# Read the package list into an array
-	mapfile -t packages <"$file"
-
-	# Categorize and install packages
-	default_found=()
-	aur_found=()
-	group_found=()
-	not_found=()
-
-	for package in "${packages[@]}"; do
-		[[ -z "$package" ]] && continue
-
-		if grep -q "^${package}$" <<<"$default_pkgs"; then
-			default_found+=("$package")
-		elif grep -q "^${package}$" <<<"$aur_pkgs"; then
-			aur_found+=("$package")
-		elif grep -q "^${package}$" <<<"$pkg_groups"; then
-			group_found+=("$package")
-		else
-			not_found+=("$package")
-		fi
-	done
-
-	# Install default packages
-	if [[ ${#default_found[@]} -gt 0 ]]; then
-		echo "Installing default packages..."
-		sudo pacman -S --noconfirm "${default_found[@]}"
-	fi
-
-	# Install package groups
-	if [[ ${#group_found[@]} -gt 0 ]]; then
-		echo "Installing package groups..."
-		sudo pacman -S --noconfirm "${group_found[@]}"
-	fi
-
-	# Install AUR packages
-	if [[ ${#aur_found[@]} -gt 0 ]]; then
-		echo "Installing AUR packages..."
-		for aur_pkg in ${aur_found[@]}
-		do
-			"$AUR_HELPER" -S --noconfirm "$aur_pkg"
-		done
-	fi
-
-	# Handle not found packages
-	if [[ ${#not_found[@]} -gt 0 ]]; then
-		echo "Warning: The following packages were not found:"
-		printf '  - %s\n' "${not_found[@]}"
-	fi
-}
-
-# Main logic
-if [[ $# -lt 1 ]]; then
-	echo "Usage: $0 <file1> [<file2> ...]"
-	exit 1
+# Source utility functions if available
+if [[ -f "${SCRIPT_DIR}/utils.sh" ]]; then
+    # shellcheck disable=SC1091
+    source "${SCRIPT_DIR}/utils.sh"
+    
+    # Use logging functions
+    LOG_AVAILABLE=true
+else
+    # Fallback logging functions
+    LOG_AVAILABLE=false
+    
+    # Simple logging functions
+    info() {
+        echo "[INFO] $*"
+    }
+    
+    warning() {
+        echo "[WARNING] $*" >&2
+    }
+    
+    error() {
+        echo "[ERROR] $*" >&2
+    }
 fi
 
-check_aur_helper
+# Check for package_manager.sh
+PACKAGE_MANAGER="${SCRIPT_DIR}/package_manager.sh"
 
+if [[ ! -f "${PACKAGE_MANAGER}" ]]; then
+    error "package_manager.sh not found at: ${PACKAGE_MANAGER}"
+    error "This script requires the new package_manager.sh to be present."
+    exit 1
+fi
+
+# Check arguments
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $0 <file1> [<file2> ...]"
+    exit 1
+fi
+
+# Process each package list file
 for file in "$@"; do
-	install_packages "$file"
+    if [[ ! -f "${file}" ]]; then
+        error "Package list file not found: ${file}"
+        continue
+    fi
+    
+    info "Processing package list file: ${file}"
+    
+    # Call the new package_manager.sh script
+    if ! bash "${PACKAGE_MANAGER}" "${file}"; then
+        warning "Failed to install some packages from: ${file}"
+    fi
 done
+
+exit 0
