@@ -1,0 +1,27 @@
+* {
+  bg0:      #141617a0;
+  bg1:      #1d2021e0;
+  bg2:      #282828e0;
+  bg3:      #3c3836e0;
+  bg4:      #7c6f64e0;
+
+  fg0:      #fbf1c7e0;
+  fg1:      #ebdbb2e0;
+  fg2:      #d5c4a1e0;
+  fg3:      #bdae93e0;
+  fg4:      #a89984e0;
+
+  red:      #ea6962;
+  green:    #a9b665;
+  yellow:   #d8a657;
+  blue:     #7daea3;
+  purple:   #d3869b;
+  aqua:     #89b482;
+  orange:   #e78a4e;
+  gray:     #928374;
+ 
+  accent:   @orange;
+
+  background-color: transparent;
+  text-color:       @fg0;
+}

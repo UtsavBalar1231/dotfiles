@@ -1,0 +1,9 @@
+name = "nvim"
+description = "Neovim configuration"
+config_paths = ["~/.config/nvim"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/nvim"
+created_at = "2025-06-20T16:59:27.930062207Z"
+modified_at = "2025-06-20T16:59:27.930063462Z"

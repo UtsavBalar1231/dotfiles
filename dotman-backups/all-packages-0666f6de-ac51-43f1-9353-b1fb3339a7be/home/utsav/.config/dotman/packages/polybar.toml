@@ -1,0 +1,9 @@
+name = "polybar"
+description = "Polybar configuration"
+config_paths = ["~/.config/polybar"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/polybar"
+created_at = "2025-06-20T16:59:27.930068992Z"
+modified_at = "2025-06-20T16:59:27.930069373Z"

@@ -1,0 +1,12 @@
+name = "tmux"
+description = "Tmux configuration"
+config_paths = [
+    "~/.tmux.conf",
+    "~/.config/tmux",
+]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/tmux"
+created_at = "2025-06-20T16:59:27.930063788Z"
+modified_at = "2025-06-20T16:59:27.930064375Z"

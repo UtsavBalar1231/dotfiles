@@ -1,0 +1,9 @@
+name = "i3"
+description = "i3 window manager configuration"
+config_paths = ["~/.config/i3"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/i3"
+created_at = "2025-06-20T16:59:27.930067469Z"
+modified_at = "2025-06-20T16:59:27.930068136Z"

@@ -1,0 +1,12 @@
+name = "git"
+description = "Git configuration"
+config_paths = [
+    "~/.gitconfig",
+    "~/.gitignore_global",
+]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/git"
+created_at = "2025-06-20T16:59:27.930065421Z"
+modified_at = "2025-06-20T16:59:27.930065865Z"

@@ -1,0 +1,51 @@
+[core]
+	pager = delta
+	hooksPath = /home/utsav/.git/hooks
+	editor = nvim
+[core]
+    pager = delta
+
+[interactive]
+	diffFilter = diff-so-fancy --patch
+
+[delta]
+    features = decorations
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[credential]
+	helper = store
+[merge]
+	log = 10000
+	stat = true
+	branchdesc = true
+	tool = diffmerge
+	verbosity = 5
+[user]
+	name = UtsavBalar1231
+	email = utsavbalar1231@gmail.com

@@ -1,0 +1,9 @@
+name = "alacritty"
+description = "Alacritty terminal configuration"
+config_paths = ["~/.config/alacritty"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/alacritty"
+created_at = "2025-06-20T16:59:27.930066869Z"
+modified_at = "2025-06-20T16:59:27.930067252Z"

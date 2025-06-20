@@ -1,0 +1,9 @@
+name = "hypr"
+description = "Hyprland configuration"
+config_paths = ["~/.config/hypr"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/hypr"
+created_at = "2025-06-20T16:59:27.930068411Z"
+modified_at = "2025-06-20T16:59:27.930068765Z"

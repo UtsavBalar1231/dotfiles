@@ -1,0 +1,65 @@
+[core]
+	hooksPath = /home/utsav/.git/hooks
+	editor = nvim
+	# Use delta as the default pager for commands like log, diff, show etc.
+	pager = delta --diff-so-fancy
+
+[interactive]
+	# Use delta also for interactive staging (git add -p)
+	diffFilter = delta --color-only
+
+[delta]
+	true-color = always
+
+	# side-by-side view for diffs, like GitHub
+	side-by-side = false
+
+	# Enable line numbers, essential for diff review
+	line-numbers = false
+
+	# Choose a syntax theme. 'GitHub' often works well when combined with 'dark = true'.
+	# Alternatives: Dracula, Nord, OneHalfDark, Coldark-Dark, Solarized (dark)
+	# Experiment to find the best match for your taste and terminal.
+	syntax-theme = zenburn
+
+	# Enable the dark variant for the chosen syntax-theme
+	dark = true
+
+	# use n and N to move between diff sections
+	navigate = true
+
+	# Add features like commit hash, file names, language detection etc.
+	# 'decorations' adds commit hashes & refs in blame/log context
+	# 'ref-format' styles the reference names (branches/tags)
+	# 'navigate' enables navigation between diff sections using 'n' and 'N'
+	features = line-numbers decorations hyperlinks ref-format navigate
+
+[color]
+	ui = true
+
+[merge]
+	conflictstyle = zdiff3
+
+[diff]
+    colorMoved = default
+
+[blame]
+	pager = delta
+
+[credential]
+	helper = store
+[merge]
+	log = 10000
+	stat = true
+	branchdesc = true
+	verbosity = 5
+[user]
+	name = utsavbalar1231
+	email = utsavbalar1231@gmail.com
+[http]
+	postBuffer = 9999999999
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

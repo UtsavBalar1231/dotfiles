@@ -1,0 +1,208 @@
+backup_dir = "/home/utsav/dotfiles/dotman-backups"
+config_dir = "/home/utsav/.config/dotman"
+include_patterns = ["*"]
+exclude_patterns = [".git/*", ".DS_Store", "*.tmp", "*.log", "target/*", "node_modules/*", "*.pyc", "__pycache__/*"]
+follow_symlinks = true
+preserve_permissions = true
+create_backups = true
+verify_integrity = true
+operation_mode = "Default"
+max_backup_versions = 5
+enable_compression = false
+enable_encryption = false
+log_level = "info"
+
+[backup_patterns]
+
+[compression]
+enabled = false
+level = 6
+
+[packages.makepkg]
+name = "makepkg"
+description = "Makepkg configuration files"
+paths = ["/etc/makepkg.conf", "/etc/makepkg.conf.d"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.rofi]
+name = "rofi"
+description = "Rofi configuration files"
+paths = ["/home/utsav/.config/rofi"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.waybar]
+name = "waybar"
+description = "Waybar configuration files"
+paths = ["/home/utsav/.config/waybar"]
+exclude_patterns = []
+include_patterns = []
+
+[packages."gtk-3.0"]
+name = "gtk-3.0"
+description = "GTK 3.0 configuration files"
+paths = ["/home/utsav/.config/gtk-3.0"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.dotman]
+name = "dotman"
+description = "Dotman configuration files"
+paths = ["/home/utsav/.config/dotman"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.ly]
+name = "ly"
+description = "Ly display manager configuration files"
+paths = ["/home/utsav/.config/ly"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.picom]
+name = "picom"
+description = "Picom configuration files"
+paths = ["/home/utsav/.config/picom"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.hypr]
+name = "hypr"
+description = "Hypr window manager configuration files"
+paths = ["/home/utsav/.config/hypr"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.anyrun]
+name = "anyrun"
+description = "Anyrun configuration files"
+paths = ["/home/utsav/.config/anyrun"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.zsh]
+name = "zsh"
+description = "Zsh configuration files"
+paths = ["/home/utsav/.config/zsh", "/home/utsav/.zshrc"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.pacman]
+name = "pacman"
+description = "Pacman configuration files"
+paths = ["/etc/pacman.conf"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.starship]
+name = "starship"
+description = "Starship prompt configuration"
+paths = ["/home/utsav/.config/starship.toml"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.git]
+name = "git"
+description = "Git configuration files"
+paths = ["/home/utsav/.gitconfig", "/home/utsav/.gitignore_global"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.kitty]
+name = "kitty"
+description = "Kitty terminal configuration"
+paths = ["/home/utsav/.config/kitty"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.clang-format]
+name = "clang-format"
+description = "Clang-format configuration files"
+paths = ["/home/utsav/.clang-format"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.electron-flags]
+name = "electron-flags"
+description = "Electron flags configuration files"
+paths = ["/home/utsav/.config/electron-flags.conf"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.polybar]
+name = "polybar"
+description = "Polybar configuration files"
+paths = ["/home/utsav/.config/polybar"]
+exclude_patterns = []
+include_patterns = []
+
+[packages."gtk-4.0"]
+name = "gtk-4.0"
+description = "GTK 4.0 configuration files"
+paths = ["/home/utsav/.config/gtk-4.0"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.nvim]
+name = "nvim"
+description = "Neovim configuration files"
+paths = ["/home/utsav/.config/nvim"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.tmux]
+name = "tmux"
+description = "Tmux configuration"
+paths = ["/home/utsav/.tmux.conf"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.swaync]
+name = "swaync"
+description = "SwayNC notification configuration files"
+paths = ["/home/utsav/.config/swaync"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.yazi]
+name = "yazi"
+description = "Yazi file manager configuration files"
+paths = ["/home/utsav/.config/yazi"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.alacritty]
+name = "alacritty"
+description = "Alacritty configuration files"
+paths = ["/home/utsav/.config/alacritty"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.xresources]
+name = "xresources"
+description = "Xresources configuration files"
+paths = ["/home/utsav/.Xresources"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.bat]
+name = "bat"
+description = "Bat configuration files"
+paths = ["/home/utsav/.config/bat"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.wallpapers]
+name = "wallpapers"
+description = "Wallpapers"
+paths = ["/home/utsav/Pictures/wallpapers"]
+exclude_patterns = []
+include_patterns = []
+
+[packages.i3]
+name = "i3"
+description = "i3 window manager configuration files"
+paths = ["/home/utsav/.config/i3"]
+exclude_patterns = []
+include_patterns = []

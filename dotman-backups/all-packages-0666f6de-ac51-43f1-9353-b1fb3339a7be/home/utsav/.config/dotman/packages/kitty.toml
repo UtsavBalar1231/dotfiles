@@ -1,0 +1,9 @@
+name = "kitty"
+description = "Kitty terminal configuration"
+config_paths = ["~/.config/kitty"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/kitty"
+created_at = "2025-06-20T16:59:27.930066174Z"
+modified_at = "2025-06-20T16:59:27.930066636Z"

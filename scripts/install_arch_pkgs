@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# ====================================================================
+# install_arch_pkgs - Legacy wrapper for package_manager.sh
+# ====================================================================
+# This script is maintained for backward compatibility with the old
+# setup-arch.sh script. New code should use package_manager.sh directly.
+#
+# Author: UtsavBalar1231 <utsavbalar1231@gmail.com>
+# LICENCE: MIT
+# Description:
+#       Install packages listed in files, categorized as default, AUR, or group.
+#       The script uses the Arch Linux package repository, AUR package list,
+#       and package groups for categorization and installation.
+#
+#       Usage: ./install_arch_pkgs <file1> [<file2> ...]
+#               `<file>`: A file containing a list of package names separated by newlines.
+
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source utility functions if available
+if [[ -f "${SCRIPT_DIR}/utils.sh" ]]; then
+    # shellcheck disable=SC1091
+    source "${SCRIPT_DIR}/utils.sh"
+    
+    # Use logging functions
+    LOG_AVAILABLE=true
+else
+    # Fallback logging functions
+    LOG_AVAILABLE=false
+    
+    # Simple logging functions
+    info() {
+        echo "[INFO] $*"
+    }
+    
+    warning() {
+        echo "[WARNING] $*" >&2
+    }
+    
+    error() {
+        echo "[ERROR] $*" >&2
+    }
+fi
+
+# Check for package_manager.sh
+PACKAGE_MANAGER="${SCRIPT_DIR}/package_manager.sh"
+
+if [[ ! -f "${PACKAGE_MANAGER}" ]]; then
+    error "package_manager.sh not found at: ${PACKAGE_MANAGER}"
+    error "This script requires the new package_manager.sh to be present."
+    exit 1
+fi
+
+# Check arguments
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $0 <file1> [<file2> ...]"
+    exit 1
+fi
+
+# Process each package list file
+for file in "$@"; do
+    if [[ ! -f "${file}" ]]; then
+        error "Package list file not found: ${file}"
+        continue
+    fi
+    
+    info "Processing package list file: ${file}"
+    
+    # Call the new package_manager.sh script
+    if ! bash "${PACKAGE_MANAGER}" "${file}"; then
+        warning "Failed to install some packages from: ${file}"
+    fi
+done
+
+exit 0

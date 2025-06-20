@@ -1,0 +1,9 @@
+name = "rofi"
+description = "Rofi launcher configuration"
+config_paths = ["~/.config/rofi"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/rofi"
+created_at = "2025-06-20T16:59:27.930070535Z"
+modified_at = "2025-06-20T16:59:27.930070911Z"

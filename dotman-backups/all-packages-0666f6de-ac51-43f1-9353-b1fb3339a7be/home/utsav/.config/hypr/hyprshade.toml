@@ -1,0 +1,10 @@
+[[shades]]
+name = "vibrant"
+default = true
+shader = "~/.config/hypr/shaders/vibrant.glsl"
+
+[[shades]]
+name = "blue-light-filter"
+start_time = 22:30:00
+end_time = 06:00:00
+shader = "~/.config/hypr/shaders/blue-light-filter.glsl"

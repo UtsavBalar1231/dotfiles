@@ -1,0 +1,9 @@
+name = "waybar"
+description = "Waybar configuration"
+config_paths = ["~/.config/waybar"]
+include_patterns = ["*"]
+exclude_patterns = []
+follow_symlinks = true
+backup_subdir = "packages/waybar"
+created_at = "2025-06-20T16:59:27.930069962Z"
+modified_at = "2025-06-20T16:59:27.930070313Z"
