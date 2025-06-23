@@ -294,7 +294,7 @@ setup_nerd_fonts() {
     fi
     
     # Install getnf tool
-    if ! has_command getnf && [[ ! -f "${HOME}/.local/bin/getnf" ]]; then
+    if ! has_command getnf; then
         info "Installing getnf tool"
         
         if has_command curl; then
@@ -314,17 +314,21 @@ setup_nerd_fonts() {
     fi
     
     # Path to getnf executable
-    local getnf_path="${HOME}/.local/bin/getnf"
+    local getnf_path="/usr/bin/getnf"
     
     # Verify getnf installation
     if [[ ! -f "${getnf_path}" ]]; then
-        error "getnf installation verification failed"
-        return 1
+	if [[ -f "${HOME}/.local/bin/getnf" ]]; then
+		getnf_path="${HOME}/.local/bin/getnf"
+	else
+		error "getnf installation verification failed"
+		return 1
+	fi
     fi
     
     # Install fonts
     info "Installing Nerd Fonts"
-    local fonts_to_install=("FiraCode" "IBMPlexMono" "IntelOneMono" "Iosevka" "JetBrainsMono" "NerdFontsSymbolsOnly")
+    local fonts_to_install=("0xProto" "AdwaitaMono" "FiraCode" "IBMPlexMono" "IntelOneMono" "Iosevka" "JetBrainsMono" "NerdFontsSymbolsOnly")
     
     if ! run_cmd "${getnf_path}" -i "$(IFS=,; echo "${fonts_to_install[*]}")"; then
         error "Failed to install Nerd Fonts"

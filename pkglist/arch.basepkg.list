@@ -44,7 +44,6 @@ python-pipx
 qt5ct
 qt6ct
 ripgrep
-rustup
 tmux
 tree-sitter-cli
 ttf-terminus-nerd
@@ -52,5 +51,6 @@ vim
 vulkan-intel
 vulkan-mesa-layers
 yazi
+wget
 zoxide
 zsh
