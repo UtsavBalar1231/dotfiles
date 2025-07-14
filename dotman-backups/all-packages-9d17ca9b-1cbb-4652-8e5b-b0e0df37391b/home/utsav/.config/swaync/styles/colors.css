@@ -1,0 +1,146 @@
+/* Gruvbox Material Dark Hard Color Scheme */
+/* Background Colors */
+@define-color bg_dim #1d2021;
+@define-color bg_dim_noalpha #1d2021;
+@define-color bg0 #1d2021;
+@define-color bg0_noalpha #1d2021;
+@define-color bg1 #282828;
+@define-color bg2 #32302f;
+@define-color bg3 #3c3836;
+@define-color bg4 #504945;
+@define-color bg5 #665c54;
+
+/* Foreground Colors */
+@define-color fg0 #fbf1c7;
+@define-color fg1 #ebdbb2;
+@define-color fg2 #d5c4a1;
+@define-color fg3 #bdae93;
+@define-color fg4 #a89984;
+
+/* Accent Colors */
+@define-color red #fb4934;
+@define-color green #b8bb26;
+@define-color yellow #fabd2f;
+@define-color blue #83a598;
+@define-color purple #d3869b;
+@define-color aqua #8ec07c;
+@define-color orange #fe8019;
+
+/* Statusline backgrounds */
+/* Background colors - removing opacity */
+@define-color bg_dim #141617;
+@define-color bg_dim_noalpha #141617;
+@define-color bg0 #1d2021;
+@define-color bg0_noalpha #1d2021;
+@define-color bg1 #3c3836;
+@define-color bg2 #585553;
+@define-color bg3 #504945;
+@define-color bg4 #665c54;
+@define-color bg5 #7c6f64;
+
+/* Statusline backgrounds */
+@define-color bg_statusline1 #282828;
+@define-color bg_statusline2 #332021;
+@define-color bg_statusline3 #504945;
+
+/* Diff and visual backgrounds */
+@define-color bg_diff_green #323616;
+@define-color bg_visual_green #333634;
+@define-color bg_diff_red #351116;
+@define-color bg_visual_red #442621;
+@define-color bg_diff_blue #043188;
+@define-color bg_visual_blue #248535;
+@define-color bg_visual_yellow #479629;
+
+/* Current word background */
+@define-color bg_current_word #232027;
+
+/* Foreground colors */
+@define-color fg0 #d4be98;
+@define-color fg1 #ddc7a1;
+
+/* Bright colors */
+@define-color bright_red #ec6962;
+@define-color bright_orange #e78a4e;
+@define-color bright_yellow #d8a657;
+@define-color bright_green #a9b665;
+@define-color bright_aqua #89b482;
+@define-color bright_blue #7daea3;
+@define-color bright_purple #d3869b;
+
+/* Background variants for bright colors */
+@define-color bg_red #ec6962;
+@define-color bg_green #a9b665;
+@define-color bg_yellow #d8a657;
+
+/* Grey colors */
+@define-color grey0 #7c6f64;
+@define-color grey1 #928374;
+@define-color grey2 #a89984;
+
+/* Neutral colors */
+@define-color neutral_red #cc241d;
+@define-color neutral_green #98971a;
+@define-color neutral_yellow #d79921;
+@define-color neutral_blue #458588;
+@define-color neutral_purple #b16286;
+@define-color neutral_aqua #689d6a;
+@define-color neutral_orange #d65d0e;
+
+/* Text and base colors */
+@define-color text @bg4;
+@define-color base @bg0;
+@define-color surface @bg1;
+@define-color hover @bg2;
+@define-color active @neutral_aqua;
+
+/* Material Design 3 Color System */
+/* Primary Colors */
+@define-color primary #fabd2f;
+@define-color primary_container #665c54;
+@define-color on_primary #1d2021;
+@define-color on_primary_container #fbf1c7;
+
+/* Secondary Colors */
+@define-color secondary #8ec07c;
+@define-color secondary_container #3c3836;
+@define-color on_secondary #1d2021;
+@define-color on_secondary_container #fbf1c7;
+
+/* Surface Colors */
+@define-color surface #282828;
+@define-color surface_variant #32302f;
+@define-color surface_dim #1d2021;
+@define-color surface_bright #3c3836;
+@define-color surface_container_lowest #1d2021;
+@define-color surface_container_low #282828;
+@define-color surface_container #32302f;
+@define-color surface_container_high #3c3836;
+@define-color surface_container_highest #504945;
+
+/* Error Colors */
+@define-color error #fb4934;
+@define-color error_container #3c3836;
+@define-color on_error #fbf1c7;
+@define-color on_error_container #fbf1c7;
+
+/* Text Colors */
+@define-color text_primary #fbf1c7;
+@define-color text_secondary #ebdbb2;
+@define-color text_tertiary #d5c4a1;
+@define-color text_disabled #a89984;
+
+/* State Colors - removing opacity and making solid */
+@define-color hover_state #332e2d;
+@define-color focus_state #3d3632;
+@define-color pressed_state #3d3632;
+@define-color dragged_state #453e3b;
+
+/* Legacy color mappings for compatibility */
+@define-color base #282828;
+@define-color surface #282828;
+@define-color hover #332e2d;
+@define-color active #fabd2f;
+@define-color text #fbf1c7;
+@define-color fg0 #fbf1c7;
+@define-color fg1 #ebdbb2;

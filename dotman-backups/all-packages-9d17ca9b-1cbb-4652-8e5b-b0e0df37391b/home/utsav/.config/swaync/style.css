@@ -1,0 +1,76 @@
+@import "styles/notifications.css";
+@import "styles/central_control.css";
+
+@define-color cc-bg rgb(46, 46, 46);
+@define-color noti-border-color rgb(255, 255, 255);
+@define-color noti-bg rgb(48, 48, 48);
+@define-color noti-bg-opaque rgb(48, 48, 48);
+@define-color noti-bg-darker rgb(38, 38, 38);
+@define-color noti-bg-hover rgb(56, 56, 56);
+@define-color noti-bg-hover-opaque rgb(56, 56, 56);
+@define-color noti-bg-focus rgb(68, 68, 68);
+@define-color noti-close-bg rgb(255, 255, 255);
+@define-color noti-close-bg-hover rgb(255, 255, 255);
+@define-color text-color rgb(255, 255, 255);
+@define-color text-color-disabled rgb(150, 150, 150);
+@define-color bg-selected rgb(0, 128, 255);
+
+.notification-row .notification-background .notification .notification-default-action .notification-content progressbar {
+  /* The optional notification progress bar */
+  min-height: 1.5rem;
+  margin: 1.25rem 0;
+  background-color: @noti-bg-darker;
+  border-radius: 999999px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content progressbar progress {
+  background-color: @bg-selected;
+  border-radius: 999999px;
+}
+
+.notification-row .notification-background .notification.critical .notification-default-action .notification-content progressbar progress {
+  background-color: @text-color;
+}
+
+/* System tray icons */
+.tray-icon {
+  border-radius: 999999px;
+  background-color: @noti-bg;
+  padding: 0.5rem;
+  margin: 0.25rem;
+}
+
+.tray-icon:hover {
+  background-color: @noti-bg-hover;
+}
+
+.tray-icon:active {
+  background-color: @noti-bg-darker;
+}
+
+/* MPRIS text with pill background */
+.mpris-title,
+.mpris-artist {
+  background-color: @noti-bg;
+  color: @text-color;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999999px;
+  margin: 0.25rem 0;
+}
+
+/* Material Design 3 Typography */
+.notification-row .notification-background .notification .summary {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.15px;
+}
+
+.notification-row .notification-background .notification .body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 0.25px;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
