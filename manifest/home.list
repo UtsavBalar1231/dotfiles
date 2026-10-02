@@ -16,11 +16,11 @@
 !*.pacnew
 !*.orig
 !*.swp
-# Nested repos and AI-agent state inside config dirs
+# Nested repos and AI-agent state inside config dirs (per-entry `!/.claude/` below: a global
+# `.claude/` pattern would also match the ~/.claude parent of the Claude entries)
 !.git/
 !.omc/
 !.omca/
-!.claude/
 
 # Shell and terminal tools
 .zshrc
@@ -41,7 +41,7 @@
 .gitconfig
 .gitignore_global
 .clang-format
-.config/nvim
+.config/nvim           !/.claude/
 
 # Terminals
 .config/kitty          !/docs/ !/.claude/
@@ -49,7 +49,7 @@
 .config/ghostty
 
 # niri + eww desktop (theme-generated files are kept: config.kdl includes them)
-.config/niri
+.config/niri           !/.claude/
 .config/eww
 .local/share/applications/eww-wallpapers.desktop
 .local/share/dbus-1/services

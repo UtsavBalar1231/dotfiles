@@ -17,7 +17,9 @@ MANIFEST=$REPO/manifest/home.list
 STORE=$REPO/home
 STATE=${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles
 # Content comparison (-c) without preserving mtimes (no -t), so status shows only real changes.
-RSYNC=(rsync -rlpDc --mkpath --itemize-changes)
+# --relative recreates each entry's parent directories (also in dry runs, which --mkpath does not
+# do on rsync 3.2.x, e.g. a fresh account with no ~/.config yet).
+RSYNC=(rsync -rlpDc --relative --itemize-changes)
 
 die() { printf 'dotfiles: %s\n' "$*" >&2; exit 1; }
 warn() { printf 'dotfiles: %s\n' "$*" >&2; }
@@ -51,26 +53,26 @@ load_manifest() {
 }
 
 # sync_entry SRC_ROOT DST_ROOT ENTRY [rsync options...]: copy one manifest entry between roots.
+# Paths in rsync's output and anchored (/...) excludes are relative to the root, so an entry's own
+# anchored excludes are prefixed with the entry.
 sync_entry() {
   local src=$1 dst=$2 entry=$3
   shift 3
   local -a cmd=("${RSYNC[@]}" "$@")
   local p
   for p in "${GLOBAL_EXCLUDES[@]}"; do cmd+=(--exclude="$p"); done
-  while IFS= read -r p; do [[ -n $p ]] && cmd+=(--exclude="$p"); done <<<"${ENTRY_EXCLUDES[$entry]}"
-  if [[ -d $src/$entry && ! -L $src/$entry ]]; then
-    "${cmd[@]}" "$src/$entry/" "$dst/$entry/"
-  else
-    "${cmd[@]}" "$src/$entry" "$dst/$entry"
-  fi
+  while IFS= read -r p; do
+    [[ -n $p ]] || continue
+    [[ $p == /* ]] && p=/$entry$p
+    cmd+=(--exclude="$p")
+  done <<<"${ENTRY_EXCLUDES[$entry]}"
+  "${cmd[@]}" "$src/./$entry" "$dst/"
 }
 
-# changes ROOT ENTRY: turn rsync's itemized output into one line per changed file (new directories and attribute-only
-# directory updates are left out: the files inside them are listed).
+# changes ROOT: turn rsync's itemized output into one line per changed file (new directories and
+# attribute-only directory updates are left out: the files inside them are listed).
 changes() {
-  local prefix=${1%/}/$2
-  [[ -d $HOME/$2 || -d $STORE/$2 ]] || prefix=${1%/}/$(dirname "$2")
-  prefix=${prefix%/.}
+  local prefix=${1%/}
   sed -nE -e "s|^\*deleting +(.*)$|  $prefix/\1 (removed)|p" -e '/^(\.d|cd)/d' \
     -e "s|^[<>ch.][fLDS][^ ]* (.*)$|  $prefix/\1|p"
 }
@@ -79,13 +81,14 @@ cmd_capture() {
   local dry=()
   [[ ${1:-} == --dry-run ]] && dry=(--dry-run)
   load_manifest
+  ((${#dry[@]})) || mkdir -p "$STORE"
   local entry out total=0
   for entry in "${ENTRIES[@]}"; do
     if [[ ! -e $HOME/$entry && ! -L $HOME/$entry ]]; then
       warn "skip $entry (not in \$HOME)"
       continue
     fi
-    out=$(sync_entry "$HOME" "$STORE" "$entry" --delete --delete-excluded "${dry[@]}" | changes "home" "$entry")
+    out=$(sync_entry "$HOME" "$STORE" "$entry" --delete --delete-excluded "${dry[@]}" | changes "home")
     if [[ -n $out ]]; then
       printf '%s\n' "$out"
       total=$((total + $(wc -l <<<"$out")))
@@ -107,7 +110,7 @@ cmd_deploy() {
   local entry out plan=""
   for entry in "${ENTRIES[@]}"; do
     [[ -e $STORE/$entry || -L $STORE/$entry ]] || continue
-    out=$(sync_entry "$STORE" "$HOME" "$entry" --dry-run | changes "~" "$entry")
+    out=$(sync_entry "$STORE" "$HOME" "$entry" --dry-run | changes "~")
     [[ -n $out ]] && plan+=$out$'\n'
   done
   if [[ -z $plan ]]; then
@@ -130,11 +133,7 @@ cmd_deploy() {
   backup=$STATE/backups/$(date +%Y%m%d-%H%M%S)
   for entry in "${ENTRIES[@]}"; do
     [[ -e $STORE/$entry || -L $STORE/$entry ]] || continue
-    if [[ -d $STORE/$entry && ! -L $STORE/$entry ]]; then
-      sync_entry "$STORE" "$HOME" "$entry" --backup --backup-dir="$backup/$entry" >/dev/null
-    else
-      sync_entry "$STORE" "$HOME" "$entry" --backup --backup-dir="$backup/$(dirname "$entry")" >/dev/null
-    fi
+    sync_entry "$STORE" "$HOME" "$entry" --backup --backup-dir="$backup" >/dev/null
   done
   printf 'deploy: %d file(s) updated' "$count"
   [[ -d $backup ]] && printf '; replaced files saved in %s' "$backup"
@@ -146,11 +145,11 @@ cmd_status() {
   local entry out to_home="" to_repo=""
   for entry in "${ENTRIES[@]}"; do
     if [[ -e $STORE/$entry || -L $STORE/$entry ]]; then
-      out=$(sync_entry "$STORE" "$HOME" "$entry" --dry-run | changes "~" "$entry")
+      out=$(sync_entry "$STORE" "$HOME" "$entry" --dry-run | changes "~")
       [[ -n $out ]] && to_home+=$out$'\n'
     fi
     if [[ -e $HOME/$entry || -L $HOME/$entry ]]; then
-      out=$(sync_entry "$HOME" "$STORE" "$entry" --dry-run --delete --delete-excluded | changes "home" "$entry")
+      out=$(sync_entry "$HOME" "$STORE" "$entry" --dry-run --delete --delete-excluded | changes "home")
       [[ -n $out ]] && to_repo+=$out$'\n'
     else
       echo "  missing in \$HOME: $entry"
