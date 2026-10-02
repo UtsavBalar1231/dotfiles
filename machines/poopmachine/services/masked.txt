@@ -1,0 +1,5 @@
+## system
+fancontrol.service	masked	disabled
+
+## user
+

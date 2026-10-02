@@ -1,0 +1,13 @@
+[Unit]
+Description=Rescan PCIe bus and load ath12k for Qualcomm WiFi
+After=systemd-modules-load.service
+Before=NetworkManager.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'echo 1 > /sys/bus/pci/rescan'
+ExecStartPost=/bin/sleep 3
+ExecStartPost=/sbin/modprobe ath12k
+
+[Install]
+WantedBy=multi-user.target

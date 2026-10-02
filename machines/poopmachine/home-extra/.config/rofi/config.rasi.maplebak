@@ -1,0 +1,25 @@
+configuration {
+    modi: "drun,run,window,filebrowser"; 
+    show-icons: true;
+    icon-theme: "Gruvbox-Plus-Dark";  
+    display-drun: "";
+    display-run: "";
+    display-window: "";
+    display-filebrowser: "";
+    drun-display-format: "{icon} {name}";
+    window-format: "{w} - {c} - {t:0}";
+    sort: true;
+    sorting-method: "fzf";
+    font: "JetBrainsMono Nerd Font 10";
+
+    matching: "normal";
+    tokenize: true;
+
+    filebrowser-display-format: "{icon} {name}";
+    filebrowser {
+        directories-first: true;
+        sorting-method:    "name";
+    }
+}
+
+@theme "material"

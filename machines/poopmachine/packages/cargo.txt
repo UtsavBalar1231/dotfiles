@@ -1,0 +1,40 @@
+    agstage
+    cargo-add
+    cargo-audit
+    cargo-cache
+    cargo-deb
+    cargo-deny
+    cargo-flamegraph
+    cargo-llvm-cov
+    cargo-machete
+    cargo-nextest
+    cargo-rm
+    cargo-set-version
+    cargo-upgrade
+    cargo-watch
+    cross
+    cross-util
+    dot
+    flamegraph
+    flutter_rust_bridge_codegen
+    just-mcp
+    pgs
+    pgs-mcp
+    wasm-pack
+agstage v0.2.0 (/home/utsav/dev/agstage):
+cargo-audit v0.22.1:
+cargo-cache v0.8.3:
+cargo-deb v3.6.3:
+cargo-deny v0.18.4:
+cargo-edit v0.13.7:
+cargo-llvm-cov v0.6.18:
+cargo-machete v0.9.1:
+cargo-nextest v0.9.133:
+cargo-watch v8.5.3:
+cross v0.2.5 (https://github.com/cross-rs/cross#e281947c):
+dotman v0.0.1 (/home/utsav/dev/dotman):
+flamegraph v0.6.8:
+flutter_rust_bridge_codegen v1.80.1 (/home/utsav/.cache/yay/rustdesk/src/flutter_rust_bridge-1.80.1/frb_codegen):
+just-mcp v0.1.0:
+pgs v0.4.2 (/home/utsav/dev/pgs):
+wasm-pack v0.13.1:

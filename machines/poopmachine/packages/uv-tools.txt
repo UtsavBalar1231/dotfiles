@@ -1,0 +1,8 @@
+- basic-memory
+- bm
+- kimi
+- kimi-cli
+- specify
+basic-memory v0.23.2
+kimi-cli v1.14.0
+specify-cli v0.1.6

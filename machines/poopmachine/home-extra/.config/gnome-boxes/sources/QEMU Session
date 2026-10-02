@@ -1,0 +1,15 @@
+[source]
+name=QEMU Session
+type=libvirt
+uri=qemu+unix:///session
+save-on-quit=true
+
+[display e24545c4-cdc6-45bf-bdb8-e5089ede612c]
+last-seen-name=Ubuntu Desktop 24.04 LTS
+uuid=e24545c4-cdc6-45bf-bdb8-e5089ede612c
+acceleration-3d=false
+run-in-bg=true
+access-last-time=1771944534974320
+access-ntimes=186
+access-total-time=175952
+

@@ -1,0 +1,525 @@
+## DMI (serial numbers omitted)
+sys_vendor: Micro-Star International Co., Ltd.
+product_name: MS-7E59
+product_version: 2.0
+board_vendor: Micro-Star International Co., Ltd.
+board_name: MAG X870E TOMAHAWK WIFI (MS-7E59)
+bios_vendor: American Megatrends International, LLC.
+bios_version: 2.A91
+bios_date: 09/09/2025
+
+## lscpu (summary)
+Architecture:                            x86_64
+CPU(s):                                  32
+On-line CPU(s) list:                     0-31
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD Ryzen 9 9950X3D 16-Core Processor
+CPU family:                              26
+Thread(s) per core:                      2
+Core(s) per socket:                      16
+Socket(s):                               1
+Microcode version:                       0xb404035
+Frequency boost:                         enabled
+Virtualization:                          AMD-V
+L1d cache:                               768 KiB (16 instances)
+L1i cache:                               512 KiB (16 instances)
+L2 cache:                                16 MiB (16 instances)
+L3 cache:                                128 MiB (2 instances)
+NUMA node(s):                            1
+
+## memory
+MemTotal:       63304052 kB
+SwapTotal:      31651836 kB
+
+## GPU
+VGA compatible controller [0300]: NVIDIA Corporation GB202 [GeForce RTX 5090] [10de:2b85] (rev a1)
+VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Granite Ridge [Radeon Graphics] [1002:13c0] (rev c9)
+
+## nvidia-smi (name, driver, memory)
+NVIDIA GeForce RTX 5090, 615.71.09, 32607 MiB
+
+## lspci -nnk (UUIDs redacted)
+00:00.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Root Complex [1022:14d8]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+00:00.2 IOMMU [0806]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge IOMMU [1022:14d9]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+00:01.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Dummy Host Bridge [1022:14da]
+00:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge GPP Bridge [1022:14db]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+00:01.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge GPP Bridge [1022:14db]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+00:02.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Dummy Host Bridge [1022:14da]
+00:02.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge GPP Bridge [1022:14db]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+00:02.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge GPP Bridge [1022:14db]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+00:03.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Dummy Host Bridge [1022:14da]
+00:04.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Dummy Host Bridge [1022:14da]
+00:08.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Dummy Host Bridge [1022:14da]
+00:08.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Internal GPP Bridge to Bus [C:A] [1022:14dd]
+	Subsystem: Device [7e59:1462]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+00:08.3 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Internal GPP Bridge to Bus [C:A] [1022:14dd]
+	Subsystem: Device [7e59:1462]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+00:14.0 SMBus [0c05]: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller [1022:790b] (rev 71)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: piix4_smbus
+	Kernel modules: i2c_piix4, sp5100_tco
+00:14.3 ISA bridge [0601]: Advanced Micro Devices, Inc. [AMD] FCH LPC Bridge [1022:790e] (rev 51)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+00:18.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 0 [1022:14e0]
+00:18.1 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 1 [1022:14e1]
+00:18.2 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 2 [1022:14e2]
+00:18.3 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 3 [1022:14e3]
+	Kernel driver in use: k10temp
+	Kernel modules: k10temp
+00:18.4 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 4 [1022:14e4]
+00:18.5 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 5 [1022:14e5]
+00:18.6 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 6 [1022:14e6]
+00:18.7 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge Data Fabric; Function 7 [1022:14e7]
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GB202 [GeForce RTX 5090] [10de:2b85] (rev a1)
+	Subsystem: ZOTAC International (MCO) Ltd. Device [19da:1761]
+	Kernel driver in use: nvidia
+	Kernel modules: nouveau, nvidia_drm, nvidia
+01:00.1 Audio device [0403]: NVIDIA Corporation GB202 High Definition Audio Controller [10de:22e8] (rev a1)
+	Subsystem: NVIDIA Corporation Device [10de:0000]
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+02:00.0 Non-Volatile memory controller [0108]: ADATA Technology Co., Ltd. XPG MARS 980 BLADE NVMe SSD [1cc1:646a] (rev 03)
+	Subsystem: ADATA Technology Co., Ltd. XPG MARS 980 BLADE NVMe SSD [1cc1:646a]
+	Kernel driver in use: nvme
+	Kernel modules: nvme
+03:00.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Upstream Port [1022:43f4] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+04:00.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+04:04.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+04:05.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+04:06.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+04:08.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+04:0c.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+04:0d.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+05:00.0 Non-Volatile memory controller [0108]: ADATA Technology Co., Ltd. GAMMIX S70 BLADE, PS5 PREMIUM NVMe SSD [1cc1:5370] (rev 01)
+	Subsystem: ADATA Technology Co., Ltd. GAMMIX S70 BLADE, PS5 PREMIUM NVMe SSD [1cc1:5370]
+	Kernel driver in use: nvme
+	Kernel modules: nvme
+07:00.0 Ethernet controller [0200]: Realtek Semiconductor Co., Ltd. RTL8126 5GbE Controller [10ec:8126] (rev 01)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: r8169
+	Kernel modules: r8169
+08:00.0 Network controller [0280]: Qualcomm Technologies, Inc WCN785x Wi-Fi 7(802.11be) 320MHz 2x2 [FastConnect 7800] [17cb:1107] (rev 01)
+	Subsystem: Foxconn International, Inc. High Band Simultaneous Wireless Network Adapter [105b:e0f7]
+	Kernel driver in use: ath12k_wifi7_pci
+	Kernel modules: ath12k_wifi7
+09:00.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Upstream Port [1022:43f4] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:00.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:04.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:05.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:06.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:07.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:08.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:0c.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+0a:0d.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset PCIe Switch Downstream Port [1022:43f5] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:3328]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+11:00.0 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] 800 Series Chipset USB 3.x XHCI Controller [1022:43fd] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:1142]
+	Kernel driver in use: xhci-pci-prom21
+	Kernel modules: xhci_pci_prom21, xhci_pci
+12:00.0 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset SATA Controller [1022:43f6] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:1062]
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+13:00.0 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] 800 Series Chipset USB 3.x XHCI Controller [1022:43fd] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:1142]
+	Kernel driver in use: xhci-pci-prom21
+	Kernel modules: xhci_pci_prom21, xhci_pci
+14:00.0 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] 600 Series Chipset SATA Controller [1022:43f6] (rev 01)
+	Subsystem: ASMedia Technology Inc. Device [1b21:1062]
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+15:00.0 PCI bridge [0604]: ASMedia Technology Inc. ASM4242 PCIe Switch Upstream Port [1b21:2421] (rev 01)
+	Subsystem: ASMedia Technology Inc. ASM4242 PCIe Switch Upstream Port [1b21:2421]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+16:00.0 PCI bridge [0604]: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423] (rev 01)
+	Subsystem: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+16:01.0 PCI bridge [0604]: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423] (rev 01)
+	Subsystem: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+16:02.0 PCI bridge [0604]: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423] (rev 01)
+	Subsystem: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+16:03.0 PCI bridge [0604]: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423] (rev 01)
+	Subsystem: ASMedia Technology Inc. ASM4242 PCIe Switch Downstream Port [1b21:2423]
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+77:00.0 USB controller [0c03]: ASMedia Technology Inc. ASM4242 USB 3.2 xHCI Controller [1b21:2426] (rev 01)
+	Subsystem: ASMedia Technology Inc. ASM4242 USB 3.2 xHCI Controller [1b21:2426]
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+78:00.0 USB controller [0c03]: ASMedia Technology Inc. ASM4242 USB 4 / Thunderbolt 3 Host Router [1b21:2425] (rev 01)
+	Subsystem: ASMedia Technology Inc. ASM4242 USB 4 / Thunderbolt 3 Host Router [1b21:2425]
+	Kernel driver in use: thunderbolt
+	Kernel modules: thunderbolt
+79:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Granite Ridge [Radeon Graphics] [1002:13c0] (rev c9)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: amdgpu
+	Kernel modules: amdgpu
+79:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Radeon High Definition Audio Controller [1002:1640]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+79:00.2 Encryption controller [1080]: Advanced Micro Devices, Inc. [AMD] Family 19h PSP/CCP [1022:1649]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: ccp
+	Kernel modules: ccp
+79:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge USB 3.1 xHCI [1022:15b6]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+79:00.4 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge USB 3.1 xHCI [1022:15b7]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+79:00.6 Audio device [0403]: Advanced Micro Devices, Inc. [AMD] Ryzen HD Audio Controller [1022:15e3]
+	DeviceName: Realtek ALC1220
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:ee59]
+	Kernel modules: snd_hda_intel
+7a:00.0 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Raphael/Granite Ridge USB 2.0 xHCI [1022:15b8]
+	Subsystem: Micro-Star International Co., Ltd. [MSI] Device [1462:7e59]
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+
+## lsusb (bus numbers only)
+Bus 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 003: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 004: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 005: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 006: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 007: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 008: ID 0403:6001 Future Technology Devices International, Ltd FT232 Serial (UART) IC
+Bus 008: ID 0db0:cd0e Micro Star International USB Audio
+Bus 008: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 009: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 010: ID 046d:c53f Logitech, Inc. USB Receiver
+Bus 010: ID 0489:e10a Foxconn / Hon Hai 
+Bus 010: ID 0db0:0076 Micro Star International MYSTIC LIGHT
+Bus 010: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 010: ID 258a:010c BY Tech Gaming Keyboard
+Bus 010: ID 3554:fc00 Compx 2.4G Receiver
+Bus 011: ID 1d6b:0003 Linux Foundation 3.0 root hub
+
+## monitors (niri msg --json outputs, serials omitted)
+{
+  "DP-6": {
+    "current_mode": 0,
+    "is_custom_mode": false,
+    "logical": {
+      "height": 1440,
+      "scale": 1.0,
+      "transform": "Normal",
+      "width": 3440,
+      "x": 0,
+      "y": 0
+    },
+    "make": "Microstep",
+    "model": "MAG 342CQR E2",
+    "modes": [
+      {
+        "height": 1440,
+        "is_preferred": true,
+        "refresh_rate": 59999,
+        "width": 3440
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 180000,
+        "width": 3440
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 165001,
+        "width": 3440
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 144000,
+        "width": 3440
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 120000,
+        "width": 3440
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 100000,
+        "width": 3440
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 50000,
+        "width": 3440
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 144000,
+        "width": 2560
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 120000,
+        "width": 2560
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 60000,
+        "width": 2560
+      },
+      {
+        "height": 1440,
+        "is_preferred": false,
+        "refresh_rate": 60001,
+        "width": 1720
+      },
+      {
+        "height": 1200,
+        "is_preferred": false,
+        "refresh_rate": 59885,
+        "width": 1920
+      },
+      {
+        "height": 1080,
+        "is_preferred": false,
+        "refresh_rate": 119879,
+        "width": 1920
+      },
+      {
+        "height": 1080,
+        "is_preferred": false,
+        "refresh_rate": 99898,
+        "width": 1920
+      },
+      {
+        "height": 1080,
+        "is_preferred": false,
+        "refresh_rate": 60000,
+        "width": 1920
+      },
+      {
+        "height": 1080,
+        "is_preferred": false,
+        "refresh_rate": 59939,
+        "width": 1920
+      },
+      {
+        "height": 1200,
+        "is_preferred": false,
+        "refresh_rate": 60000,
+        "width": 1600
+      },
+      {
+        "height": 1050,
+        "is_preferred": false,
+        "refresh_rate": 99846,
+        "width": 1680
+      },
+      {
+        "height": 1050,
+        "is_preferred": false,
+        "refresh_rate": 59954,
+        "width": 1680
+      },
+      {
+        "height": 1024,
+        "is_preferred": false,
+        "refresh_rate": 99962,
+        "width": 1280
+      },
+      {
+        "height": 1024,
+        "is_preferred": false,
+        "refresh_rate": 75025,
+        "width": 1280
+      },
+      {
+        "height": 1024,
+        "is_preferred": false,
+        "refresh_rate": 60020,
+        "width": 1280
+      },
+      {
+        "height": 900,
+        "is_preferred": false,
+        "refresh_rate": 99925,
+        "width": 1440
+      },
+      {
+        "height": 900,
+        "is_preferred": false,
+        "refresh_rate": 59887,
+        "width": 1440
+      },
+      {
+        "height": 800,
+        "is_preferred": false,
+        "refresh_rate": 59810,
+        "width": 1280
+      },
+      {
+        "height": 720,
+        "is_preferred": false,
+        "refresh_rate": 59943,
+        "width": 1280
+      },
+      {
+        "height": 720,
+        "is_preferred": false,
+        "refresh_rate": 50000,
+        "width": 1280
+      },
+      {
+        "height": 768,
+        "is_preferred": false,
+        "refresh_rate": 75029,
+        "width": 1024
+      },
+      {
+        "height": 768,
+        "is_preferred": false,
+        "refresh_rate": 60004,
+        "width": 1024
+      },
+      {
+        "height": 600,
+        "is_preferred": false,
+        "refresh_rate": 75000,
+        "width": 800
+      },
+      {
+        "height": 600,
+        "is_preferred": false,
+        "refresh_rate": 72188,
+        "width": 800
+      },
+      {
+        "height": 600,
+        "is_preferred": false,
+        "refresh_rate": 60317,
+        "width": 800
+      },
+      {
+        "height": 576,
+        "is_preferred": false,
+        "refresh_rate": 50000,
+        "width": 720
+      },
+      {
+        "height": 480,
+        "is_preferred": false,
+        "refresh_rate": 59940,
+        "width": 720
+      },
+      {
+        "height": 480,
+        "is_preferred": false,
+        "refresh_rate": 75000,
+        "width": 640
+      },
+      {
+        "height": 480,
+        "is_preferred": false,
+        "refresh_rate": 59952,
+        "width": 640
+      },
+      {
+        "height": 480,
+        "is_preferred": false,
+        "refresh_rate": 59940,
+        "width": 640
+      }
+    ],
+    "name": "DP-6",
+    "physical_size": [
+      790,
+      350
+    ],
+    "serial": null,
+    "vrr_enabled": true,
+    "vrr_supported": false
+  }
+}
+

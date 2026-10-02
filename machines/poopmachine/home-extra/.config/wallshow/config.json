@@ -1,0 +1,32 @@
+{
+  "wallpaper_dirs": {
+    "static": "~/Pictures/wallpapers",
+    "animated": "~/Pictures/wallpapers/animated"
+  },
+  "intervals": {
+    "change_seconds": 300,
+    "transition_ms": 300,
+    "gif_frame_ms": 50
+  },
+  "behavior": {
+    "shuffle": true,
+    "exclude_patterns": [
+      "*.tmp",
+      ".*"
+    ],
+    "battery_optimization": true,
+    "max_cache_size_mb": 500,
+    "max_log_size_kb": 1024,
+    "debug": false
+  },
+  "tools": {
+    "preferred_static": "auto",
+    "preferred_animated": "auto",
+    "fallback_chain": [
+      "swww",
+      "swaybg",
+      "feh",
+      "xwallpaper"
+    ]
+  }
+}

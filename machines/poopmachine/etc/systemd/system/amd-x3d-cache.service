@@ -1,0 +1,11 @@
+[Unit]
+Description=Set AMD X3D V-Cache mode to cache (gaming)
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo cache > /sys/bus/platform/drivers/amd_x3d_vcache/AMDI0101:00/amd_x3d_mode'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

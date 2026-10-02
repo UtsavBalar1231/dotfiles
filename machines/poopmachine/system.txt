@@ -1,0 +1,93 @@
+## hostnamectl (machine and boot ids omitted)
+  Static hostname: poopmachine
+        Icon name: computer-desktop
+          Chassis: desktop 🖥️
+ Operating System: Arch Linux
+           Kernel: Linux 7.2.8-arch1-1
+     Architecture: x86-64
+  Hardware Vendor: Micro-Star International Co., Ltd.
+   Hardware Model: MS-7E59
+ Hardware Version: 2.0
+ Firmware Version: 2.A91
+    Firmware Date: Tue 2025-09-09
+     Firmware Age: 1y 3w 2d
+
+## /etc/os-release
+NAME="Arch Linux"
+PRETTY_NAME="Arch Linux"
+ID=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;23;147;209"
+HOME_URL="https://archlinux.org/"
+DOCUMENTATION_URL="https://wiki.archlinux.org/"
+SUPPORT_URL="https://bbs.archlinux.org/"
+BUG_REPORT_URL="https://gitlab.archlinux.org/groups/archlinux/-/issues"
+PRIVACY_POLICY_URL="https://terms.archlinux.org/docs/privacy-policy/"
+LOGO=archlinux-logo
+
+## uname -a
+Linux poopmachine 7.2.8-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 01 Oct 2026 02:24:43 +0000 x86_64 GNU/Linux
+
+## /proc/cmdline (UUIDs redacted)
+BOOT_IMAGE=/vmlinuz-linux root=UUID=<uuid> rw rootfstype=ext4 rw loglevel=3 quiet nvidia-drm.modeset=1 amd_pstate=active mitigations=off nowatchdog audit=0 threadirqs psi=1 plymouth.enable=0 disablehooks=plymouth zswap.enabled=0 transparent_hugepage=always
+
+## timezone
+Timezone=Asia/Kolkata
+LocalRTC=no
+NTP=yes
+
+## locale
+System Locale: LANG=en_US.UTF-8
+    VC Keymap: us
+   X11 Layout: us
+    X11 Model: pc105+inet
+  X11 Options: terminate:ctrl_alt_bksp
+
+## lsblk -f (UUID column omitted)
+NAME        FSTYPE FSVER LABEL        SIZE MOUNTPOINTS
+zram0       swap   1     zram0       30.2G [SWAP]
+nvme1n1                               1.9T 
+|-nvme1n1p1 ntfs         New Volume 953.9G 
+`-nvme1n1p2 ext4   1.0              941.3G /home
+nvme0n1                               1.9T 
+|-nvme0n1p1 vfat   FAT32              100M 
+|-nvme0n1p2                            16M 
+|-nvme0n1p3 ntfs                    956.3G 
+|-nvme0n1p4 ntfs                      736M 
+|-nvme0n1p5 vfat   FAT32                1G /boot
+`-nvme0n1p6 ext4   1.0              949.6G /
+
+## findmnt -l (UUIDs redacted; container and per-user runtime mounts omitted)
+TARGET                                                                                           SOURCE                 FSTYPE          OPTIONS
+/                                                                                                /dev/nvme0n1p6         ext4            rw,relatime
+/boot                                                                                            /dev/nvme0n1p5         vfat            rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro
+/dev                                                                                             devtmpfs               devtmpfs        rw,nosuid,size=31508724k,nr_inodes=7877181,mode=755,inode64,huge=advise
+/dev/hugepages                                                                                   hugetlbfs              hugetlbfs       rw,nosuid,nodev,relatime,pagesize=2M
+/dev/mqueue                                                                                      mqueue                 mqueue          rw,nosuid,nodev,noexec,relatime
+/dev/pts                                                                                         devpts                 devpts          rw,nosuid,noexec,relatime,gid=5,mode=600,ptmxmode=000
+/dev/shm                                                                                         tmpfs                  tmpfs           rw,nosuid,nodev,inode64,huge=advise,usrquota
+/home                                                                                            /dev/nvme1n1p2         ext4            rw,relatime
+/proc                                                                                            proc                   proc            rw,nosuid,nodev,noexec,relatime
+/proc/sys/fs/binfmt_misc                                                                         binfmt_misc            binfmt_misc     rw,nosuid,nodev,noexec,relatime
+/proc/sys/fs/binfmt_misc                                                                         systemd-1              autofs          rw,relatime,fd=34,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=14921
+/run                                                                                             tmpfs                  tmpfs           rw,nosuid,nodev,size=12660812k,nr_inodes=819200,mode=755,inode64,huge=advise
+/sys                                                                                             sysfs                  sysfs           rw,nosuid,nodev,noexec,relatime
+/sys/firmware/efi/efivars                                                                        efivarfs               efivarfs        rw,nosuid,nodev,noexec,relatime
+/sys/fs/bpf                                                                                      bpf                    bpf             rw,nosuid,nodev,noexec,relatime,mode=700
+/sys/fs/cgroup                                                                                   cgroup2                cgroup2         rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot,memory_hugetlb_accounting
+/sys/fs/fuse/connections                                                                         fusectl                fusectl         rw,nosuid,nodev,noexec,relatime
+/sys/fs/pstore                                                                                   none                   pstore          rw,nosuid,nodev,noexec,relatime
+/sys/kernel/config                                                                               configfs               configfs        rw,nosuid,nodev,noexec,relatime
+/sys/kernel/debug                                                                                debugfs                debugfs         rw,nosuid,nodev,noexec,relatime
+/sys/kernel/security                                                                             securityfs             securityfs      rw,nosuid,nodev,noexec,relatime
+/sys/kernel/tracing                                                                              tracefs                tracefs         rw,nosuid,nodev,noexec,relatime
+/tmp                                                                                             tmpfs                  tmpfs           rw,nosuid,nodev,size=31652028k,nr_inodes=1048576,inode64,huge=advise,usrquota
+
+## swap
+NAME       TYPE       SIZE PRIO
+/dev/zram0 partition 30.2G  100
+
+## zram
+NAME       DISKSIZE ALGORITHM STREAMS
+/dev/zram0    30.2G zstd      
+

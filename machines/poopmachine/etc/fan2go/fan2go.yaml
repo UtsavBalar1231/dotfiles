@@ -1,0 +1,140 @@
+# The path of the database file
+dbPath: "/etc/fan2go/fan2go.db"
+
+# Allow the fan initialization sequence to run in parallel for all configured fans
+runFanInitializationInParallel: false
+# The maximum difference between consecutive RPM measurements to
+# consider a fan speed "settled"
+# Note: This parameter is only used for initial analysis of fan curve
+#       and has no effect during normal operation
+maxRpmDiffForSettledFan: 20
+# The time in seconds to wait before checking that a fan has responded to a control change
+# Note: This parameter is only used for initial analysis of fan curve
+#       and has no effect during normal operation
+fanResponseDelay: 2
+
+# The rate to poll temperature sensors at
+tempSensorPollingRate: 200ms
+# The number of temp sensor values to keep in a rolling window array
+tempRollingWindowSize: 10
+
+# The rate to poll fan RPM input sensors at
+rpmPollingRate: 1s
+# The number of rpm sensor values to keep in a rolling window array
+rpmRollingWindowSize: 10
+
+# Configuration options for each fan controller responsible for an individual fan.
+fanController:
+  # The rate to update fan speed targets at
+  adjustmentTickRate: 200ms
+  # Time to wait for a fan to respond to a control change
+  pwmSetDelay: 5ms
+
+curves:
+  # A user defined ID, which is used to reference
+  # a curve in a fan configuration (see above)
+  - id: cpu_curve
+    linear:
+      sensor: cpu_package1
+      min: 40
+      max: 60
+  - id: always_max1
+    linear:
+      sensor: cpu_package2
+      min: 30
+      max: 50
+  - id: always_max2
+    linear:
+      sensor: cpu_package3
+      min: 30
+      max: 50
+
+sensors:
+  - id: cpu_package1
+    # The type of sensor configuration, one of: hwmon | nvidia | file | cmd
+    hwmon:
+      platform: nct6687-isa-0a20
+      index: 1
+  - id: cpu_package2
+    # The type of sensor configuration, one of: hwmon | nvidia | file | cmd
+    hwmon:
+      platform: nct6687-isa-0a20
+      index: 2
+  - id: cpu_package3
+    # The type of sensor configuration, one of: hwmon | nvidia | file | cmd
+    hwmon:
+      platform: nct6687-isa-0a20
+      index: 6
+
+# A list of fans to control
+fans:
+  - id: lianli_front_and_back
+    hwmon:
+      platform: nct6687-isa-0a20
+      rpmChannel: 1
+      pwmChannel: 1
+    neverStop: true
+    curve: cpu_curve
+    controlAlgorithm: direct
+    minPwm: 64
+    startPwm: 64
+    maxPwm: 255
+    pwmMap:
+      0: 0
+      64: 128
+      128: 192
+      192: 255
+    sanityCheck:
+      # (Optional) Control the behavior of the "pwmValueChangedByThirdParty" sanity check
+      # This check is used to detect if the PWM value of a fan has changed between two consecutive
+      # control loop cycles, which is usually an indication that an external program is trying to control the fan
+      # at the same time as fan2go. This can lead to unexpected behavior and is usually not desired, so 
+      # fan2go will log a warning if this happens.
+      pwmValueChangedByThirdParty:
+        # (Optional) Whether to enable this check or not
+        enabled: true
+  - id: aio_fans
+    hwmon:
+      platform: nct6687-isa-0a20
+      rpmChannel: 2
+      pwmChannel: 2
+    neverStop: true
+    curve: always_max1
+    controlAlgorithm: direct
+    minPwm: 50
+    startPwm: 50
+    maxPwm: 255
+    pwmMap:
+      0: 0
+      64: 128
+      128: 192
+      192: 255
+  # - id: bottom_arctic
+  #   hwmon:
+  #     platform: nct6687-isa-0a20
+  #     rpmChannel: 12
+  #   neverStop: true
+  #   controlAlgorithm: direct
+  #   curve: always_max2
+
+statistics:
+  # Whether to enable the prometheus exporter or not
+  enabled: true
+  # The port to expose the exporter on
+  port: 9000
+
+api:
+  # Whether to enable the API or not
+  enabled: true
+  # The host to listen for connections
+  host: localhost
+  # The port to listen for connections
+  port: 9001
+
+profiling:
+  # Whether to enable the profiling webserver
+  enabled: true
+  # The host to listen for connections
+  host: localhost
+  # The port to listen for connections
+  port: 6060

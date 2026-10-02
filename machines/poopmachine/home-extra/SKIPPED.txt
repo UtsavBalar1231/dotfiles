@@ -1,0 +1,113 @@
+.ICEauthority	noise (log, backup, lock, history or database)
+.bash_history	noise (log, backup, lock, history or database)
+.claude.json.backup	noise (log, backup, lock, history or database)
+.config/.android/	application data or profile
+.config/.copilot/config.json	symlink -> /home/utsav/.copilot/config.json
+.config/.copilot/logs/	cache or generated data
+.config/.mozilla/zen/Crash Reports/	cache or generated data
+.config/Android Open Source Project/	application data or profile
+.config/Antigravity/	application data or profile
+.config/Bitwarden/	application data or profile
+.config/BraveSoftware/	application data or profile
+.config/Claude-3p/	application data or profile
+.config/Claude/	application data or profile
+.config/Code - Insiders/	application data or profile
+.config/Cursor/	application data or profile
+.config/Docker Desktop/	application data or profile
+.config/GIMP/3.0/CrashLog/	cache or generated data
+.config/Insync/	application data or profile
+.config/JetBrains/	application data or profile
+.config/Kiro/	application data or profile
+.config/LarkInternational/	application data or profile
+.config/Notion/	application data or profile
+.config/OpenRGB/logs/	cache or generated data
+.config/Slack/	application data or profile
+.config/Thonny/backend.log	noise (log, backup, lock, history or database)
+.config/Thonny/frontend.log	noise (log, backup, lock, history or database)
+.config/Thonny/frontend_faults.log	noise (log, backup, lock, history or database)
+.config/ai.opencode.desktop/	application data or profile
+.config/astropy	symlink -> /home/utsav/.astropy/config
+.config/autostart/slack.desktop	symlink -> /usr/share/applications/slack.desktop
+.config/baidunetdisk/	application data or profile
+.config/balenaEtcher/	application data or profile
+.config/basic-memory/	application data or profile
+.config/bytertc/	application data or profile
+.config/chromium-headless/	application data or profile
+.config/chromium/	application data or profile
+.config/claude/	application data or profile
+.config/configstore/	credentials (copied to private/)
+.config/connections.db	noise (log, backup, lock, history or database)
+.config/dconf/cosmic	binary
+.config/dconf/user	binary
+.config/dotman/	application data or profile
+.config/drata-agent/	application data or profile
+.config/evolution/mail/properties.db	noise (log, backup, lock, history or database)
+.config/evolution/mail/remote-content.db	noise (log, backup, lock, history or database)
+.config/figma-linux/	application data or profile
+.config/flowblade/prefs	binary
+.config/flowblade/recent	binary
+.config/flowblade/vaults	binary
+.config/gcloud/	application data or profile
+.config/gdrive3/	credentials (copied to private/)
+.config/gh/	credentials (copied to private/)
+.config/github-copilot/	credentials (copied to private/)
+.config/gmic/gmic_qt_dynamism.dat	binary
+.config/gmic/gmic_qt_filters.dat	>1MB
+.config/gmic/gmic_qt_params.dat	binary
+.config/gmic/gmic_qt_tags.dat	binary
+.config/gmic/gmic_qt_visibility.dat	binary
+.config/gmic/update361.gmic	>1MB
+.config/gnome-boxes/e24545c4-cdc6-45bf-bdb8-e5089ede612c/test	symlink -> /home/utsav/Public
+.config/go/telemetry/	cache or generated data
+.config/goa-1.0/	application data or profile
+.config/google-chrome-for-testing/	application data or profile
+.config/google-chrome/	application data or profile
+.config/hypr/scripts/hypr-wallshow.sh.backup	noise (log, backup, lock, history or database)
+.config/inkscape/extension-errors.log	noise (log, backup, lock, history or database)
+.config/inkscape/extensions/	cache or generated data
+.config/inkscape/fontcollections/recently_used_fonts.log	noise (log, backup, lock, history or database)
+.config/kite-mcp/	application data or profile
+.config/libaccounts-glib/accounts.db	noise (log, backup, lock, history or database)
+.config/libreoffice/	application data or profile
+.config/libresprite/palettes/default.ase	binary
+.config/libvirt/storage/autostart/gnome-boxes.xml	symlink -> /home/utsav/.config/libvirt/storage/gnome-boxes.xml
+.config/ly/config.ini.pacnew	noise (log, backup, lock, history or database)
+.config/ly/setup.sh.pacnew	noise (log, backup, lock, history or database)
+.config/ly/wsetup.sh.pacnew	noise (log, backup, lock, history or database)
+.config/ly/xsetup.sh.pacnew	noise (log, backup, lock, history or database)
+.config/microsoft-edge/	application data or profile
+.config/mimeapps.list.bak.20260517-134717	noise (log, backup, lock, history or database)
+.config/mimeapps.list.bak.20260517-141327	noise (log, backup, lock, history or database)
+.config/monitors.xml~	noise (log, backup, lock, history or database)
+.config/notion-app-enhanced/	application data or profile
+.config/notion-electron/	application data or profile
+.config/nvim.backup-20251118_134259/	application data or profile
+.config/nvm/	application data or profile
+.config/onedrive/items.sqlite3	noise (log, backup, lock, history or database)
+.config/opencode/	application data or profile
+.config/opera/	application data or profile
+.config/picom/picom.conf.bak	noise (log, backup, lock, history or database)
+.config/rustdesk/	application data or profile
+.config/spotify/	application data or profile
+.config/sst/	application data or profile
+.config/starship.toml.bak-pre-theme	noise (log, backup, lock, history or database)
+.config/superpowers/conversation-index/db.sqlite	noise (log, backup, lock, history or database)
+.config/swaync/.claude/	cache or generated data
+.config/swaync/.omca/	cache or generated data
+.config/teamviewer/	application data or profile
+.config/upgrade_tool/log/	cache or generated data
+.config/user-share/	unreadable
+.config/utsav/	application data or profile
+.config/vivaldi/	application data or profile
+.config/warp-terminal/	application data or profile
+.config/waybar/config.jsonc.bak-bt	noise (log, backup, lock, history or database)
+.config/xournalpp/emergencysave.xopp	binary
+.nix-profile	symlink -> /home/utsav/.local/state/nix/profiles/profile
+.node_repl_history	noise (log, backup, lock, history or database)
+.python_history	noise (log, backup, lock, history or database)
+.steampath	symlink -> /home/utsav/.steam/sdk32/steam
+.steampid	symlink -> /home/utsav/.steam/steam.pid
+.viminfo	noise (log, backup, lock, history or database)
+.wget-hsts	noise (log, backup, lock, history or database)
+.zsh_history	noise (log, backup, lock, history or database)
+.zshrc.backup.20250930_031323	noise (log, backup, lock, history or database)

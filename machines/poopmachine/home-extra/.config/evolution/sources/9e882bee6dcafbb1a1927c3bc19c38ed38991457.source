@@ -1,0 +1,30 @@
+[Data Source]
+DisplayName=utsavbalar1231@gmail.com
+Enabled=true
+Parent=c1a614140aa1ea4f975c28707aa82f943c2187cb
+
+[Mail Submission]
+SentFolder=folder://local/Sent
+TransportUid=5da2d60ba55810029c51f88d253f801a48ad2390
+RepliesToOriginFolder=false
+UseSentFolder=true
+
+[Mail Composition]
+Bcc=
+Cc=
+DraftsFolder=folder://80977677545a8fdb518832e41b30e6ef6cfc4a82/%5bGmail%5d/Drafts
+ReplyStyle=default
+SignImip=true
+TemplatesFolder=
+StartBottom=inconsistent
+TopSignature=inconsistent
+Language=
+ComposerMode=
+
+[Mail Identity]
+Address=utsavbalar1231@gmail.com
+Aliases=
+Name=utsavbalar1231@gmail.com
+Organization=
+ReplyTo=
+SignatureUid=none

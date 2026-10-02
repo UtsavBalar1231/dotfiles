@@ -1,0 +1,6 @@
+{
+  "denali.ssh.host": "127.0.0.1",
+  "denali.ssh.user": "nobody",
+  "denali.tcp.host": "192.168.7.2",
+  "denali.tcp.port": 15000
+}

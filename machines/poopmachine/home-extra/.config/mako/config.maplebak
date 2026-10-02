@@ -1,0 +1,49 @@
+max-visible=5
+default-timeout=8000
+layer=overlay
+sort=-time
+
+font=AdwaitaMono Nerd Font
+background-color=#1d2021
+text-color=#d4be98
+border-color=#665c54
+border-size=0
+border-radius=12
+padding=24
+margin=16
+width=480
+height=160
+
+# Progress bar styling
+progress-color=source #ad3a86
+
+# Dark mode notifications
+[mode=dark]
+background-color=#1d2021
+text-color=#d4be98
+border-color=#665c54
+
+# Do not disturb mode
+[mode=do-not-disturb]
+invisible=1
+
+# Critical notifications (always show)
+[urgency=critical]
+invisible=0
+default-timeout=0
+background-color=#ea6962
+text-color=#1d2021
+border-color=#ea6962
+
+# Low priority notifications
+[urgency=low]
+default-timeout=2500
+background-color=#282828
+
+# Normal priority notifications
+[urgency=normal]
+default-timeout=2500
+background-color=#000000
+
+# Group notifications by app
+group-by=app-name

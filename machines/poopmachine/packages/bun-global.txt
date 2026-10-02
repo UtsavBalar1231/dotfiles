@@ -1,0 +1,8 @@
+@ast-grep/napi@0.40.5
+@opencode-ai/cli@0.0.0-beta-19271
+@opencode/cli@2.0.20
+omc@1.0.1
+tokscale@1.1.2
+ts-node@10.9.2
+tsx@4.20.6
+vercel@48.10.14

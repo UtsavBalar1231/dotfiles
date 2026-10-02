@@ -1,0 +1,2 @@
+actionlint	github.com/rhysd/actionlint/cmd/actionlint github.com/rhysd/actionlint@v1.7.11
+kite-mcp-server	github.com/zerodha/kite-mcp-server github.com/zerodha/kite-mcp-server@v0.4.0-dev2.0.20260131093507-8c43af0ef9c1+dirty

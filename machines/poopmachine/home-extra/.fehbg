@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --bg-fill '/home/utsav/.cache/wallpaper-slideshow/fc801c28aef14cf7d62cfffa80116991/frame_0002.png' 

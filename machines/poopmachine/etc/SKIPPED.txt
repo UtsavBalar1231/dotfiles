@@ -1,0 +1,3 @@
+/etc/dconf/db/ibus	binary
+/etc/fan2go/fan2go.db	binary
+/etc/resolv.conf	symlink -> /run/systemd/resolve/stub-resolv.conf

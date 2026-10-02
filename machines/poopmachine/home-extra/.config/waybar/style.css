@@ -1,0 +1,326 @@
+/* Gruvbox Material Hard Dark Theme for Waybar - AMOLED Black Background
+ */
+
+/* Import Gruvbox color palette */
+@import "themes/gruvbox.css";
+
+/* Global styles: font, scaling, and reset */
+* {
+  font-family: "Iosevka Nerd Font", "JetBrainsMono Nerd Font", monospace;
+  font-size: 26px;
+  font-weight: 500;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Waybar window: pure black background */
+window#waybar {
+  background: #000000;
+  color: @foreground;
+}
+
+/* Tooltip styling */
+tooltip {
+  background: @bg1;
+  color: @foreground;
+  border: 2px solid @bg4;
+  padding: 16px;
+  font-size: 22px;
+}
+
+tooltip label {
+  color: @foreground;
+  padding: 0;
+}
+
+/* Module group containers */
+.modules-left,
+.modules-center,
+.modules-right {
+  padding: 0 16px;
+}
+
+/* Custom launcher icon */
+#custom-launcher {
+  color: @foreground;
+  font-size: 32px;
+}
+#custom-launcher:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Workspaces: rounded segment */
+#workspaces {
+  padding: 4px 12px;
+  background: @bg2;
+  border-radius: 8px;
+  margin: 4px 6px;
+}
+#workspaces button {
+  color: @color8;
+  padding: 8px 6px;
+  margin: 0 3px;
+  background: transparent;
+  min-width: 20px;
+  font-size: 18px;
+  border-radius: 50%;
+}
+#workspaces button:hover {
+  color: @foreground;
+  box-shadow: none;
+}
+#workspaces button.active {
+  color: @color2;
+  background: transparent;
+}
+#workspaces button.urgent {
+  color: @color1;
+  background: transparent;
+}
+
+/* Window title */
+#window {
+  color: @color15;
+  font-weight: 600;
+  margin: 0 4px;
+}
+#window:hover {
+  color: @foreground;
+  background: transparent;
+}
+
+/* MPRIS media info */
+#mpris {
+  color: @color6;
+}
+#mpris:hover {
+  color: @color14;
+  background: transparent;
+}
+
+/* Clock */
+#clock {
+  color: @foreground;
+  font-weight: 600;
+}
+#clock:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* System tray: rounded segment */
+#tray {
+  background-color: @bg1;
+  border-radius: 8px;
+  margin: 8px 2px;
+  padding: 4px 12px;
+}
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: @color1;
+}
+
+/* Network status */
+#network {
+  color: @color4;
+  font-size: 28px;
+}
+#network.disconnected {
+  color: @color8;
+}
+#network.wifi {
+  color: @color4;
+}
+#network.ethernet {
+  color: @color2;
+}
+#network:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Bluetooth status */
+#bluetooth {
+  color: @color4;
+  font-size: 28px;
+  padding: 8px 8px;
+}
+#bluetooth.connected {
+  color: @color6;
+}
+#bluetooth.disabled {
+  color: @color8;
+}
+#bluetooth:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Audio volume (sink) */
+#pulseaudio {
+  color: @color3;
+  font-size: 28px;
+  padding: 8px 8px;
+}
+#pulseaudio.muted {
+  color: @color8;
+}
+#pulseaudio.bluetooth {
+  color: @color6;
+}
+#pulseaudio.bluetooth.muted {
+  color: @color8;
+}
+#pulseaudio:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Microphone (source) */
+#pulseaudio-source {
+  color: @color5;
+  font-size: 28px;
+  padding: 8px 8px;
+}
+#pulseaudio-source.source-muted {
+  color: @color8;
+}
+#pulseaudio-source:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Memory usage */
+#memory {
+  color: @color5;
+}
+#memory.warning {
+  color: @color3;
+}
+#memory.critical {
+  color: @color1;
+}
+#memory:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* CPU usage */
+#cpu {
+  color: @color3;
+}
+#cpu.warning {
+  color: @color3;
+}
+#cpu.critical {
+  color: @color1;
+}
+#cpu:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Disk usage */
+#disk.root {
+  color: @color2;
+}
+#disk.home {
+  color: @color4;
+}
+#disk.root.warning,
+#disk.home.warning {
+  color: @color3;
+}
+#disk.root.critical,
+#disk.home.critical {
+  color: @color1;
+}
+#disk:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Battery status */
+#battery {
+  color: @color2;
+}
+#battery.charging,
+#battery.plugged,
+#battery.full {
+  color: @color2;
+}
+#battery.warning:not(.charging) {
+  color: @color3;
+}
+#battery.critical:not(.charging) {
+  color: @color1;
+}
+#battery:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Custom notification icon */
+#custom-notification {
+  color: @color6;
+  font-size: 28px;
+  padding: 8px 8px;
+}
+#custom-notification:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Custom power icon */
+#custom-power {
+  color: @color1;
+  font-size: 28px;
+  background: transparent;
+  margin: 0 4px;
+  padding: 8px 16px;
+}
+#custom-power:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Brightness */
+#custom-brightness {
+  color: @color3;
+}
+#custom-brightness:hover {
+  color: @color15;
+  background: transparent;
+}
+
+/* Shared module spacing and transparent background for all modules */
+#battery,
+#cpu,
+#memory,
+#disk.root,
+#disk.home,
+#custom-brightness,
+#clock,
+#custom-notification,
+#mpris,
+#network,
+#pulseaudio,
+#pulseaudio-source,
+#bluetooth {
+  background: transparent;
+  margin: 0 6px;
+  padding: 4px 10px;
+}
+
+#custom-launcher {
+  background: transparent;
+  margin: 0 4px;
+  padding: 4px 4px;
+}
+

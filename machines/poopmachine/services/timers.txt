@@ -1,0 +1,6 @@
+## system
+fstrim.timer	enabled	disabled
+
+## user
+tmp-cleanup.timer	enabled	enabled
+

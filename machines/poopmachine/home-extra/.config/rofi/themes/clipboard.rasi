@@ -1,0 +1,101 @@
+// Clipboard theme - based on material.rasi for dmenu
+@import "colors/gruvbox.rasi"
+
+window {
+    height:                      30em;
+    width:                       30em;
+    transparency:                "real";
+    fullscreen:                  false;
+    enabled:                     true;
+    cursor:                      "default";
+    spacing:                     0em;
+    padding:                     0em;
+    border-color:                @bg2;
+    border-radius:               1.5em;
+    background-color:            @bg0;
+}
+
+mainbox {
+    enabled:                     true;
+    spacing:                     0em;
+    padding:                     0.5em;
+    orientation:                 vertical;
+    children:                    [ "inputbar", "listview" ];
+    background-color:            transparent;
+}
+
+inputbar {
+    enabled:                     true;
+    children:                    [ "prompt", "entry" ];
+    margin:                      0.5em 0em 0em 0em;
+    padding:                     1em;
+    spacing:                     0.5em;
+    border-radius:               1.5em;
+    background-color:            @bg1;
+}
+
+prompt {
+    background-color:            transparent;
+    text-color:                  @accent;
+}
+
+entry {
+    placeholder:                 "Search...";
+    placeholder-color:           @fg4;
+    background-color:            transparent;
+    text-color:                  @fg0;
+}
+
+listview {
+    padding:                     1em;
+    spacing:                     0em;
+    enabled:                     true;
+    columns:                     1;
+    lines:                       7;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    expand:                      false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    cursor:                      "default";
+    background-color:            transparent;
+    text-color:                  @fg0;
+    border-radius:               1.5em;
+    border:                      none;
+}
+
+element {
+    enabled:                     true;
+    spacing:                     1em;
+    padding:                     1em;
+    cursor:                      pointer;
+    background-color:            transparent;
+    text-color:                  @fg0;
+    border-radius:               1.5em;
+}
+
+element normal.normal {
+    background-color:            transparent;
+    text-color:                  @fg0;
+}
+
+element alternate.normal {
+    background-color:            transparent;
+    text-color:                  @fg0;
+}
+
+element selected.normal {
+    background-color:            @bg1;
+    text-color:                  @accent;
+}
+
+element-text {
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+}

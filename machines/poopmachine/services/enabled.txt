@@ -1,0 +1,42 @@
+## system
+NetworkManager-dispatcher.service	enabled	disabled
+NetworkManager-wait-online.service	enabled	disabled
+NetworkManager.service	enabled	disabled
+avahi-daemon.service	enabled	disabled
+avahi-daemon.socket	enabled	disabled
+bluetooth.service	enabled	disabled
+docker.service	enabled	disabled
+fstrim.timer	enabled	disabled
+gaming-power-profile.service	enabled	disabled
+getty@.service	enabled	enabled
+iptables.service	enabled	disabled
+linux-modules-cleanup.service	enabled	disabled
+lm_sensors.service	enabled	disabled
+postgresql.service	enabled	disabled
+remote-fs.target	enabled	enabled
+rustdesk.service	enabled	disabled
+scx_loader.service	enabled	disabled
+sshd.service	enabled	disabled
+systemd-resolved-monitor.socket	enabled	disabled
+systemd-resolved-varlink.socket	enabled	disabled
+systemd-resolved.service	enabled	enabled
+systemd-timesyncd.service	enabled	enabled
+systemd-userdbd.socket	enabled	enabled
+tailscaled.service	enabled	disabled
+teamviewerd.service	enabled	disabled
+valkey.service	enabled	disabled
+
+## user
+gamemoded.service	enabled	enabled
+gnome-keyring-daemon.socket	enabled	enabled
+lapis-worksim-peer.service	enabled	enabled
+openclaw-gateway.service	enabled	enabled
+p11-kit-server.socket	enabled	enabled
+pipewire-pulse.service	enabled	enabled
+pipewire-pulse.socket	enabled	enabled
+pipewire.socket	enabled	enabled
+speech-dispatcher.socket	enabled	enabled
+tmp-cleanup.timer	enabled	enabled
+wireplumber.service	enabled	enabled
+xdg-user-dirs.service	enabled	enabled
+

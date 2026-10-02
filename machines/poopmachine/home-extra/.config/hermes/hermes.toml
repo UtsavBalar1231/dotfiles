@@ -1,0 +1,45 @@
+[daemon]
+socket_path = "$XDG_RUNTIME_DIR/hermes.sock"
+log_level = "info"
+
+[hints]
+alphabet = "asdfghjkl"
+show_delay_ms = 0
+auto_dismiss = true
+timeout_ms = 10000
+
+[hints.filter]
+roles = ["button", "link", "text_input", "menu_item", "check_box", "radio_button",
+         "toggle_button", "combo_box", "tab", "switch", "slider", "spin_button"]
+require_visible = true
+require_sensitive = true
+
+[scroll]
+line_amount = 3
+page_amount = 0.5
+smooth = false
+
+[appearance]
+font_family = "FiraCode Nerd Font"
+font_size = 22.0
+background_color = "#FABD2F"
+text_color = "#282828"
+border_color = "#D79921"
+border_width = 2.0
+border_radius = 6.0
+padding = 5.0
+opacity = 0.95
+hint_position = "top-left"
+csd_shadow_offset = 0.0
+
+[compositor]
+backend = "auto"
+
+[input]
+click_delay_ms = 10
+virtual_device_name = "hermes-pointer"
+
+[fallback]
+mode = "grid"
+grid_rows = 10
+grid_cols = 18

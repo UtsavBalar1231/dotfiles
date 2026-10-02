@@ -1,0 +1,1 @@
+BOOT_IMAGE=/vmlinuz-linux root=UUID=1a857221-9886-4d18-bd2a-5dd9904fd7e0 rw rootfstype=ext4 rw loglevel=3 quiet nvidia-drm.modeset=1 amd_pstate=active mitigations=off nowatchdog audit=0 threadirqs psi=1 plymouth.enable=0 disablehooks=plymouth zswap.enabled=0 transparent_hugepage=always
