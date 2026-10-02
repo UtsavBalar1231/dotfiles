@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This repo sets core.hooksPath to .githooks, which replaces the global hooks directory, so hand
+# the message to the user's global commit-msg hook when there is one.
+global=$(git config --global --get core.hooksPath 2>/dev/null || true)
+global=${global/#\~/$HOME}
+[[ -n $global && -x $global/commit-msg ]] && exec "$global/commit-msg" "$@"
+exit 0

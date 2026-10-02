@@ -1,1 +1,7 @@
-!(.*)
+# Secrets from scripts/snapshot.sh: owner-only, local, never committed.
+/private/
+# Editor and Python leftovers
+__pycache__/
+*.pyc
+*.swp
+/.omca/

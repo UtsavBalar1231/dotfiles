@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Refuse commits that would publish secrets: anything under private/, or staged content that looks
+# like a private key or an access token. The repo has a public remote.
+set -euo pipefail
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+[[ -z $staged ]] && exit 0
+if grep -q '^private/' <<<"$staged"; then
+  echo "pre-commit: refusing to commit files under private/ (secrets live there)" >&2
+  exit 1
+fi
+pattern='-----BEGIN [A-Z ]*PRIVATE KEY|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|xox[abpr]-[A-Za-z0-9-]{10,}|sk-(ant-)?[A-Za-z0-9_-]{20,}|AIza[0-9A-Za-z_-]{30,}'
+hits=$(git diff --cached -U0 --diff-filter=ACMR | grep -E '^\+' | grep -E -c -e "$pattern" || true)
+if (( hits > 0 )); then
+  echo "pre-commit: staged changes contain $hits line(s) that look like a private key or token:" >&2
+  git diff --cached --name-only -G "$pattern" --diff-filter=ACMR | sed 's/^/  /' >&2
+  exit 1
+fi
