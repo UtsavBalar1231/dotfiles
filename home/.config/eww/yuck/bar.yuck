@@ -1,0 +1,113 @@
+(defwindow bar [monitor]
+  :monitor monitor
+  :geometry (geometry :width "100%" :height "60px" :anchor "bottom center")
+  :stacking "fg"
+  :exclusive true
+  :focusable "none"
+  :namespace "eww-bar"
+  (box :class theme
+    (bar :monitor monitor)))
+
+(defwidget bar [monitor]
+  (centerbox :class "bar-body"
+    (box :halign "start" :space-evenly false
+      (button :class "item logo ${reveal == 'drawer' || reveal == 'launcher' ? 'open' : ''}"
+              :tooltip "${apps.total} apps · right-click to search"
+              :onclick "scripts/panel.sh toggle drawer" :onrightclick "scripts/panel.sh toggle launcher"
+        (label :class "icon" :text "󰣇"))
+      (sep)
+      (workspaces :monitor monitor)
+      (sep)
+      (label :class "window-title" :limit-width 60 :text {niriwin.win?.[monitor]?.title ?: ""}))
+    (button :class "item clock ${reveal == 'calendar' ? 'open' : ''}" :onclick "scripts/panel.sh toggle calendar"
+      (label :text {formattime(EWW_TIME, "%a %d %b   %H:%M")}))
+    (box :halign "end" :space-evenly false
+      (media)
+      (box :visible {media.available == true} (sep))
+      (box :class "tray" (systray :icon-size 30 :spacing 18 :prepend-new true))
+      (sep)
+      (box :class "item stat ${EWW_CPU.avg > 90 ? 'hot' : ''}"
+           :tooltip "CPU · ${round(EWW_TEMPS?.K10TEMP_TCTL ?: 0, 0)}°C"
+        (glyph :icon "󰻠" :text "${round(EWW_CPU.avg, 0)}%"))
+      (box :class "item stat ${EWW_RAM.used_mem_perc > 90 ? 'hot' : ''}"
+           :tooltip "${round(EWW_RAM.used_mem / 1073741824, 1)} / ${round(EWW_RAM.total_mem / 1073741824, 1)} GiB"
+        (glyph :icon "󰍛" :text "${round(EWW_RAM.used_mem_perc, 0)}%"))
+      (drives)
+      (sep)
+      (network)
+      (bluetooth)
+      (sound)
+      (bell)
+      (sep)
+      (button :class "item power ${reveal == 'power' ? 'open' : ''}" :tooltip "Power" :onclick "scripts/panel.sh toggle power"
+        (label :class "icon" :text "󰐥")))))
+
+(defwidget sep []
+  (box :class "sep" :valign "center"))
+
+; A bar item's icon and text as separate labels: the icon takes the accent, the text stays neutral.
+(defwidget glyph [icon text]
+  (box :space-evenly false :spacing 10
+    (label :class "icon" :text icon)
+    (label :visible {text != ""} :text text)))
+
+(defwidget workspaces [monitor]
+  (eventbox :onscroll "scripts/throttle 120 ws niri msg action focus-workspace-{}"
+    (box :space-evenly false
+      (for ws in {niri.ws?.[monitor] ?: "[]"}
+        (button :class "ws ${ws.active ? 'active' : ws.wins > 0 ? 'occupied' : ''} ${ws.urgent ? 'urgent' : ''}"
+                :onclick "niri msg action focus-monitor ${monitor} && niri msg action focus-workspace ${ws.idx}"
+          (label :text {ws.idx}))))))
+
+(defwidget media []
+  (button :class "item" :visible {media.available == true} :tooltip "${media.artist ?: ''} · right-click: next"
+          :onclick "playerctl -p '${media.player}' play-pause" :onrightclick "playerctl -p '${media.player}' next"
+    (box :space-evenly false :spacing 10
+      (label :class "icon" :text {media.status == 'Playing' ? '󰏤' : '󰐊'})
+      (label :limit-width 36 :text {media.title ?: ''}))))
+
+; Root and home always; removable media appear while mounted (click opens, right-click ejects).
+(defwidget drives []
+  (box :space-evenly false
+    (for d in disks
+      (button :class "item disk ${d.used >= 90 ? 'hot' : ''} ${d.removable ? 'removable' : ''}"
+              :tooltip "${d.name} · ${d.mount} · ${d.used}% of ${d.size} GB${d.removable ? ' · right-click to eject' : ''}"
+              :onclick "scripts/disks.sh open ${d.i}"
+              :onrightclick {d.removable ? "scripts/disks.sh eject ${d.i}" : ""}
+        (glyph :icon {d.mount == '/' ? '󰋊' : d.mount == '/home' ? '󰋜' : '󰕓'}
+               :text "${d.removable ? d.name + ' ' : ''}${d.used}%")))))
+
+(defwidget network []
+  (button :class "item net ${net.type == 'ethernet' || net.wifi_on ? 'on' : 'off'} ${reveal == 'control' && cc_page == 'wifi' ? 'open' : ''}"
+          :tooltip {net.type == "none" ? (net.wifi_on ? "Wi-Fi on · not connected" : "Wi-Fi off") : "${net.name} · ${net.signal}% · ${net.dev}"}
+          :onclick "scripts/panel.sh toggle control wifi"
+    (box :space-evenly false :spacing 10
+      (label :class "icon"
+             :text {net.type == "ethernet" ? "󰈀" : !net.wifi_on ? "󰤭" : net.type == "none" ? "󰤯"
+                    : net.signal > 66 ? "󰤨" : net.signal > 33 ? "󰤥" : "󰤟"})
+      (label :class "name" :visible {net.type != "none"} :limit-width 18 :text {net.name}))))
+
+(defwidget bluetooth []
+  (button :class "item bt ${bt.on ? 'on' : 'off'} ${reveal == 'control' && cc_page == 'bt' ? 'open' : ''}"
+          :tooltip {!bt.on ? "Bluetooth off" : arraylength(bt.connected) > 0 ? "Connected: ${jq(bt.connected, 'join(\", \")', 'r')}" : "Bluetooth on · nothing connected"}
+          :onclick "scripts/panel.sh toggle control bt"
+    (box :space-evenly false :spacing 10
+      (label :class "icon" :text {!bt.on ? "󰂲" : arraylength(bt.connected) > 0 ? "󰂱" : "󰂯"})
+      (label :class "name" :visible {arraylength(bt.connected) > 0} :limit-width 18
+             :text {arraylength(bt.connected) > 1 ? "${bt.connected[0]} +${arraylength(bt.connected) - 1}" : bt.connected[0] ?: ""}))))
+
+(defwidget sound []
+  (eventbox :onscroll "scripts/throttle 40 vol scripts/osd.sh vol-{}"
+    (box :space-evenly false
+      (button :class "item ${audio.muted ? 'bad' : ''}" :tooltip "${audio.sink} · scroll to change, right-click to mute"
+              :onclick "scripts/panel.sh toggle control" :onrightclick "scripts/osd.sh vol-mute"
+        (glyph :icon {audio.muted ? '󰝟' : audio.headphones ? '󰋋' : '󰕾'} :text "${audio.vol}%"))
+      (button :class "item bad" :visible {audio.mic_muted} :tooltip "Microphone muted · click to unmute"
+              :onclick "scripts/osd.sh mic-mute"
+        (label :class "icon" :text "󰍭")))))
+
+(defwidget bell []
+  (button :class "item ${notifs.dnd ? 'off' : notifs.count > 0 ? 'accent' : ''}"
+          :tooltip {notifs.dnd ? "Do not disturb · right-click to turn off" : "${notifs.count} notifications · right-click for do not disturb"}
+          :onclick "scripts/panel.sh toggle control" :onrightclick "scripts/notif dnd"
+    (glyph :icon {notifs.dnd ? "󰂛" : notifs.count > 0 ? "󰂚" : "󰂜"} :text {!notifs.dnd && notifs.count > 0 ? notifs.count : ""})))

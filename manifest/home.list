@@ -1,0 +1,86 @@
+# Configs that `bin/dotfiles capture` copies from $HOME into home/ and `bin/dotfiles deploy`
+# copies back. One entry per line: a path relative to $HOME (file or directory), optionally
+# followed by `!pattern` excludes for that entry. Lines that are only `!pattern` apply to every
+# entry. Patterns use rsync syntax; a leading `/` anchors to the entry's root.
+#
+# Never list anything holding secrets: the repo is public. Secrets stay in owner-only files that
+# are excluded here (e.g. ~/.config/zsh/secrets.zsh) and are backed up by scripts/snapshot.sh
+# into the git-ignored private/ directory.
+
+!__pycache__/
+!.venv/
+!*.bak
+!*.bak-*
+!*.bak.*
+!*.maplebak
+!*.pacnew
+!*.orig
+!*.swp
+# Nested repos and AI-agent state inside config dirs
+!.git/
+!.omc/
+!.omca/
+!.claude/
+
+# Shell and terminal tools
+.zshrc
+.zshenv
+.config/zsh            !/secrets.zsh
+.tmux.conf
+.config/starship.toml
+.config/fish
+.config/zellij
+.config/bat
+.config/btop
+.config/lazygit
+.config/yazi
+.config/glow
+.config/helix
+
+# Git and editors
+.gitconfig
+.gitignore_global
+.clang-format
+.config/nvim
+
+# Terminals
+.config/kitty          !/docs/ !/.claude/
+.config/alacritty
+.config/ghostty
+
+# niri + eww desktop (theme-generated files are kept: config.kdl includes them)
+.config/niri
+.config/eww
+.local/share/applications/eww-wallpapers.desktop
+.local/share/dbus-1/services
+.config/swaylock
+.config/environment.d
+.config/xdg-desktop-portal
+.config/systemd/user
+.config/mimeapps.list
+.config/user-dirs.dirs
+.config/xdg-terminals.list
+.config/niri-xdg-terminals.list
+.config/electron-flags.conf
+.Xresources
+
+# Toolkit theming, fonts, audio
+.config/gtk-3.0
+.config/gtk-4.0
+.config/qt5ct
+.config/qt6ct
+.local/share/color-schemes/EwwDynamic.colors
+.config/fontconfig
+.config/xsettingsd
+.config/nwg-look
+.config/wireplumber
+
+# Apps
+.config/mpv
+.config/zathura
+.config/MangoHud
+
+# Claude Code look (settings.json holds tokens and is backed up privately instead)
+.claude/themes
+.claude/statusline     !/.venv/
+.claude/statusline.py

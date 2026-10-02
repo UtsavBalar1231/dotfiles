@@ -1,0 +1,18 @@
+// Managed by ~/.config/eww/scripts/theme.py: niri accents follow the wallpaper.
+// Included last from config.kdl, so these colours override the ones set there.
+layout {
+    focus-ring {
+        active-color "#89b4fadd"
+    }
+    insert-hint {
+        color "#89b4fa80"
+    }
+    tab-indicator {
+        active-color "#89b4fa"
+    }
+}
+recent-windows {
+    highlight {
+        active-color "#89b4faff"
+    }
+}

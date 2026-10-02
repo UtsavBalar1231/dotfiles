@@ -1,0 +1,153 @@
+; Control centre (Mod+N / status item): sliders, toggles, media, notifications; Wi-Fi/Bluetooth pages.
+(defwindow control
+  :monitor 0
+  :geometry (geometry :x "8px" :width "580px" :anchor "bottom right")
+  :stacking "overlay"
+  :focusable "ondemand"
+  :namespace "eww-control"
+  (box :class theme
+    (box :class "sheet bottom ${closing == 'control' ? 'closing' : ''}" :orientation "v" :space-evenly false
+      (stack :selected {cc_page == "wifi" ? 1 : cc_page == "bt" ? 2 : 0}
+             :transition "crossfade" :same-size true
+        (cc-main)
+        (cc-wifi)
+        (cc-bt)))))
+
+(defwidget cc-main []
+  (box :orientation "v" :space-evenly false :spacing 26
+    (box :orientation "v" :space-evenly false :spacing 8
+      (slider :glyph {audio.muted ? "󰝟" : audio.headphones ? "󰋋" : "󰕾"} :tip {audio.sink}
+              :value {audio.vol} :muted {audio.muted}
+              :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%"
+              :ontoggle "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
+      (slider :glyph {audio.mic_muted ? "󰍭" : "󰍬"} :tip "Microphone"
+              :value {audio.mic} :muted {audio.mic_muted}
+              :onchange "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ {}%"
+              :ontoggle "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle")
+      (slider :glyph "󰃠" :tip "Brightness" :value brightness :muted false
+              :onchange "scripts/brightness.sh set {}" :ontoggle ""))
+    (box :orientation "v" :space-evenly false :spacing 12
+      (box :space-evenly true :spacing 12
+        (toggle :glyph {net.type == "ethernet" ? "󰈀" : net.wifi_on ? "󰤨" : "󰤭"} :name "Wi-Fi" :kind "net"
+                :state {net.type != "none" ? net.name : net.wifi_on ? "Not connected" : "Off"}
+                :active {net.wifi_on} :onclick "scripts/net.sh toggle"
+                :onmore "eww update cc_page=wifi; scripts/net.sh list")
+        (toggle :glyph {arraylength(bt.connected) > 0 ? "󰂱" : bt.on ? "󰂯" : "󰂲"} :name "Bluetooth" :kind "bt"
+                :state {arraylength(bt.connected) > 0 ? bt.connected[0] : bt.on ? "On" : "Off"}
+                :active {bt.on} :onclick "setsid -f bluetoothctl power ${bt.on ? 'off' : 'on'}"
+                :onmore "eww update cc_page=bt"))
+      (box :space-evenly true :spacing 12
+        (toggle :glyph {notifs.dnd ? "󰂛" : "󰂚"} :name "Do not disturb" :state {notifs.dnd ? "On" : "Off"}
+                :active {notifs.dnd} :onclick "scripts/notif dnd")
+        (toggle :glyph {profile == "performance" ? "󰓅" : profile == "power-saver" ? "󰌪" : "󰾅"} :name "Power"
+                :state {profile == "power-saver" ? "Saver" : profile == "performance" ? "Performance" : "Balanced"}
+                :active {profile == "performance"}
+                :onclick "p=${profile == 'balanced' ? 'performance' : profile == 'performance' ? 'power-saver' : 'balanced'}; powerprofilesctl set $p && eww update profile=$p")))
+    (media-row)
+    (box :class "section" :space-evenly false
+      (label :class "section-title" :xalign 0 :hexpand true :text "Notifications")
+      (box :visible {notifs.count > 0}
+        (button :class "text-button" :onclick "scripts/notif clear" "Clear")))
+    ; Constant height, like the media row below and the same-size page stack above: the
+    ; window is sized once when it opens and must not need to grow afterwards.
+    (box :orientation "v" :space-evenly false :height 520
+      (scroll :hscroll false :vscroll true :vexpand true :visible {notifs.count > 0}
+        (box :orientation "v" :space-evenly false :spacing 12
+          (for n in {notifs.history}
+            (notif-card :n n :popup false))))
+      (label :class "empty" :visible {notifs.count == 0} :text "No notifications"))))
+
+(defwidget slider [glyph tip value muted onchange ontoggle]
+  (box :class "slider-row ${muted ? 'muted' : ''}" :space-evenly false :spacing 10 :tooltip tip
+    (icon-button :glyph glyph :onclick ontoggle)
+    (scale :class "slider" :hexpand true :min 0 :max 101 :value {value > 100 ? 100 : value}
+           :onchange onchange :timeout "2s")
+    (label :class "slider-value" :xalign 1 :text "${round(value, 0)}%")))
+
+(defwidget toggle [glyph name state active onclick ?onmore ?kind]
+  (box :class "toggle ${kind} ${active ? 'on' : ''}" :space-evenly false
+    (button :class "toggle-main" :hexpand true :onclick onclick :timeout "3s"
+      (box :space-evenly false :spacing 16
+        (label :class "icon" :text glyph)
+        (box :orientation "v" :valign "center" :space-evenly false
+          (label :class "toggle-name" :xalign 0 :text name)
+          (label :class "toggle-state" :xalign 0 :limit-width 14 :text state))))
+    (box :visible {onmore != ""}
+      (button :class "toggle-more" :onclick onmore :timeout "3s"
+        (label :class "icon" :text "󰅂")))))
+
+(defwidget media-row []
+  (box :class "media-row ${media.available == true ? '' : 'idle'}" :space-evenly false :spacing 12
+    (box :class "art" :valign "center"
+         :style {(media.art_css ?: "") != "" ? "background-image: url('${media.art_css}');" : ""})
+    (box :orientation "v" :hexpand true :valign "center" :space-evenly false
+      (label :class "row-title" :xalign 0 :limit-width 22 :text {media.available == true ? media.title : "Nothing playing"})
+      (label :class "row-meta" :xalign 0 :limit-width 28 :text {media.artist ?: ""}))
+    (box :visible {media.available == true} :space-evenly false
+      (icon-button :glyph "󰒮" :onclick "playerctl -p '${media.player}' previous")
+      (icon-button :glyph {media.status == "Playing" ? "󰏤" : "󰐊"} :onclick "playerctl -p '${media.player}' play-pause")
+      (icon-button :glyph "󰒭" :onclick "playerctl -p '${media.player}' next"))))
+
+(defwidget switch [active onclick]
+  (button :class "switch ${active ? 'on' : ''}" :valign "center" :onclick onclick :timeout "3s"
+    (box :space-evenly false
+      (box :class "knob" :valign "center"))))
+
+(defwidget page-head [title active ontoggle glyph onextra]
+  (box :space-evenly false :spacing 8
+    (icon-button :glyph "󰁍" :tooltip "Back" :onclick "eww update cc_page=main wifi_pick= wifi_pick_label=")
+    (label :class "row-title" :xalign 0 :hexpand true :text title)
+    (icon-button :glyph glyph :onclick onextra)
+    (switch :active active :onclick ontoggle)))
+
+(defwidget cc-wifi []
+  (box :orientation "v" :space-evenly false :spacing 8
+    (page-head :title "Wi-Fi" :active {net.wifi_on} :ontoggle "scripts/net.sh toggle"
+               :glyph "󰑓" :onextra "scripts/net.sh rescan")
+    ; Rebuilt each time a network is picked (the `for` runs over [] or [1]), so a password
+    ; typed for one network is never left in the field for the next.
+    (box :orientation "v" :space-evenly false :spacing 8
+      (for _ in {wifi_pick != "" ? "[1]" : "[]"}
+        (box :orientation "v" :space-evenly false :spacing 8
+          (box :class "search" :space-evenly false :spacing 12
+            (label :class "icon" :text "󰌾")
+            (input :class "search-input" :hexpand true :password true
+                   :onaccept "scripts/net.sh connect-pick <<'EWW'
+{}
+EWW"))
+          (label :class "row-meta" :xalign 0 :text "Password for ${wifi_pick_label}, then Enter"))))
+    ; The stack gives every page the main page's height: the list takes what the header and the
+    ; footer leave, so the settings link sits at the bottom however few networks there are.
+    (box :orientation "v" :space-evenly false :vexpand true
+      (label :class "empty" :visible {arraylength(wifi_list) == 0}
+             :text {net.wifi_on ? "No networks found" : "Wi-Fi is off"})
+      (scroll :hscroll false :vscroll true :vexpand true :visible {arraylength(wifi_list) > 0}
+        (box :class "device-list" :orientation "v" :space-evenly false :spacing 2
+          (for w in wifi_list
+            (button :class "row ${w.active ? 'selected' : ''}"
+                    :onclick {w.secure && !w.known && !w.active ? "scripts/net.sh pick ${w.i}" : "scripts/net.sh connect ${w.i}"}
+              (box :space-evenly false :spacing 12
+                (label :class "icon" :text {w.signal > 66 ? "󰤨" : w.signal > 33 ? "󰤥" : "󰤟"})
+                (label :class "row-title" :xalign 0 :hexpand true :limit-width 26 :text {w.label})
+                (label :class "row-meta" :text {w.active ? "Connected" : w.known ? "Saved" : w.secure ? "󰌾" : ""})))))))
+    (box :class "sheet-foot" :space-evenly false
+      (button :class "text-button" :onclick "scripts/panel.sh close; niri msg action spawn -- nm-connection-editor"
+        "Network settings"))))
+
+(defwidget cc-bt []
+  (box :orientation "v" :space-evenly false :spacing 8
+    (page-head :title "Bluetooth" :active {bt.on} :ontoggle "setsid -f bluetoothctl power ${bt.on ? 'off' : 'on'}"
+               :glyph "󰒓" :onextra "scripts/panel.sh close; niri msg action spawn -- blueman-manager")
+    (box :orientation "v" :space-evenly false :vexpand true
+      (label :class "empty" :visible {arraylength(bt.devices) == 0}
+             :text {bt.on ? "No paired devices" : "Bluetooth is off"})
+      (scroll :hscroll false :vscroll true :vexpand true :visible {arraylength(bt.devices) > 0}
+        (box :class "device-list" :orientation "v" :space-evenly false :spacing 2
+          (for d in {bt.devices}
+            (button :class "row ${d.connected ? 'selected' : ''}"
+                    :onclick "setsid -f bluetoothctl ${d.connected ? 'disconnect' : 'connect'} ${d.mac}"
+              (box :space-evenly false :spacing 12
+                (label :class "icon" :text {d.icon})
+                (label :class "row-title" :xalign 0 :hexpand true :limit-width 24 :text {d.name})
+                (label :class "row-meta"
+                       :text {d.connected ? (d.battery >= 0 ? "${d.battery}%" : "Connected") : ""})))))))))

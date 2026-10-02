@@ -1,0 +1,15 @@
+; Gruvbox AMOLED × Material 3 Expressive shell for niri.
+; Start with ./launch.sh; popups are driven by scripts/panel.sh.
+
+(include "./yuck/vars.yuck")
+(include "./yuck/widgets.yuck")
+(include "./yuck/bar.yuck")
+(include "./yuck/launcher.yuck")
+(include "./yuck/drawer.yuck")
+(include "./yuck/clipboard.yuck")
+(include "./yuck/control.yuck")
+(include "./yuck/notifications.yuck")
+(include "./yuck/calendar.yuck")
+(include "./yuck/power.yuck")
+(include "./yuck/osd.yuck")
+(include "./yuck/wallpapers.yuck")

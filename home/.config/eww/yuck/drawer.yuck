@@ -1,0 +1,26 @@
+; App drawer (Mod+A / bar logo): search plus a grid of every app.
+(defwindow drawer
+  :monitor 0
+  :geometry (geometry :x "8px" :width "1060px" :anchor "bottom left")
+  :stacking "overlay"
+  :focusable "exclusive"
+  :namespace "eww-drawer"
+  (box :class theme
+    (box :class "sheet bottom ${closing == 'drawer' ? 'closing' : ''}" :orientation "v" :space-evenly false
+      (search-field :placeholder "Search apps" :query {apps.query}
+                    :onchange "scripts/apps.py qs $EPOCHREALTIME - <<'EWW'
+{}
+EWW" :onaccept "scripts/apps.py accept")
+      (scroll :hscroll false :vscroll true :height 760
+        (box :orientation "v" :space-evenly false :spacing 10
+          (for row in {apps.rows}
+            (box :space-evenly true :spacing 10
+              (for app in row
+                (box
+                  (button :class "tile" :visible {app.id != ""}
+                          :tooltip {app.ago != "" ? "${app.desc} · opened ${app.ago}" : app.desc}
+                          :onclick "scripts/apps.py pick ${app.i}"
+                    (box :orientation "v" :space-evenly false :spacing 12
+                      (image :path {app.icon} :image-width 56 :image-height 56)
+                      (label :class "tile-name" :limit-width 12 :text {app.name})))))))))
+      (app-sort))))

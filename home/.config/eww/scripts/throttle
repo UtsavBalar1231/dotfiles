@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Run a command at most once per interval. Smooth-scroll devices (touchpads) fire a handler
+# for every tiny delta; this keeps one flick from skipping several workspaces or pages.
+#   throttle MS KEY CMD [ARGS...]
+ms=$1 key=$2
+shift 2
+stamp=${XDG_RUNTIME_DIR:-/tmp}/eww-throttle-$key
+now=$(( ${EPOCHREALTIME/./} / 1000 ))
+last=$(cat "$stamp" 2>/dev/null || echo 0)
+((now - last < ms)) && exit 0
+echo "$now" >"$stamp"
+exec "$@"

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.Notifications
+Exec=/home/utsav/.config/eww/scripts/notifd.py

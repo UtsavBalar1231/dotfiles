@@ -1,0 +1,39 @@
+; Notification popups (always open, bottom right) and the card shared with the control centre.
+(defwindow notif-popups
+  :monitor 0
+  :geometry (geometry :x "8px" :y "8px" :width "560px" :anchor "bottom right")
+  :stacking "overlay"
+  :focusable "none"
+  :namespace "eww-notifications"
+  (box :class theme
+    (box :orientation "v" :space-evenly false :spacing 10
+      (for n in {notifs.popups}
+        (notif-card :n n :popup true)))))
+
+; eww buttons let their click bubble to an enclosing eventbox, so the close and action
+; buttons must sit outside the clickable body or one click would also run the default action.
+(defwidget notif-card [n popup]
+  (box :class "notif ${popup ? 'popup' : ''} ${n.urgency == 2 ? 'critical' : ''} ${popup && n.fresh ? 'fresh' : ''} ${n.leaving ? 'leaving' : ''}"
+       :orientation "v" :space-evenly false :spacing 10
+    (box :space-evenly false :spacing 8
+      (eventbox :hexpand true
+                :onclick {n.has_default ? "scripts/notif invoke ${n.id}" : popup ? "scripts/notif hide ${n.id}" : ""}
+                :onrightclick "scripts/notif ${popup ? 'hide' : 'dismiss'} ${n.id}"
+        (box :space-evenly false :spacing 16
+          (image :valign "start" :path {n.icon} :image-width 44 :image-height 44)
+          (box :orientation "v" :hexpand true :space-evenly false :spacing 2
+            (label :class "notif-app" :xalign 0 :limit-width 30
+                   :text "${n.app != '' ? n.app : 'System'} · ${formattime(n.ts, '%H:%M')}")
+            (label :class "notif-summary" :xalign 0 :wrap true :limit-width 120 :lines 2 :text {n.summary})
+            (label :class "notif-body" :xalign 0 :wrap true :visible {n.body != ""}
+                   :limit-width 600 :lines {popup ? 3 : 6} :text {n.body})
+            (box :visible {n.progress >= 0}
+              (progress :hexpand true :value {n.progress >= 0 ? n.progress : 0})))
+          (box :class "notif-image" :valign "start" :visible {n.image != ""}
+               :style {n.image != "" ? "background-image: url('${n.image_css}');" : ""})))
+      (button :class "notif-close" :valign "start" :onclick "scripts/notif ${popup ? 'hide' : 'dismiss'} ${n.id}"
+        (label :class "icon" :text "󰅖")))
+    (box :space-evenly true :spacing 8 :visible {arraylength(n.actions) > 0}
+      (for a in {n.actions}
+        (button :class "text-button outline" :onclick "scripts/notif action ${n.id} ${a.i}"
+          (label :limit-width 24 :text {a.label}))))))

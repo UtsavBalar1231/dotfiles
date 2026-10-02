@@ -1,0 +1,14 @@
+@import "scss/tokens";
+@import "scss/themes";
+@import "scss/paint";
+@import "scss/base";
+@import "scss/components";
+@import "scss/wallpapers";
+
+// Colours go last: the default palette, then one copy per wallpaper theme under its class.
+@include paint($default-palette);
+@each $name, $palette in $themes {
+  .#{$name} {
+    @include paint($palette);
+  }
+}

@@ -1,0 +1,55 @@
+// Minimal Gruvbox on AMOLED black: neutral greys, one accent, spacious 4px-based spacing.
+
+// Global size knobs. Type and icons scale with $type-scale; padding, gaps and component
+// sizes scale with $space-scale (slightly less, so larger text does not balloon the layout).
+// Pixel sizes in yuck (window widths, image sizes) are set to match these values by hand.
+$type-scale: 1.5;
+$space-scale: 1.3;
+
+@function f($px) {
+  @return round($px * $type-scale);
+}
+
+@function sp($px) {
+  @return round($px * $space-scale);
+}
+
+$bg: #000000;
+$surface: #0e0e0e; // popups
+$raised: #171717; // rows, cards, toggles
+$hover: #232323;
+$border: #282828;
+
+$fg: #ebdbb2;
+$fg-dim: #bdae93;
+$fg-mute: #928374;
+
+$accent: #e78a4e; // gruvbox-material orange, matches the GTK theme
+$on-accent: #000000;
+$red: #ea6962;
+
+// The colours scss/_paint.scss draws with. These Gruvbox values apply until a wallpaper picks
+// one of the generated palettes (scss/_themes.scss); $bg, $on-accent and $red
+// above never change.
+$default-palette: (accent: $accent, fg: $fg, fg-dim: $fg-dim, fg-mute: $fg-mute,
+  surface: $surface, raised: $raised, hover: $hover, border: $border);
+
+$font: "JetBrainsMono Nerd Font Propo", "JetBrainsMono Nerd Font", monospace;
+$font-bar: "Iosevka Nerd Font Propo", "Iosevka Nerd Font", monospace;
+$fs-sm: f(13px);
+$fs: f(15px);
+$fs-md: f(16px);
+$fs-lg: f(18px);
+$icon: f(18px);
+
+$radius: sp(12px);
+$radius-sm: sp(8px);
+$radius-xs: sp(6px); // every hover/selection highlight, on the bar and in popups
+
+// Motion: M3 standard easing, no overshoot. Enter decelerates, exit accelerates and is shorter.
+$ease: cubic-bezier(0.2, 0, 0, 1);
+$ease-out: cubic-bezier(0.05, 0.7, 0.1, 1);
+$ease-in: cubic-bezier(0.3, 0, 0.8, 0.15);
+$t-state: 150ms;
+$t-enter: 220ms;
+$t-exit: 140ms; // panel.sh waits this long before closing the window

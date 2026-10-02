@@ -1,0 +1,24 @@
+# Managed by ~/.config/eww/scripts/theme.py: lock screen colours follow the wallpaper.
+color=000000
+font=JetBrainsMono Nerd Font Propo
+indicator-radius=90
+indicator-thickness=7
+inside-color=00000000
+inside-clear-color=00000000
+inside-ver-color=00000000
+inside-wrong-color=00000000
+line-color=00000000
+line-clear-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000
+ring-color=27272e
+ring-clear-color=7c849c
+ring-ver-color=89b4fa
+ring-wrong-color=ea6962
+key-hl-color=89b4fa
+bs-hl-color=ea6962
+text-color=cdd6f4
+text-clear-color=7c849c
+text-ver-color=89b4fa
+text-wrong-color=ea6962

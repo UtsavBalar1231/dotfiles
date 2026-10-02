@@ -1,0 +1,84 @@
+# Ghostty configuration file
+
+# Font settings
+font-family = Maple Mono NF
+font-size = 20
+font-feature = +calt +case +cv01 +cv02 +cv03 +cv04 +cv05 +cv06 +cv07 +cv08 +cv09 +cv10 +cv11 +cv12 +cv14 +cv15 +cv16 +cv17 +cv18 +cv19 +cv20 +cv99 +frac +locl +ss01 +ss02 +ss19 +ss20 +mark +mkmk
+font-thicken = true
+font-thicken-strength = 1
+
+# Cursor settings
+cursor-style = bar
+cursor-style-blink = false
+
+# ============================================
+# LINKS & URL HANDLING (URL Hints Workarounds)
+# ============================================
+
+# Enable URL detection (default: true - explicit for clarity)
+# link-url = true
+
+# Show link previews on hover
+# Options: true (always), false (never), osc8 (OSC8 hyperlinks only)
+# link-previews = true
+
+# Copy URL under cursor to clipboard
+# Usage: Position cursor on any URL and press Ctrl+Shift+U
+keybind = ctrl+shift+u=copy_url_to_clipboard
+
+# Clipboard settings
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = clipboard
+
+# Window settings
+window-padding-x = 4
+window-padding-y = 4
+window-padding-balance = true
+resize-overlay-duration = 250ms
+gtk-titlebar-hide-when-maximized = true
+
+# Theme settings
+theme = Gruvbox Dark Hard
+background = #000000
+foreground = #d4be98
+selection-background = #d4be98
+selection-foreground = #000000
+cursor-color = #d4be98
+cursor-text = #d4be98
+palette = 0=#000000
+palette = 1=#ea6962
+palette = 2=#a9b665
+palette = 3=#d8a657
+palette = 4=#7daea3
+palette = 5=#d3869b
+palette = 6=#89b482
+palette = 7=#d4be98
+palette = 8=#7c6f64
+palette = 9=#ea6962
+palette = 10=#a9b665
+palette = 11=#d8a657
+palette = 12=#7daea3
+palette = 13=#d3869b
+palette = 14=#89b482
+palette = 15=#ddc7a1
+
+# Keybindings
+keybind = shift+enter=text:\x1b\r
+keybind = f11=toggle_window_decorations
+keybind = ctrl+shift+h=write_screen_file:paste
+keybind = ctrl+shift+f=write_screen_file:open
+
+# quick_terminal
+keybind = ctrl+`=toggle_quick_terminal
+quick-terminal-position = top
+gtk-quick-terminal-layer = overlay
+quick-terminal-screen = mouse
+
+gtk-tabs-location = top
+gtk-toolbar-style = flat
+# gtk-titlebar-style = tabs
+
+# Auto-update settings
+auto-update = download
+auto-update-channel = tip

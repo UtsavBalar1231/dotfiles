@@ -1,0 +1,39 @@
+; UI state, pushed by scripts/panel.sh and friends via `eww update`.
+; reveal = open popup (drives bar highlights); closing = popup playing its exit animation.
+(defvar reveal "")
+(defvar closing "")
+(defvar cc_page "main")
+(defvar wifi_list "[]")
+(defvar wifi_pick "")        ; row index of the network awaiting a password
+(defvar wifi_pick_label "")
+(defvar power_pending "")
+(defvar osd '{"kind":"vol","value":0,"muted":false}')
+(defvar clip '{"query":"","filter":"all","items":[],"count":0,"total":0}')
+(defvar clip_wipe false)
+
+; Event-driven feeders: each prints one JSON line per change.
+(deflisten niri :initial '{"ws":{}}' "scripts/niri.py ws")
+(deflisten niriwin :initial '{"win":{}}' "scripts/niri.py win")
+; eww only runs a deflisten while an open window uses it. The bar's logo tooltip reads
+; apps.count so the app index stays warm and never misses the launcher's first keystrokes.
+(deflisten apps :initial '{"query":"","cat":"all","count":0,"results":[],"rows":[],"top":[],"cats":[]}' "scripts/apps.py daemon")
+(deflisten notifs :initial '{"dnd":false,"count":0,"popups":[],"history":[]}' "scripts/notifd.py watch")
+(deflisten audio :initial '{"vol":0,"muted":false,"mic":0,"mic_muted":false,"sink":"","headphones":false}' "scripts/audio.sh")
+(deflisten media :initial '{"available":false}' "scripts/media.py")
+(deflisten net :initial '{"type":"none","name":"","dev":"","signal":0,"wifi_on":false}' "scripts/net.sh watch")
+(deflisten bt :initial '{"on":false,"devices":[],"connected":[]}' "scripts/bt.py")
+(deflisten disks :initial '[]' "scripts/disks.sh")
+; The wallpaper grid and its status are separate streams: eww rebuilds every tile whenever the
+; variable a `for` reads changes, so slideshow/progress ticks must not touch `walls`.
+(deflisten walls :initial '{"tab":"static","query":"","page":1,"pages":1,"count":0,"rows":[],"counts":{"static":0,"gif":0,"fav":0}}' "scripts/wall.py watch grid")
+; Wallpaper colours: the theme class (.th-<hue>, or "" for Gruvbox) on every window's wrapper box.
+; eww also adds the window's name as a class to that wrapper (its root widget), so no CSS class
+; may share a window's name.
+(deflisten theme :initial "" "scripts/wall.py watch theme")
+; The current wallpaper's sampled colours, as swatches for the picker: [{key, hex, on, tip}].
+(deflisten wallcolors :initial '[]' "scripts/wall.py watch colors")
+(deflisten wallstat :initial '{"current":{"path":"","name":"","kind":""},"slideshow":{"on":false,"every":15,"source":"all","shuffle":true,"next_at":0},"transition":"grow","intervals":[],"transitions":[],"progress":{"done":0,"total":0},"applying":false}' "scripts/wall.py watch status")
+
+(defpoll brightness :interval "120s" :initial "50" "scripts/brightness.sh poll")
+(defpoll profile :interval "20s" :initial "balanced" "powerprofilesctl get")
+(defpoll uptime :interval "60s" :initial "" :run-while {reveal == "power"} "uptime -p | sed 's/^up //'")

@@ -1,0 +1,438 @@
+// Every colour declaration for widgets inside eww windows, drawn with one palette.
+// eww.scss includes this once with the Gruvbox defaults and once per colour of the theme
+// universe (scss/_themes.scss), scoped under that colour's `.th-<colour>` class on each window's wrapper box. Scoping adds
+// exactly one class to every rule here, so the cascade between colour rules is unchanged; that
+// only holds while no colour declaration is left behind in the layout files.
+// Kept out: tooltips and tray menus (their own toplevel windows, never inside a wrapper) and
+// .thumb-loading, whose colour is a keyframe animation.
+@mixin paint($p) {
+  $accent: map-get($p, accent);
+  $fg: map-get($p, fg);
+  $fg-dim: map-get($p, fg-dim);
+  $fg-mute: map-get($p, fg-mute);
+  $surface: map-get($p, surface);
+  $raised: map-get($p, raised);
+  $hover: map-get($p, hover);
+  $border: map-get($p, border);
+  // base
+  scrollbar {
+    background-color: transparent;
+  }
+  scrollbar slider {
+    background-color: $hover;
+  }
+  undershoot,
+  overshoot {
+    background: none;
+  }
+  entry {
+    caret-color: $accent;
+  }
+  entry selection {
+    background-color: $hover;
+    color: $fg;
+  }
+  .sheet {
+    border-color: $border;
+    background-color: $surface;
+    color: $fg;
+  }
+  .search {
+    border-bottom-color: $border;
+  }
+  .search .icon {
+    color: $fg-mute;
+  }
+  .search-input,
+  .placeholder {
+    color: $fg;
+  }
+  .placeholder {
+    color: $fg-mute;
+  }
+  .row:hover,
+  .row:focus {
+    background-color: $raised;
+  }
+  .row.selected {
+    background-color: $hover;
+  }
+  .row-title {
+    color: $fg;
+  }
+  .row-meta {
+    color: $fg-mute;
+  }
+  .row .icon {
+    color: $fg-dim;
+  }
+  .sheet-foot {
+    border-top-color: $border;
+  }
+  .empty {
+    color: $fg-mute;
+  }
+  .icon-button {
+    color: $fg-dim;
+  }
+  .icon-button:hover {
+    background-color: $hover;
+    color: $fg;
+  }
+  .text-button {
+    color: $fg-dim;
+  }
+  .text-button:hover {
+    background-color: $hover;
+    color: $fg;
+  }
+  .text-button.danger {
+    color: $red;
+  }
+  .text-button.outline {
+    border-color: $border;
+    color: $fg;
+  }
+  progressbar trough {
+    background-color: $hover;
+  }
+  progressbar progress {
+    background-color: $accent;
+  }
+
+  // components
+  .bar-body {
+    background-color: $bg;
+    color: $fg-dim;
+  }
+  .item {
+    color: $fg-dim;
+  }
+  button.item:hover,
+  .item.open {
+    background-color: $raised;
+    color: $fg;
+  }
+  .logo .icon {
+    color: $accent;
+  }
+  .sep {
+    background-color: $border;
+  }
+  .ws {
+    color: $fg-mute;
+  }
+  .ws.occupied {
+    color: $fg-dim;
+  }
+  .ws:hover {
+    background-color: $raised;
+    color: $fg;
+  }
+  .ws.active {
+    background-color: $hover;
+    color: $accent;
+  }
+  .ws.urgent {
+    color: $red;
+  }
+  .window-title {
+    color: $fg-dim;
+  }
+  .clock label {
+    color: $fg;
+  }
+  .stat.hot,
+  .disk.hot,
+  .bad {
+    color: $red;
+  }
+  .item .name {
+    color: $fg;
+  }
+  // Every bar icon takes the accent; the text beside it stays neutral. Off is grey, hot or muted red.
+  .bar-body .icon {
+    color: $accent;
+  }
+  .item.off .icon {
+    color: $fg-mute;
+  }
+  .item.hot .icon,
+  .item.bad .icon,
+  button.item.power:hover .icon {
+    color: $red;
+  }
+  .disk.removable {
+    color: $fg;
+  }
+  .accent {
+    color: $accent;
+  }
+  // State colours on bar buttons must out-rank `button.item:hover` (0,2,1) or hovering resets them.
+  button.item.power:hover,
+  button.item.bad,
+  button.item.bad:hover,
+  button.item.disk.hot,
+  button.item.disk.hot:hover {
+    color: $red;
+  }
+  button.item.accent,
+  button.item.accent:hover {
+    color: $accent;
+  }
+  .tile:hover,
+  .tile:focus {
+    background-color: $raised;
+  }
+  .tile-name {
+    color: $fg-dim;
+  }
+  .row-title.meta {
+    color: $fg-mute;
+  }
+  .slider-row.muted .icon-button {
+    color: $red;
+  }
+  scale.slider trough {
+    background-color: $hover;
+  }
+  scale.slider highlight {
+    background-color: $accent;
+  }
+  scale.slider slider {
+    background-color: $fg;
+  }
+  .slider-row.muted scale.slider highlight {
+    background-color: $fg-mute;
+  }
+  .slider-value {
+    color: $fg-dim;
+  }
+  .toggle {
+    background-color: $raised;
+  }
+  .toggle .icon {
+    color: $fg-mute;
+  }
+  .toggle-name {
+    color: $fg;
+  }
+  .toggle-state {
+    color: $fg-mute;
+  }
+  .toggle.on {
+    background-color: $hover;
+  }
+  .toggle.on .icon {
+    color: $accent;
+  }
+  .device-list .icon {
+    color: $accent;
+  }
+  .toggle-more {
+    color: $fg-mute;
+  }
+  .toggle-more:hover {
+    color: $fg;
+  }
+  .switch {
+    background-color: $hover;
+  }
+  .switch .knob {
+    background-color: $fg-mute;
+  }
+  .switch.on {
+    background-color: $accent;
+  }
+  .switch.on .knob {
+    background-color: $on-accent;
+  }
+  .media-row {
+    background-color: $raised;
+  }
+  .media-row.idle .row-title {
+    color: $fg-mute;
+  }
+  .art {
+    background-color: $hover;
+  }
+  .section-title {
+    color: $fg-mute;
+  }
+  .notif {
+    border-color: transparent;
+    background-color: $raised;
+  }
+  .notif.popup {
+    border-color: $border;
+    background-color: $surface;
+  }
+  .notif.critical {
+    border-color: $red;
+  }
+  .notif-app {
+    color: $fg-mute;
+  }
+  .notif-summary {
+    color: $fg;
+  }
+  .notif-body {
+    color: $fg-dim;
+  }
+  .notif-close {
+    color: $fg-mute;
+  }
+  .notif-close:hover {
+    background-color: $hover;
+    color: $fg;
+  }
+  .cal-head {
+    border-bottom-color: $border;
+  }
+  .cal-time {
+    color: $fg;
+  }
+  .cal-day {
+    color: $accent;
+  }
+  .cal-date {
+    color: $fg-dim;
+  }
+  calendar.cal {
+    color: $fg-dim;
+  }
+  calendar.cal.header {
+    color: $fg;
+  }
+  calendar.cal.button {
+    color: $fg-mute;
+  }
+  calendar.cal.button:hover {
+    color: $fg;
+  }
+  calendar.cal.highlight {
+    color: $fg-mute;
+  }
+  calendar.cal:selected {
+    background-color: $accent;
+    color: $on-accent;
+  }
+  calendar.cal:indeterminate {
+    color: #3c3836;
+  }
+  .power-head {
+    color: $fg-mute;
+  }
+  .row.armed {
+    background-color: rgba($red, 0.14);
+  }
+  .row.armed .row-title,
+  .row.armed .icon {
+    color: $red;
+  }
+  .osd-card {
+    border-color: $border;
+    background-color: $surface;
+  }
+  .osd-card .icon {
+    color: $accent;
+  }
+  .osd-title {
+    color: $fg-mute;
+  }
+  .osd-value {
+    color: $fg;
+  }
+  .osd-track {
+    background-color: $hover;
+  }
+  .osd-fill {
+    background-color: $accent;
+  }
+  .osd-card.muted .icon,
+  .osd-card.muted .osd-value {
+    color: $red;
+  }
+  .osd-card.muted .osd-fill {
+    background-color: $fg-mute;
+  }
+
+  // wallpapers
+  .wall-scrim {
+    background-color: rgba(0, 0, 0, 0.72);
+  }
+  .wall-title {
+    color: $fg;
+  }
+  .wall-search .search {
+    background-color: $raised;
+  }
+  .wall-tab {
+    color: $fg-dim;
+  }
+  .wall-tab:hover {
+    background-color: $raised;
+    color: $fg;
+  }
+  .wall-tab.active {
+    background-color: $hover;
+    color: $accent;
+  }
+  .tab-count {
+    color: $fg-mute;
+  }
+  .wall-tile:hover .thumb-frame {
+    background-color: $hover;
+  }
+  .wall-tile.current .thumb-frame {
+    background-color: $accent;
+  }
+  .badge {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: $fg;
+  }
+  .badge.fav {
+    color: $accent;
+  }
+  .badge.now {
+    background-color: $accent;
+    color: $on-accent;
+  }
+  .tile-label {
+    color: $fg-dim;
+  }
+  .wall-tile.current .tile-label {
+    color: $accent;
+  }
+  .wall-pager .loading,
+  .wall-foot .loading {
+    color: $accent;
+  }
+  .wall-foot {
+    border-top-color: $border;
+  }
+  .group-label {
+    color: $fg-mute;
+  }
+  .group-sep {
+    background-color: $border;
+  }
+  .chip {
+    color: $fg-dim;
+  }
+  .chip:hover {
+    background-color: $raised;
+    color: $fg;
+  }
+  .chip.active {
+    background-color: $hover;
+    color: $accent;
+  }
+  .swatch:hover {
+    box-shadow: 0 0 0 2px $bg, 0 0 0 4px $fg-mute;
+  }
+  .swatch.active {
+    box-shadow: 0 0 0 2px $bg, 0 0 0 4px $fg;
+  }
+}
+

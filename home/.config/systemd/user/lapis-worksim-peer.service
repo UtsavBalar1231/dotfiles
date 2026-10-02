@@ -1,0 +1,11 @@
+[Unit]
+Description=Lapis worksim host network peer
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /userdata/lapis-dvt-monitor/worksim/worksim-peer.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

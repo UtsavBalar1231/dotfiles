@@ -1,0 +1,15 @@
+[Unit]
+Description=Clean orphaned /tmp build/transcript dirs to protect tmpfs quota
+
+[Service]
+Type=oneshot
+# Safety: every find uses -user $USER + -mtime guards. Nothing system-owned is touched.
+ExecStart=/bin/sh -c '\
+  find /tmp -maxdepth 1 -user %u -name "cargo-install*"    -mtime +0 -exec rm -rf {} + 2>/dev/null; \
+  find /tmp -maxdepth 1 -user %u -name "claude-*"          -mtime +2 -exec rm -rf {} + 2>/dev/null; \
+  find /tmp -maxdepth 1 -user %u -name "lapis-bench-*.log" -mtime +3 -delete 2>/dev/null; \
+  find /tmp -maxdepth 1 -user %u -name "tmp.???????????"   -mtime +1 -delete 2>/dev/null; \
+  find /tmp -maxdepth 1 -user %u -name "fit.nobody-*"      -mtime +1 -exec rm -rf {} + 2>/dev/null; \
+  find /tmp -maxdepth 1 -user %u -name "node-compile-cache" -mtime +3 -exec rm -rf {} + 2>/dev/null; \
+  find /tmp -maxdepth 1 -user %u -name "core.*"            -mtime +0 -delete 2>/dev/null; \
+  true'

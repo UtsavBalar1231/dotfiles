@@ -1,0 +1,16 @@
+[Unit]
+Description=Hermes - Keyboard navigation daemon for Linux
+Documentation=https://github.com/UtsavBalar1231/hermes
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/hermes daemon
+ExecReload=/usr/bin/hermes config-reload
+Restart=on-failure
+RestartSec=3
+Slice=session.slice
+
+[Install]
+WantedBy=graphical-session.target

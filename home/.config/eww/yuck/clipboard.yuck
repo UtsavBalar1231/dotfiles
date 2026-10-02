@@ -1,0 +1,38 @@
+; Clipboard history (Mod+C, Mod+Shift+C for images). Click or Enter copies; hover a row to delete it.
+(defwindow clipboard
+  :monitor 0
+  :geometry (geometry :y "18%" :width "880px" :anchor "top center")
+  :stacking "overlay"
+  :focusable "exclusive"
+  :namespace "eww-clipboard"
+  ; The search field must be the topmost focusable widget: GTK gives initial focus by
+  ; vertical position, so anything sharing its row can steal it (as "Clear all" did).
+  (box :class theme
+    (box :class "sheet top ${closing == 'clipboard' ? 'closing' : ''}" :orientation "v" :space-evenly false
+      (search-field :placeholder {clip.filter == "image" ? "Search images" : "Search clipboard"} :query {clip.query}
+                    :onchange "scripts/clip.py search $EPOCHREALTIME - <<'EWW'
+{}
+EWW" :onaccept "scripts/clip.py accept")
+      ; Constant height: see launcher.yuck (layer windows must not need to grow right after opening).
+      (box :orientation "v" :space-evenly false :height 600
+      (scroll :hscroll false :vscroll true :vexpand true :visible {clip.count > 0}
+        (box :orientation "v" :space-evenly false :spacing 6
+          (for item in {clip.items}
+            (eventbox :class "clip-row"
+              (box :space-evenly false
+                (button :class "row" :hexpand true :onclick "scripts/clip.py copy ${item.id}"
+                  (box :orientation "v" :space-evenly false :spacing 6
+                    (box :class "thumb" :visible {item.kind == "image"}
+                         :style {item.kind == "image" ? "background-image: url('${item.thumb}'); min-height: ${item.height > 150 ? 150 : item.height}px;" : ""})
+                    (label :class "row-title ${item.kind == 'image' ? 'meta' : ''}" :xalign 0 :wrap true
+                           :limit-width 140 :lines 2 :text {item.text})))
+                (button :class "icon-button del" :valign "center" :tooltip "Delete"
+                        :onclick "scripts/clip.py delete ${item.id}"
+                  (label :class "icon" :text "󰅖")))))))
+      (label :class "empty" :visible {clip.count == 0}
+             :text {clip.query != "" ? "No matches" : "Clipboard is empty"}))
+      (box :class "sheet-foot" :space-evenly false
+        (label :class "row-meta" :xalign 0 :hexpand true :valign "center"
+               :text {clip.query != "" ? "${clip.count} of ${clip.total} items" : "${clip.total} items"})
+        (button :class "text-button ${clip_wipe ? 'danger' : ''}" :timeout "2s" :onclick "scripts/clip.py wipe"
+          {clip_wipe ? "Click again to clear" : "Clear all"})))))

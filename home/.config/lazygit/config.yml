@@ -1,0 +1,25 @@
+# Gruvbox Material Dark theme
+gui:
+  theme:
+    activeBorderColor:
+      - "#89b4fa"
+      - bold
+    inactiveBorderColor:
+      - "#504945"
+    optionsTextColor:
+      - "#89b4fa"
+    selectedLineBgColor:
+      - "#3c3836"
+    selectedRangeBgColor:
+      - "#3c3836"
+    cherryPickedCommitBgColor:
+      - "#458588"
+    cherryPickedCommitFgColor:
+      - "#ebdbb2"
+    unstagedChangesColor:
+      - "#cc241d"
+    defaultFgColor:
+      - "#ebdbb2"
+    searchingActiveBorderColor:
+      - "#fabd2f"
+  nerdFontsVersion: "3"

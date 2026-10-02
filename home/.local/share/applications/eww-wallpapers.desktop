@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Wallpapers
+GenericName=Wallpaper picker
+Comment=Browse, apply and rotate wallpapers
+Icon=preferences-desktop-wallpaper
+Exec=sh -c 'sleep 0.3; /home/utsav/.config/eww/scripts/panel.sh open wallpapers'
+Categories=Settings;DesktopSettings;
+Keywords=wallpaper;background;slideshow;gif;

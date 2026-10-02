@@ -1,0 +1,186 @@
+* {
+  all: unset;
+  font-family: $font;
+  font-size: $fs;
+}
+
+window {
+  background-color: transparent;
+}
+
+.icon {
+  font-size: $icon;
+}
+
+tooltip {
+  padding: sp(6px) sp(10px);
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  background-color: $raised;
+}
+
+tooltip label {
+  color: $fg;
+  font-size: $fs-sm;
+}
+
+// Tray menus are plain GTK menus and lose all theming under `all: unset`.
+menu {
+  padding: sp(6px);
+  border: 1px solid $border;
+  border-radius: $radius;
+  background-color: $surface;
+}
+
+menu menuitem {
+  padding: sp(8px) sp(12px);
+  border-radius: $radius-xs;
+  color: $fg;
+}
+
+menu menuitem:hover {
+  background-color: $hover;
+}
+
+menu menuitem:disabled {
+  color: $fg-mute;
+}
+
+menu separator {
+  min-height: 1px;
+  margin: sp(4px) 0;
+  background-color: $border;
+}
+
+menu check,
+menu radio {
+  min-width: sp(12px);
+  min-height: sp(12px);
+  margin-right: sp(8px);
+  border: 1px solid $fg-mute;
+  border-radius: 3px;
+}
+
+menu check:checked,
+menu radio:checked {
+  border-color: $accent;
+  background-color: $accent;
+}
+
+menu arrow {
+  min-width: sp(12px);
+  -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+}
+
+scrollbar slider {
+  min-width: 4px;
+  border-radius: 2px;
+}
+
+// Popup surfaces. A sheet fades in while rising; `.closing` (set by panel.sh) reverses it.
+.sheet {
+  padding: sp(20px);
+  border: 1px solid;
+  border-radius: sp(16px);
+}
+
+.sheet.bottom {
+  margin-bottom: sp(8px);
+  animation: rise-in $t-enter $ease-out;
+}
+
+.sheet.bottom.closing {
+  animation: rise-out $t-exit $ease-in forwards;
+}
+
+.sheet.top {
+  animation: drop-in $t-enter $ease-out;
+}
+
+.sheet.top.closing {
+  animation: drop-out $t-exit $ease-in forwards;
+}
+
+@keyframes rise-in {
+  from { opacity: 0; margin-bottom: 0; }
+  to { opacity: 1; margin-bottom: sp(8px); }
+}
+
+@keyframes rise-out {
+  from { opacity: 1; margin-bottom: sp(8px); }
+  to { opacity: 0; margin-bottom: 0; }
+}
+
+@keyframes drop-in {
+  from { opacity: 0; margin-top: sp(10px); }
+  to { opacity: 1; margin-top: 0; }
+}
+
+@keyframes drop-out {
+  from { opacity: 1; margin-top: 0; }
+  to { opacity: 0; margin-top: sp(6px); }
+}
+
+.search {
+  padding: 2px sp(10px) sp(16px);
+  margin-bottom: sp(12px);
+  border-bottom: 1px solid;
+}
+
+.search-input,
+.placeholder {
+  font-size: $fs-lg;
+}
+
+// Hover and selection highlights share one subtle radius, $radius-xs.
+.row {
+  padding: sp(10px) sp(12px);
+  border-radius: $radius-xs;
+  transition: background-color $t-state $ease;
+}
+
+.row-title {
+  font-size: $fs-md;
+}
+
+.row-meta {
+  font-size: $fs-sm;
+}
+
+.sheet-foot {
+  padding: sp(14px) sp(4px) 0;
+  margin-top: sp(12px);
+  border-top: 1px solid;
+}
+
+.empty {
+  padding: sp(24px);
+}
+
+.icon-button {
+  min-width: sp(34px);
+  min-height: sp(34px);
+  border-radius: $radius-xs;
+  transition: background-color $t-state $ease, color $t-state $ease;
+}
+
+.text-button {
+  padding: sp(6px) sp(12px);
+  border-radius: $radius-xs;
+  font-size: $fs-sm;
+  transition: background-color $t-state $ease, color $t-state $ease;
+}
+
+.text-button.outline {
+  border: 1px solid;
+}
+
+progressbar trough {
+  min-height: sp(4px);
+  border-radius: sp(2px);
+}
+
+progressbar progress {
+  min-height: sp(4px);
+  border-radius: sp(2px);
+}

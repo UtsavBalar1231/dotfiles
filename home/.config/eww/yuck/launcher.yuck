@@ -1,0 +1,27 @@
+; App search (Mod+D). Enter launches the highlighted top result.
+(defwindow launcher
+  :monitor 0
+  :geometry (geometry :y "22%" :width "860px" :anchor "top center")
+  :stacking "overlay"
+  :focusable "exclusive"
+  :namespace "eww-launcher"
+  (box :class theme
+    (box :class "sheet top ${closing == 'launcher' ? 'closing' : ''}" :orientation "v" :space-evenly false
+      (search-field :placeholder "Search apps" :query {apps.query}
+                    :onchange "scripts/apps.py qs $EPOCHREALTIME - <<'EWW'
+{}
+EWW" :onaccept "scripts/apps.py accept")
+      ; Constant height (8 rows): a layer window that has to grow in its first instant can miss
+      ; the resize and stay cut off, so the content size never depends on the result count.
+      (box :orientation "v" :space-evenly false :height 570
+        (box :orientation "v" :space-evenly false :spacing 6 :visible {apps.count > 0}
+          (for app in {apps.results}
+            (button :class "row ${app.id == apps.results[0].id ? 'selected' : ''}"
+                    :onclick "scripts/apps.py pick ${app.i}"
+              (box :space-evenly false :spacing 18
+                (image :path {app.icon} :image-width 40 :image-height 40)
+                (label :class "row-title" :xalign 0 :hexpand true :limit-width 34 :text {app.name})
+                (label :class "row-meta" :limit-width 26
+                       :text {apps.sort == "recent" && app.ago != "" ? app.ago : app.desc})))))
+        (label :class "empty" :visible {apps.count == 0} :text "No matches"))
+      (app-sort))))

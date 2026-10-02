@@ -1,0 +1,310 @@
+.bar-body {
+  padding: 0 sp(16px);
+}
+
+// Iosevka is narrower and lighter than JetBrains Mono at the same size, so the bar uses Medium.
+.bar-body,
+.bar-body label {
+  font-family: $font-bar;
+  font-size: $fs-md;
+  font-weight: 500;
+}
+
+// Bar highlights are inset pills: vertical margin keeps them off the bar edges.
+.item {
+  margin: sp(7px) sp(2px);
+  padding: 0 sp(12px);
+  border-radius: $radius-xs;
+  transition: background-color $t-state $ease, color $t-state $ease;
+}
+
+.logo .icon {
+  font-size: f(20px);
+}
+
+.sep {
+  min-width: 1px;
+  min-height: sp(20px);
+  margin: 0 sp(8px);
+}
+
+.ws {
+  min-width: sp(40px);
+  margin: sp(7px) sp(2px);
+  border-radius: $radius-xs;
+  transition: background-color $t-state $ease, color $t-state $ease;
+}
+
+.ws label {
+  font-size: $fs;
+}
+
+.ws.active {
+  min-width: sp(52px);
+}
+
+.ws.active label {
+  font-weight: 700;
+}
+
+.window-title {
+  padding: 0 sp(8px);
+}
+
+.clock label {
+  font-weight: 600;
+}
+
+.tray {
+  padding: 0 sp(12px);
+}
+
+.tile {
+  padding: sp(18px) sp(6px) sp(14px);
+  border-radius: $radius-sm;
+  transition: background-color $t-state $ease;
+}
+
+.tile-name {
+  font-size: $fs-sm;
+}
+
+.clip-row .del {
+  opacity: 0;
+  transition: opacity $t-state $ease;
+}
+
+.clip-row:hover .del {
+  opacity: 1;
+}
+
+.thumb {
+  border-radius: $radius-sm;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+.row-title.meta {
+  font-size: $fs-sm;
+}
+
+scale.slider trough {
+  min-height: sp(6px);
+  margin: 0 sp(8px);
+  border-radius: sp(3px);
+}
+
+scale.slider highlight {
+  border-radius: sp(3px);
+}
+
+scale.slider slider {
+  min-width: sp(16px);
+  min-height: sp(16px);
+  margin: -(sp(5px));
+  border-radius: sp(8px);
+  transition: min-width $t-state $ease, min-height $t-state $ease, margin $t-state $ease;
+}
+
+scale.slider:hover slider {
+  min-width: sp(18px);
+  min-height: sp(18px);
+  margin: -(sp(6px));
+}
+
+.slider-value {
+  min-width: sp(56px);
+  font-size: $fs-sm;
+}
+
+.toggle {
+  border-radius: $radius;
+  transition: background-color $t-state $ease;
+}
+
+.toggle-main {
+  padding: sp(14px) sp(16px);
+}
+
+.toggle .icon {
+  font-size: f(20px);
+  transition: color $t-state $ease;
+}
+
+.toggle-state {
+  font-size: $fs-sm;
+}
+
+.toggle-more {
+  padding: 0 sp(12px);
+  border-radius: 0 $radius $radius 0;
+  transition: color $t-state $ease;
+}
+
+.switch {
+  min-width: sp(40px);
+  min-height: sp(22px);
+  border-radius: sp(11px);
+  transition: background-color $t-state $ease;
+}
+
+.switch .knob {
+  min-width: sp(16px);
+  min-height: sp(16px);
+  margin-left: sp(3px);
+  border-radius: sp(8px);
+  transition: margin-left 200ms $ease, background-color $t-state $ease;
+}
+
+.switch.on .knob {
+  margin-left: sp(21px);
+}
+
+.media-row {
+  padding: sp(10px) sp(12px);
+  border-radius: $radius;
+}
+
+.art {
+  min-width: sp(44px);
+  min-height: sp(44px);
+  border-radius: $radius-sm;
+  background-size: cover;
+  background-position: center;
+}
+
+.section {
+  padding: sp(8px) sp(4px) 0;
+}
+
+.section-title {
+  font-size: $fs-sm;
+  font-weight: 700;
+}
+
+.notif {
+  padding: sp(14px) sp(16px);
+  border: 1px solid;
+  border-radius: $radius;
+}
+
+// Slide in from the screen edge. The paired negative margin keeps the card width constant
+// while it moves, so wrapped text does not reflow mid-animation.
+.notif.fresh {
+  animation: notif-in 260ms $ease-out;
+}
+
+.notif.leaving {
+  animation: notif-out 200ms $ease-in forwards;
+}
+
+@keyframes notif-in {
+  from { opacity: 0; margin-left: sp(32px); margin-right: -(sp(32px)); }
+  to { opacity: 1; margin-left: 0; margin-right: 0; }
+}
+
+@keyframes notif-out {
+  from { opacity: 1; margin-left: 0; margin-right: 0; }
+  to { opacity: 0; margin-left: sp(32px); margin-right: -(sp(32px)); }
+}
+
+.notif-app {
+  font-size: $fs-sm;
+}
+
+.notif-summary {
+  font-size: $fs-md;
+  font-weight: 700;
+}
+
+.notif-close {
+  min-width: sp(24px);
+  min-height: sp(24px);
+  border-radius: $radius-xs;
+  transition: background-color $t-state $ease, color $t-state $ease;
+}
+
+.notif-close .icon {
+  font-size: f(14px);
+}
+
+.notif-image {
+  min-width: sp(56px);
+  min-height: sp(56px);
+  border-radius: $radius-sm;
+  background-size: cover;
+  background-position: center;
+}
+
+.cal-sheet {
+  padding: sp(24px) sp(28px);
+}
+
+.cal-head {
+  padding: 0 sp(8px) sp(20px);
+  margin-bottom: sp(12px);
+  border-bottom: 1px solid;
+}
+
+.cal-time {
+  font-size: f(40px);
+  font-weight: 700;
+}
+
+.cal-day {
+  font-size: $fs-lg;
+  font-weight: 700;
+}
+
+calendar.cal {
+  padding: sp(4px);
+  font-size: $fs-lg;
+}
+
+calendar.cal.header {
+  font-weight: 700;
+}
+
+calendar.cal.highlight {
+  font-size: $fs-sm;
+}
+
+calendar.cal:selected {
+  border-radius: $radius-xs;
+  font-weight: 700;
+}
+
+.power-head {
+  padding: sp(4px) sp(12px) sp(10px);
+  font-size: $fs-sm;
+}
+
+// Volume/brightness OSD: icon, then a caption row over a thin track. The fill is a box sized in
+// pixels from the value (yuck), so it never stretches the way a GTK progressbar trough does.
+.osd-card {
+  margin-bottom: sp(8px); // where rise-in ends, so the box does not jump when it finishes
+  padding: sp(16px) sp(22px) sp(18px);
+  border: 1px solid;
+  border-radius: $radius;
+  animation: rise-in $t-enter $ease-out;
+}
+
+.osd-card .icon {
+  min-width: f(28px);
+  font-size: f(22px);
+}
+
+.osd-title,
+.osd-value {
+  font-size: $fs-sm;
+}
+
+.osd-value {
+  font-weight: 700;
+}
+
+.osd-track,
+.osd-fill {
+  border-radius: 4px;
+}

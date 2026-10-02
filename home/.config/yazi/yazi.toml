@@ -1,0 +1,106 @@
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+
+[mgr]
+ratio          = [ 1, 4, 3 ]
+sort_by        = "natural"
+sort_sensitive = false
+sort_reverse   = false
+sort_dir_first = true
+sort_translit  = true
+sort_fallback  = "alphabetical"
+linemode       = "size"
+show_hidden    = true
+show_symlink   = true
+scrolloff      = 8
+mouse_events   = [ "click", "scroll", "drag" ]
+
+[preview]
+wrap           = "yes"
+tab_size       = 4
+max_width      = 1600
+max_height     = 1600
+image_delay    = 20
+image_filter   = "lanczos3"
+image_quality  = 85
+ueberzug_scale = 1
+
+[opener]
+edit = [
+	{ run = '${EDITOR:-nvim} %s', desc = "$EDITOR", block = true, for = "unix" },
+]
+open = [
+	{ run = 'xdg-open %s1', desc = "Open", orphan = true, for = "linux" },
+]
+reveal = [
+	{ run = 'xdg-open %d1', desc = "Reveal in file manager", orphan = true, for = "linux" },
+]
+play = [
+	{ run = 'mpv %s', desc = "Play with mpv", orphan = true, for = "unix" },
+]
+media-info = [
+	{ run = 'mediainfo %s1; printf "\nPress enter to close"; read _', desc = "Show media info", block = true, for = "unix" },
+]
+image = [
+	{ run = 'imv %s', desc = "View image with imv", orphan = true, for = "linux" },
+	{ run = 'xdg-open %s1', desc = "Open image", orphan = true, for = "linux" },
+]
+pdf = [
+	{ run = 'zathura %s', desc = "View PDF with zathura", orphan = true, for = "linux" },
+	{ run = 'xdg-open %s1', desc = "Open PDF", orphan = true, for = "linux" },
+]
+exif = [
+	{ run = 'exiftool %s1; printf "\nPress enter to close"; read _', desc = "Show EXIF", block = true, for = "unix" },
+]
+extract = [
+	{ run = 'ya pub extract --list %s', desc = "Extract here" },
+]
+download = [
+	{ run = 'ya emit download --open %S', desc = "Download and open" },
+	{ run = 'ya emit download %S', desc = "Download" },
+]
+
+[open]
+prepend_rules = [
+	{ url = "*.json", use = [ "edit", "reveal" ] },
+	{ url = "*.html", use = [ "open", "edit", "reveal" ] },
+	{ url = "*.{md,markdown,toml,yaml,yml,ini,conf,sh,bash,zsh,fish,lua,py,rs,go,js,ts,tsx,jsx,css,scss}", use = [ "edit", "reveal" ] },
+	{ url = "*.{srt,ass,ssa,sub,vtt}", use = [ "edit", "open", "reveal" ] },
+	{ mime = "application/pdf", use = [ "pdf", "reveal" ] },
+	{ mime = "image/*", use = [ "image", "reveal", "exif" ] },
+	{ mime = "{audio,video}/*", use = [ "play", "media-info", "reveal" ] },
+	{ mime = "text/*", use = [ "edit", "reveal" ] },
+]
+
+[tasks]
+file_workers     = 4
+plugin_workers   = 8
+fetch_workers    = 8
+preload_workers  = 4
+process_workers  = 8
+bizarre_retry    = 3
+image_alloc      = 536870912
+image_bound      = [ 12000, 12000 ]
+suppress_preload = false
+
+[plugin]
+prepend_fetchers = [
+	{ url = "local://*", run = "mime-ext.local", prio = "high", group = "mime" },
+	{ url = "remote://*", run = "mime-ext.remote", prio = "high", group = "mime" },
+	{ url = "*", run = "git", group = "git" },
+	{ url = "*/", run = "git", group = "git" },
+]
+
+prepend_previewers = [
+	{ url = "*/", run = 'piper -- eza -TL=3 --color=always --icons=always --group-directories-first --no-quotes "$1"' },
+	{ url = "*.{md,markdown}", run = 'piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark "$1"' },
+	{ url = "*.{csv,tsv}", run = 'piper -- bat -p --color=always "$1"' },
+]
+
+[input]
+cursor_blink = true
+
+[which]
+sort_by        = "key"
+sort_sensitive = false
+sort_reverse   = false
+sort_translit  = true

@@ -1,0 +1,21 @@
+; Power menu above the bar's power button. Everything except Lock needs a second click within 4s.
+(defwindow power
+  :monitor 0
+  :geometry (geometry :x "8px" :width "360px" :anchor "bottom right")
+  :stacking "overlay"
+  :focusable "none"
+  :namespace "eww-power"
+  (box :class theme
+    (box :class "sheet bottom ${closing == 'power' ? 'closing' : ''}" :orientation "v" :space-evenly false :spacing 4
+      (label :class "power-head" :xalign 0 :text "Up ${uptime}")
+      (power-row :action "lock" :glyph "󰌾" :name "Lock")
+      (power-row :action "suspend" :glyph "󰤄" :name "Suspend")
+      (power-row :action "logout" :glyph "󰍃" :name "Log out")
+      (power-row :action "reboot" :glyph "󰜉" :name "Restart")
+      (power-row :action "shutdown" :glyph "󰐥" :name "Shut down"))))
+
+(defwidget power-row [action glyph name]
+  (button :class "row ${power_pending == action ? 'armed' : ''}" :onclick "scripts/power.sh press ${action}"
+    (box :space-evenly false :spacing 18
+      (label :class "icon" :text glyph)
+      (label :class "row-title" :xalign 0 :text {power_pending == action ? "Click again" : name}))))

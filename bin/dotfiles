@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+# Keep the configs listed in manifest/home.list in sync between $HOME and this repo's home/.
+#
+#   dotfiles capture [--dry-run]           $HOME -> home/ (each entry mirrored, excludes dropped)
+#   dotfiles deploy  [--dry-run] [--yes]   home/ -> $HOME; every file it replaces is saved under
+#                                          ~/.local/state/dotfiles/backups/<time>/ first; it never
+#                                          deletes files in $HOME
+#   dotfiles status                        what deploy and capture would each change
+#   dotfiles snapshot [args]               full machine backup (scripts/snapshot.sh)
+#
+# Files are copied, not symlinked: the desktop theme rewrites some of them at runtime (wallpaper
+# colours), and symlinks would turn every wallpaper change into a dirty repo.
+set -Eeuo pipefail
+
+REPO=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)
+MANIFEST=$REPO/manifest/home.list
+STORE=$REPO/home
+STATE=${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles
+# Content comparison (-c) without preserving mtimes (no -t), so status shows only real changes.
+RSYNC=(rsync -rlpDc --mkpath --itemize-changes)
+
+die() { printf 'dotfiles: %s\n' "$*" >&2; exit 1; }
+warn() { printf 'dotfiles: %s\n' "$*" >&2; }
+
+ENTRIES=()
+GLOBAL_EXCLUDES=()
+declare -A ENTRY_EXCLUDES=()
+
+load_manifest() {
+  [[ -r $MANIFEST ]] || die "missing $MANIFEST"
+  local line path word
+  local -a words
+  while IFS= read -r line || [[ -n $line ]]; do
+    line=${line%%#*}
+    read -r -a words <<<"$line"
+    ((${#words[@]})) || continue
+    if [[ ${words[0]} == '!'* ]]; then
+      for word in "${words[@]}"; do GLOBAL_EXCLUDES+=("${word#!}"); done
+      continue
+    fi
+    path=${words[0]%/}
+    [[ $path == /* || $path == ..* || $path == */..* ]] && die "entry must be relative to \$HOME: $path"
+    ENTRIES+=("$path")
+    ENTRY_EXCLUDES[$path]=
+    for word in "${words[@]:1}"; do
+      [[ $word == '!'* ]] || die "unexpected '$word' after $path (excludes start with !)"
+      ENTRY_EXCLUDES[$path]+="${word#!}"$'\n'
+    done
+  done <"$MANIFEST"
+  ((${#ENTRIES[@]})) || die "no entries in $MANIFEST"
+}
+
+# sync_entry SRC_ROOT DST_ROOT ENTRY [rsync options...]: copy one manifest entry between roots.
+sync_entry() {
+  local src=$1 dst=$2 entry=$3
+  shift 3
+  local -a cmd=("${RSYNC[@]}" "$@")
+  local p
+  for p in "${GLOBAL_EXCLUDES[@]}"; do cmd+=(--exclude="$p"); done
+  while IFS= read -r p; do [[ -n $p ]] && cmd+=(--exclude="$p"); done <<<"${ENTRY_EXCLUDES[$entry]}"
+  if [[ -d $src/$entry && ! -L $src/$entry ]]; then
+    "${cmd[@]}" "$src/$entry/" "$dst/$entry/"
+  else
+    "${cmd[@]}" "$src/$entry" "$dst/$entry"
+  fi
+}
+
+# changes ROOT ENTRY: turn rsync's itemized output into one line per changed file (new directories and attribute-only
+# directory updates are left out: the files inside them are listed).
+changes() {
+  local prefix=${1%/}/$2
+  [[ -d $HOME/$2 || -d $STORE/$2 ]] || prefix=${1%/}/$(dirname "$2")
+  prefix=${prefix%/.}
+  sed -nE -e "s|^\*deleting +(.*)$|  $prefix/\1 (removed)|p" -e '/^(\.d|cd)/d' \
+    -e "s|^[<>ch.][fLDS][^ ]* (.*)$|  $prefix/\1|p"
+}
+
+cmd_capture() {
+  local dry=()
+  [[ ${1:-} == --dry-run ]] && dry=(--dry-run)
+  load_manifest
+  local entry out total=0
+  for entry in "${ENTRIES[@]}"; do
+    if [[ ! -e $HOME/$entry && ! -L $HOME/$entry ]]; then
+      warn "skip $entry (not in \$HOME)"
+      continue
+    fi
+    out=$(sync_entry "$HOME" "$STORE" "$entry" --delete --delete-excluded "${dry[@]}" | changes "home" "$entry")
+    if [[ -n $out ]]; then
+      printf '%s\n' "$out"
+      total=$((total + $(wc -l <<<"$out")))
+    fi
+  done
+  printf 'capture: %d change(s)%s\n' "$total" "${dry:+ (dry run)}"
+}
+
+cmd_deploy() {
+  local dry=() yes=0 arg
+  for arg in "$@"; do
+    case $arg in
+      --dry-run) dry=(--dry-run) ;;
+      --yes | -y) yes=1 ;;
+      *) die "deploy: unknown option $arg" ;;
+    esac
+  done
+  load_manifest
+  local entry out plan=""
+  for entry in "${ENTRIES[@]}"; do
+    [[ -e $STORE/$entry || -L $STORE/$entry ]] || continue
+    out=$(sync_entry "$STORE" "$HOME" "$entry" --dry-run | changes "~" "$entry")
+    [[ -n $out ]] && plan+=$out$'\n'
+  done
+  if [[ -z $plan ]]; then
+    echo "deploy: \$HOME already matches the repo"
+    return 0
+  fi
+  printf '%s' "$plan"
+  local count
+  count=$(grep -c . <<<"$plan")
+  if ((${#dry[@]})); then
+    printf 'deploy: %d file(s) would change (dry run)\n' "$count"
+    return 0
+  fi
+  if ((!yes)); then
+    [[ -t 0 ]] || die "deploy: not a terminal; pass --yes to apply $count change(s)"
+    read -r -p "Apply $count change(s) to \$HOME? Replaced files are backed up first. [y/N] " arg
+    [[ $arg == [yY]* ]] || die "deploy: cancelled"
+  fi
+  local backup
+  backup=$STATE/backups/$(date +%Y%m%d-%H%M%S)
+  for entry in "${ENTRIES[@]}"; do
+    [[ -e $STORE/$entry || -L $STORE/$entry ]] || continue
+    if [[ -d $STORE/$entry && ! -L $STORE/$entry ]]; then
+      sync_entry "$STORE" "$HOME" "$entry" --backup --backup-dir="$backup/$entry" >/dev/null
+    else
+      sync_entry "$STORE" "$HOME" "$entry" --backup --backup-dir="$backup/$(dirname "$entry")" >/dev/null
+    fi
+  done
+  printf 'deploy: %d file(s) updated' "$count"
+  [[ -d $backup ]] && printf '; replaced files saved in %s' "$backup"
+  echo
+}
+
+cmd_status() {
+  load_manifest
+  local entry out to_home="" to_repo=""
+  for entry in "${ENTRIES[@]}"; do
+    if [[ -e $STORE/$entry || -L $STORE/$entry ]]; then
+      out=$(sync_entry "$STORE" "$HOME" "$entry" --dry-run | changes "~" "$entry")
+      [[ -n $out ]] && to_home+=$out$'\n'
+    fi
+    if [[ -e $HOME/$entry || -L $HOME/$entry ]]; then
+      out=$(sync_entry "$HOME" "$STORE" "$entry" --dry-run --delete --delete-excluded | changes "home" "$entry")
+      [[ -n $out ]] && to_repo+=$out$'\n'
+    else
+      echo "  missing in \$HOME: $entry"
+    fi
+  done
+  if [[ -z $to_home && -z $to_repo ]]; then
+    echo "status: \$HOME and the repo match"
+    return 0
+  fi
+  [[ -n $to_home ]] && printf 'deploy would change:\n%s' "$to_home"
+  [[ -n $to_repo ]] && printf 'capture would change:\n%s' "$to_repo"
+}
+
+usage() { sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+
+command -v rsync >/dev/null || die "rsync is required"
+case ${1:-} in
+  capture) shift; cmd_capture "$@" ;;
+  deploy) shift; cmd_deploy "$@" ;;
+  status) shift; cmd_status "$@" ;;
+  snapshot) shift; exec "$REPO/scripts/snapshot.sh" "$@" ;;
+  -h | --help | help | "") usage ;;
+  *) die "unknown command '$1' (try --help)" ;;
+esac

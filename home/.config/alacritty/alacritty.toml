@@ -1,0 +1,227 @@
+# Complete Alacritty starter config with internal tab bindings.
+
+[general]
+live_config_reload = true
+ipc_socket = true
+
+# Inline terminal graphics (fork feature): kitty graphics protocol, Sixel,
+# and iTerm2 inline images. All on by default; `enabled` is the master switch.
+[graphics]
+enabled = true
+kitty_protocol = true
+sixel = true
+iterm2 = true
+max_storage_mib = 320
+
+[env]
+TERM = "alacritty"
+
+[window]
+dimensions = { columns = 120, lines = 34 }
+padding = { x = 8, y = 8 }
+dynamic_padding = false
+decorations = "Full"
+opacity = 1.0
+blur = false
+startup_mode = "Windowed"
+title = "Alacritty"
+dynamic_title = true
+class = { instance = "Alacritty", general = "Alacritty" }
+resize_increments = false
+
+[window.tab_bar]
+visibility = "Auto"
+position = "Bottom"
+alignment = "Left"
+style = "Separator"
+separator = " | "
+margin_width = 0.0
+margin_height = { outer = 8.0, inner = 0.0 }
+max_width = 48
+min_width = 6
+show_index = true
+close_button = "Never"
+title_template = "󰨸 {index} {title}"
+active_title_template = "󰅍 {index} {title}"
+inactive_title_template = "{bell}{activity}󰨸 {index} {title}"
+activity_indicator = "  "
+bell_indicator = "🔔 "
+show_activity_indicator = true
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[font]
+size = 16.0
+builtin_box_drawing = true
+
+[font.symbol_map]
+"U+E000-U+F8FF" = "Symbols Nerd Font"
+"U+F0000-U+FFFFD" = "Symbols Nerd Font"
+"U+100000-U+10FFFD" = "Symbols Nerd Font"
+"U+1F300-U+1FAFF" = "Noto Color Emoji"
+
+[font.normal]
+family = "Maple Mono NF"
+style = "Regular"
+
+[font.bold]
+family = "Maple Mono NF"
+style = "Bold"
+
+[font.italic]
+family = "Maple Mono NF"
+style = "Italic"
+
+[font.bold_italic]
+family = "Maple Mono NF"
+style = "Bold Italic"
+
+[font.offset]
+x = 0
+y = 0
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+
+[colors.primary]
+background = "#000000"
+foreground = "#ddc7a1"
+dim_foreground = "#665c54"
+bright_foreground = "#ebdbb2"
+
+[colors.cursor]
+text = "#000000"
+cursor = "#a89984"
+
+[colors.vi_mode_cursor]
+text = "#000000"
+cursor = "#a89984"
+
+[colors.search.matches]
+foreground = "#000000"
+background = "#7daea3"
+
+[colors.search.focused_match]
+foreground = "#141617"
+background = "#ddc7a1"
+
+[colors.hints.start]
+foreground = "#000000"
+background = "#7daea3"
+
+[colors.hints.end]
+foreground = "#141617"
+background = "#ddc7a1"
+
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+[colors.footer_bar]
+foreground = "#000000"
+background = "#ddc7a1"
+
+[colors.tab_bar.active]
+foreground = "#ddc7a1"
+background = "#000000"
+
+[colors.tab_bar.inactive]
+foreground = "#504945"
+background = "#000000"
+
+[colors.selection]
+text = "#141617"
+background = "#d4be98"
+
+[colors.normal]
+black = "#1d2021"
+red = "#ea6962"
+green = "#a9b665"
+yellow = "#d8a657"
+blue = "#7daea3"
+magenta = "#d3869b"
+cyan = "#89b482"
+white = "#ddc7a1"
+
+[colors.bright]
+black = "#665c54"
+red = "#c14a4a"
+green = "#6f8352"
+yellow = "#e78a4e"
+blue = "#45707a"
+magenta = "#945e80"
+cyan = "#4c7a5d"
+white = "#ebdbb2"
+
+
+[bell]
+animation = "Linear"
+duration = 0
+color = "#89b482"
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+save_to_clipboard = false
+
+[cursor]
+style = { shape = "Block", blinking = "Off" }
+vi_mode_style = "None"
+unfocused_hollow = true
+thickness = 0.15
+
+[terminal]
+osc52 = "OnlyCopy"
+
+[mouse]
+hide_when_typing = false
+
+[open]
+launcher = "Default"
+
+[hints]
+alphabet = "123456789abcdefghijklmnopqrstuvwxyz"
+
+[[hints.enabled]]
+action = "Open"
+hyperlinks = true
+post_processing = true
+persist = false
+mouse.enabled = true
+binding = { key = "E", mods = "Control|Shift" }
+regex = '(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>"\s{-}\^⟨⟩`\\]+'
+
+[keyboard]
+bindings = [
+	# Tabs.
+	{ key = "T", mods = "Control|Shift", action = "CreateNewTab" },
+	{ key = "W", mods = "Control|Shift", action = "CloseTab" },
+	{ key = "Right", mods = "Control|Shift", action = "SelectNextTab" },
+	{ key = "Left", mods = "Control|Shift", action = "SelectPreviousTab" },
+	{ key = "<", mods = "Control|Shift", action = "MoveTabLeft" },
+	{ key = ">", mods = "Control|Shift", action = "MoveTabRight" },
+	{ key = "Key1", mods = "Control", action = "SelectTab1" },
+	{ key = "Key2", mods = "Control", action = "SelectTab2" },
+	{ key = "Key3", mods = "Control", action = "SelectTab3" },
+	{ key = "Key4", mods = "Control", action = "SelectTab4" },
+	{ key = "Key5", mods = "Control", action = "SelectTab5" },
+	{ key = "Key6", mods = "Control", action = "SelectTab6" },
+	{ key = "Key7", mods = "Control", action = "SelectTab7" },
+	{ key = "Key8", mods = "Control", action = "SelectTab8" },
+	{ key = "Key9", mods = "Control", action = "SelectTab9" },
+	{ key = "Key0", mods = "Alt", action = "SelectLastTab" },
+
+	# Common shortcuts.
+	{ key = "C", mods = "Control|Shift", action = "Copy" },
+	{ key = "V", mods = "Control|Shift", action = "Paste" },
+	{ key = "F", mods = "Control|Shift", action = "SearchForward" },
+	{ key = "N", mods = "Control|Shift", action = "CreateNewWindow" },
+	{ key = "Return", mods = "Alt", action = "ToggleFullscreen" },
+	{ key = "Equals", mods = "Control", action = "IncreaseFontSize" },
+	{ key = "Minus", mods = "Control", action = "DecreaseFontSize" },
+	{ key = "Key0", mods = "Control", action = "ResetFontSize" },
+	{ key = "Return", mods = "Shift", chars = "\u001B\r" },
+]

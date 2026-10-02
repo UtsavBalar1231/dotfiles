@@ -1,0 +1,23 @@
+(defwindow osd
+  :monitor 0
+  :geometry (geometry :y "8px" :anchor "bottom center")
+  :stacking "overlay"
+  :focusable "none"
+  :namespace "eww-osd"
+  (box :class theme
+    (box :class "osd-card ${osd.muted ? 'muted' : ''}" :space-evenly false :spacing 18
+      (label :class "icon" :valign "center"
+             :text {osd.kind == "mic" ? (osd.muted ? "󰍭" : "󰍬")
+                    : osd.kind == "bright" ? (osd.value < 34 ? "󰃞" : osd.value < 67 ? "󰃟" : "󰃠")
+                    : osd.muted ? "󰝟" : osd.value < 34 ? "󰕿" : osd.value < 67 ? "󰖀" : "󰕾"})
+      (box :orientation "v" :valign "center" :space-evenly false :spacing 10
+        (box :space-evenly false
+          (label :class "osd-title" :xalign 0 :hexpand true
+                 :text {osd.kind == "bright" ? "Brightness" : osd.kind == "mic" ? "Microphone" : "Volume"})
+          (label :class "osd-value" :xalign 1 :text {osd.muted ? "Muted" : "${osd.value}%"}))
+        ; 300px track; 3px per percent keeps the width an integer. Volume can reach 150%: the
+        ; fill stops at the end of the track and the label shows the real value.
+        (overlay
+          (box :class "osd-track" :width 300 :height 6)
+          (box :class "osd-fill" :halign "start" :height 6
+               :width {osd.value > 100 ? 300 : osd.value * 3}))))))

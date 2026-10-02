@@ -1,0 +1,34 @@
+# Gruvbox Material AMOLED Black theme
+set default-bg "#000000"
+set default-fg "#ebdbb2"
+
+set statusbar-bg "#0d0e0f"
+set statusbar-fg "#ebdbb2"
+
+set inputbar-bg "#000000"
+set inputbar-fg "#ebdbb2"
+
+set notification-bg "#282828"
+set notification-fg "#ebdbb2"
+set notification-error-bg "#cc241d"
+set notification-error-fg "#ebdbb2"
+set notification-warning-bg "#d79921"
+set notification-warning-fg "#1d2021"
+
+set highlight-color "#d79921"
+set highlight-active-color "#d65d0e"
+
+set completion-bg "#282828"
+set completion-fg "#ebdbb2"
+set completion-highlight-bg "#3c3836"
+set completion-highlight-fg "#d65d0e"
+
+set index-bg "#1d2021"
+set index-fg "#ebdbb2"
+set index-active-bg "#3c3836"
+set index-active-fg "#d65d0e"
+
+set recolor-lightcolor "#000000"
+set recolor-darkcolor "#ebdbb2"
+set recolor true
+set recolor-keephue true

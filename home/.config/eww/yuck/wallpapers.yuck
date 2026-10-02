@@ -1,0 +1,124 @@
+; Full-screen wallpaper picker (Mod+Shift+W). State and actions live in scripts/wall.py.
+; Click a tile to apply it, right-click to (un)favourite, scroll the grid to page.
+(defwindow wallpapers
+  :monitor 0
+  :geometry (geometry :width "100%" :height "100%" :anchor "center")
+  :stacking "overlay"
+  :focusable "exclusive"
+  :namespace "eww-wallpapers"
+  (box :class theme
+    (box :class "wall-scrim ${closing == 'wallpapers' ? 'closing' : ''}" :orientation "v" :space-evenly false
+      (box :class "wall" :orientation "v" :space-evenly false :halign "center" :valign "center" :vexpand true
+        (wall-head)
+        (eventbox :onscroll "scripts/throttle 150 wallpage scripts/wall.py page {}"
+          (box :class "wall-grid" :orientation "v" :space-evenly false :spacing 18 :height 950
+            (for row in {walls.rows}
+              (box :space-evenly true :spacing 22
+                (for w in row
+                  (wall-tile :w w))))
+            (label :class "empty" :visible {walls.count == 0}
+                   :text {walls.query != "" ? "No wallpapers match “${walls.query}”"
+                          : walls.tab == "fav" ? "No favourites yet · right-click a wallpaper to add it" : "No wallpapers found"})))
+        (wall-pager)
+        (wall-foot)))))
+
+; The search box is the leftmost child of a row whose children all fill its height,
+; so GTK's initial-focus order (by vertical centre, then x) lands on it.
+(defwidget wall-head []
+  (box :class "wall-head" :space-evenly false :spacing 24
+    (box :space-evenly false :spacing 28
+      (label :class "wall-title" :text "Wallpapers")
+      (box :class "wall-search" :width 560
+        (search-field :placeholder "Search" :query {walls.query}
+                      :onchange "scripts/wall.py qs $EPOCHREALTIME - <<'EWW'
+{}
+EWW" :onaccept "scripts/wall.py accept")))
+    (box :hexpand true)
+    (box :space-evenly false :spacing 6
+      (wall-tab :id "static" :name "Static" :count {walls.counts.static})
+      (wall-tab :id "gif" :name "Animated" :count {walls.counts.gif})
+      (wall-tab :id "fav" :name "Favourites" :count {walls.counts.fav}))
+    (box :class "head-close"
+      (icon-button :glyph "󰅖" :tooltip "Close (Esc)" :onclick "scripts/panel.sh close"))))
+
+(defwidget wall-tab [id name count]
+  (button :class "wall-tab ${walls.tab == id ? 'active' : ''}" :valign "center" :onclick "scripts/wall.py tab ${id}"
+    (box :space-evenly false :spacing 10
+      (label :text name)
+      (label :class "tab-count" :text count))))
+
+(defwidget wall-tile [w]
+  (box :class "tile-slot"
+    (button :class "wall-tile ${w.current ? 'current' : ''}" :visible {w.path != ""}
+            :tooltip "${w.name} · click to apply · right-click to ${w.fav ? 'remove from' : 'add to'} favourites"
+            :onclick "scripts/wall.py pick ${w.idx}" :onrightclick "scripts/wall.py fav ${w.idx}"
+      (box :orientation "v" :space-evenly false :spacing 10
+        (overlay
+          (box :class "thumb-frame"
+            (box :visible {w.thumb != ""}
+              (image :path {w.thumb != "" ? w.thumb : "${EWW_CONFIG_DIR}/assets/blank.png"}
+                     :image-width 448 :image-height 252))
+            (box :class "thumb-loading" :visible {w.thumb == ""} :width 448 :height 252))
+          (box :space-evenly false :spacing 6 :halign "end" :valign "start" :class "badges"
+            (label :class "badge" :visible {w.kind == "gif"} :text "GIF")
+            (label :class "badge fav" :visible {w.fav} :text "󰓎")
+            (label :class "badge now" :visible {w.current} :text "Current")))
+        (label :class "tile-label" :limit-width 34 :text {w.name})))))
+
+(defwidget wall-pager []
+  (box :class "wall-pager" :space-evenly false :halign "center" :spacing 14
+    (icon-button :glyph "󰅁" :tooltip "Previous page" :onclick "scripts/wall.py page prev")
+    (label :class "row-meta" :text "Page ${walls.page} of ${walls.pages} · ${walls.count} wallpapers")
+    (icon-button :glyph "󰅂" :tooltip "Next page" :onclick "scripts/wall.py page next")
+    (label :class "row-meta loading" :visible {wallstat.progress.done < wallstat.progress.total}
+           :text "· preparing thumbnails ${wallstat.progress.done}/${wallstat.progress.total}")))
+
+(defwidget wall-foot []
+  (box :class "wall-foot" :orientation "v" :space-evenly false :spacing 16
+    (box :space-evenly false :spacing 24
+      (box :orientation "v" :space-evenly false :valign "center"
+        (label :class "row-meta" :xalign 0 :text "Current wallpaper")
+        (box :space-evenly false :spacing 12
+          (label :class "row-title" :xalign 0 :limit-width 48 :text {wallstat.current.name != "" ? wallstat.current.name : "None yet"})
+          (label :class "row-meta loading" :visible {wallstat.applying ?: false} :text "applying…"))
+        ; Colours sampled from the wallpaper; click one to make it the accent (remembered per wallpaper).
+        (box :class "swatches" :space-evenly false
+          (for c in wallcolors
+            (button :class "swatch ${c.key == 'default' ? 'default' : ''} ${c.on ? 'active' : ''}" :style "background-color: ${c.hex};"
+                    :tooltip {c.tip} :onclick "scripts/wall.py accent ${c.key}"))))
+      (box :hexpand true)
+      (button :class "text-button outline" :onclick "scripts/wall.py random" :tooltip "Random from this tab"
+        (label :text "󰒝  Random"))
+      (button :class "text-button outline" :onclick "scripts/wall.py back" :tooltip "Go back to the previous wallpaper"
+        (label :text "󰕍  Previous"))
+      (button :class "text-button outline" :onclick "scripts/wall.py rescan" :tooltip "Rescan ~/Pictures/wallpapers"
+        (label :text "󰑓  Rescan"))
+      (button :class "text-button outline" :onclick "scripts/panel.sh close; niri msg action spawn -- xdg-open ~/Pictures/wallpapers"
+        (label :text "󰉋  Open folder")))
+    (box :space-evenly false :spacing 10
+      (label :class "group-label" :text "Slideshow")
+      (switch :active {wallstat.slideshow.on} :onclick "scripts/wall.py slideshow toggle")
+      (label :class "row-meta next-in" :visible {wallstat.slideshow.on}
+             :text "next in ${wallstat.slideshow.next_at > EWW_TIME ? round((wallstat.slideshow.next_at - EWW_TIME) / 60, 0) : 0}m")
+      (box :class "group-sep")
+      (label :class "group-label" :text "Every")
+      ; eww appends `for` children at the end of their parent, so each loop gets its own box.
+      (box :space-evenly false :spacing 10
+        (for m in {wallstat.intervals}
+          (chip :text {m >= 60 ? "${round(m / 60, 0)}h" : "${m}m"} :active {wallstat.slideshow.every == m}
+                :onclick "scripts/wall.py every ${m}")))
+      (box :class "group-sep")
+      (label :class "group-label" :text "From")
+      (chip :text "Static" :active {wallstat.slideshow.source == "static"} :onclick "scripts/wall.py source static")
+      (chip :text "Animated" :active {wallstat.slideshow.source == "gif"} :onclick "scripts/wall.py source gif")
+      (chip :text "All" :active {wallstat.slideshow.source == "all"} :onclick "scripts/wall.py source all")
+      (chip :text "Favourites" :active {wallstat.slideshow.source == "fav"} :onclick "scripts/wall.py source fav")
+      (box :class "group-sep")
+      (chip :text {wallstat.slideshow.shuffle ? "󰒝  Shuffle" : "󰑖  In order"} :active {wallstat.slideshow.shuffle}
+            :onclick "scripts/wall.py shuffle toggle")
+      (box :hexpand true)
+      (label :class "group-label" :text "Transition")
+      (box :space-evenly false :spacing 10
+        (for t in {wallstat.transitions}
+          (chip :text {t == "fade" ? "Fade" : t == "wipe" ? "Wipe" : t == "grow" ? "Grow" : t == "wave" ? "Wave" : t == "outer" ? "Shrink" : "Random"}
+                :active {wallstat.transition == t} :onclick "scripts/wall.py transition ${t}"))))))

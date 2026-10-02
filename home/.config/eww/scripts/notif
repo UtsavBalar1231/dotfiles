@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Thin CLI over the notifd control interface: dismiss|hide ID | invoke ID default | action ID INDEX | clear | dnd
+call() { busctl --user call org.freedesktop.Notifications /org/freedesktop/Notifications dev.eww.Notifd "$@"; }
+num() { [[ $1 =~ ^[0-9]+$ ]] || { echo "notif: expected a number, got '$1'" >&2; exit 1; }; }
+case $1 in
+  dismiss) num "$2"; call Dismiss u "$2" ;;
+  hide) num "$2"; call HidePopup u "$2" ;;
+  invoke) num "$2"; call Invoke us "$2" default ;;
+  action) num "$2"; num "$3"; call InvokeIndex uu "$2" "$3" ;;
+  clear) call ClearAll ;;
+  dnd) call ToggleDnd ;;
+  *) echo "usage: $0 dismiss|hide ID | invoke ID | action ID INDEX | clear | dnd" >&2; exit 1 ;;
+esac

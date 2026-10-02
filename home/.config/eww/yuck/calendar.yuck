@@ -1,0 +1,15 @@
+; Date panel (click the clock): large time and date header over a roomy month grid.
+(defwindow calendar
+  :monitor 0
+  :geometry (geometry :width "720px" :anchor "bottom center")
+  :stacking "overlay"
+  :focusable "none"
+  :namespace "eww-calendar"
+  (box :class theme
+    (box :class "sheet bottom cal-sheet ${closing == 'calendar' ? 'closing' : ''}" :orientation "v" :space-evenly false
+      (box :class "cal-head" :space-evenly false :spacing 24
+        (label :class "cal-time" :valign "center" :text {formattime(EWW_TIME, "%H:%M")})
+        (box :orientation "v" :valign "center" :space-evenly false :spacing 4
+          (label :class "cal-day" :xalign 0 :text {formattime(EWW_TIME, "%A")})
+          (label :class "cal-date" :xalign 0 :text {formattime(EWW_TIME, "%d %B %Y · week %V")})))
+      (calendar :class "cal" :height 460 :show-day-names true :show-heading true :show-week-numbers false))))

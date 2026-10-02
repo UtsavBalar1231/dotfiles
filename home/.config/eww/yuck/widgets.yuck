@@ -1,0 +1,38 @@
+; Shared building blocks.
+
+; Transparent full-screen layer under every popup; clicking it closes the popup.
+(defwindow backdrop
+  :monitor 0
+  :geometry (geometry :width "100%" :height "100%" :anchor "center")
+  :stacking "overlay"
+  :focusable "none"
+  :namespace "eww-backdrop"
+  (eventbox :onclick "scripts/panel.sh close" :onrightclick "scripts/panel.sh close"
+    (box :hexpand true :vexpand true)))
+
+;; Typed text reaches scripts through a quoted here-doc (`- <<'EWW' {} EWW`): eww pastes
+;; `{}` into `sh -c` unquoted, and a here-doc body is never interpreted by the shell.
+(defwidget search-field [placeholder query onchange onaccept]
+  (box :class "search" :space-evenly false :spacing 12
+    (label :class "icon" :text "󰍉")
+    (overlay :hexpand true
+      (input :class "search-input" :onchange onchange :onaccept onaccept :timeout "1s")
+      (label :class "placeholder" :xalign 0 :visible {query == ""} :text placeholder))))
+
+(defwidget icon-button [glyph onclick ?class ?tooltip]
+  (button :class "icon-button ${class}" :onclick onclick :tooltip tooltip :timeout "2s"
+    (label :class "icon" :text glyph)))
+
+(defwidget chip [text active onclick]
+  (button :class "chip ${active ? 'active' : ''}" :onclick onclick (label :text text)))
+
+; Footer for the launcher and drawer. It sits below the list so it can never take
+; initial focus from the search field (GTK focuses the topmost focusable widget).
+(defwidget app-sort []
+  (box :class "sheet-foot" :space-evenly false :spacing 8
+    (label :class "group-label" :text "Sort")
+    (chip :text "Recent" :active {apps.sort == "recent"} :onclick "scripts/apps.py sort recent")
+    (chip :text "Frequent" :active {apps.sort == "frequent"} :onclick "scripts/apps.py sort frequent")
+    (chip :text "A–Z" :active {apps.sort == "az"} :onclick "scripts/apps.py sort az")
+    (box :hexpand true)
+    (label :class "row-meta" :text {apps.query != "" ? "${apps.count} of ${apps.total}" : "${apps.total} apps"})))
