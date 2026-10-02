@@ -20,6 +20,9 @@ step_post() {
 			EOF
 		fi
 	fi
+	if ((${#FAILED_BUILDS[@]})); then
+		warn "these desktop components failed to build and are missing: ${FAILED_BUILDS[*]} (see the log)"
+	fi
 	if [[ ${BUILT_WAYLAND_FROM_SOURCE:-0} == 1 ]]; then
 		echo "  - niri/eww/awww/xwayland-satellite were built from source into ~/.cargo/bin;"
 		echo "    cargo does not install niri's session files (resources/ in its repo)."
