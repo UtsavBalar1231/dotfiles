@@ -1,0 +1,8 @@
+# Debian 12 (bookworm) lacks these. Debian 12 desktop is untested; Debian 13 is the target.
+@include debian/desktop
+-cliphist
+-helvum
+-loupe
+-resvg
+-nwg-displays
+-nwg-look

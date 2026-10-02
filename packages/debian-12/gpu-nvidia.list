@@ -1,0 +1,4 @@
+# Debian 12: nvidia-open-kernel-dkms conflicts with the bookworm driver packages; nvidia-driver brings
+# the proprietary DKMS module instead. Driver 535 cannot drive RTX 50-series cards (see the post step).
+@include debian/gpu-nvidia
+-nvidia-open-kernel-dkms

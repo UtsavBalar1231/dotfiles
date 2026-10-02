@@ -1,0 +1,8 @@
+# Debian 12 (bookworm) lacks these; the tools step installs lazygit.
+@include debian/dev
+-pyenv
+-docker-buildx
+-gitleaks
+-lazygit
+-just
+-mdformat

@@ -9,6 +9,8 @@ Arch AUR packages live next to them in `<group>.aur.list` (installed with yay).
 - `@include <distro>/<group>` pulls in another list (path relative to `packages/`, no `.list`).
 - `-name` removes `name` from what was included so far.
 - A missing file is an empty group.
+- `packages/<distro>-<version>/<group>.list` (for example `debian-12/base.list`, or `ubuntu-24.04/...`)
+  replaces the distro's list for that release. Groups without such a file use `packages/<distro>/`.
 - Files starting with `_` are ignored by the installer. `arch/_excluded.list` documents every explicitly
   installed package of the reference machine that is deliberately in no group.
 
@@ -149,6 +151,19 @@ Other notes:
 - `hermes` (the hint-mode tool niri calls on `Mod+Semicolon`) is a custom binary in `/usr/local/bin` on the
   reference machine, not a package on any distro.
 - aarch64: skip `gaming`, `gpu-nvidia` and the amd64-only items (i386 packages, `linux-headers-amd64`).
+
+## Debian 12
+
+Debian 13 is the target; `packages/debian-12/` adapts the lists to Debian 12 (bookworm), which lacks
+these packages:
+
+| Group | Missing on Debian 12 | Covered by |
+|---|---|---|
+| base | starship, fastfetch, glow, eza, git-delta, tree-sitter-cli | the `tools` step installs all but tree-sitter-cli |
+| dev | lazygit, pyenv, docker-buildx, gitleaks, just, mdformat | `tools` installs lazygit; the rest are left out |
+| desktop | cliphist, helvum, loupe, resvg, nwg-displays, nwg-look | left out (desktop on Debian 12 is untested) |
+| apps | papers | left out |
+| embedded | openjdk-21-jdk | left out |
 
 ## Arch details
 

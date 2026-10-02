@@ -135,6 +135,7 @@ step_tools() {
 		tool fastfetch FASTFETCH "$BIN_DIR" fastfetch
 		tool glow GLOW "$BIN_DIR" glow
 		tool eza EZA "$BIN_DIR" eza
+		tool delta DELTA "$BIN_DIR" delta
 		tool zoxide ZOXIDE "$BIN_DIR" zoxide
 	fi
 

@@ -20,7 +20,7 @@ Run it as your normal user (it uses sudo where needed). Every step is safe to re
 | Distro | Versions | Notes |
 |---|---|---|
 | Arch Linux | rolling | all roles; AUR packages through yay (bootstrapped as `yay-bin`) |
-| Debian | 13 (trixie); 12 best-effort | minimal and dev fully; desktop builds niri, eww and awww from pinned sources |
+| Debian | 13 (trixie); 12 (bookworm) for minimal and dev | desktop builds niri, eww and awww from pinned sources; Debian 12 uses the adjusted lists in `packages/debian-12/` |
 | Ubuntu | 24.04 and 26.04 LTS | same as Debian |
 
 x86_64 is the main target; on aarch64, x86-only groups are skipped with a warning.

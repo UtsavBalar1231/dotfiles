@@ -6,6 +6,8 @@
 #   '@include <distro>/<group>' pulls in another list (relative to packages/, no .list),
 #   '-name' drops name from what this file has collected so far.
 # A missing file is an empty group; files named _* are notes, never a group.
+# packages/<distro>-<version>/<group>.list (e.g. debian-12, or ubuntu-24.04) replaces the
+# distro's list for that release; groups without such a file use packages/<distro>/.
 
 PACKAGES_DIR=${DOTFILES_PACKAGES_DIR:-$REPO/packages}
 CORE_GROUPS=(base dev desktop gpu-amd gpu-nvidia gpu-intel laptop)
@@ -92,13 +94,22 @@ select_groups() {
 	fi
 }
 
+# release_list_dir GROUP: the directory under packages/ that holds GROUP for this release.
+release_list_dir() {
+	local d
+	for d in "$DISTRO-$DISTRO_VERSION" "$DISTRO-${DISTRO_VERSION%%.*}"; do
+		[[ -f $PACKAGES_DIR/$d/$1.list ]] && { echo "$d"; return; }
+	done
+	echo "$DISTRO"
+}
+
 # Sets REPO_PKGS and AUR_PKGS (deduplicated, in list order) for DISTRO/SEL_GROUPS.
 resolve_packages() {
 	local g out
 	REPO_PKGS=()
 	AUR_PKGS=()
 	for g in "${SEL_GROUPS[@]}"; do
-		out=$(group_packages "$DISTRO" "$g")
+		out=$(group_packages "$(release_list_dir "$g")" "$g")
 		[[ -z $out ]] || mapfile -t -O "${#REPO_PKGS[@]}" REPO_PKGS <<<"$out"
 		if [[ $DISTRO == arch ]]; then
 			out=$(group_packages arch "$g.aur")

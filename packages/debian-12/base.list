@@ -1,0 +1,8 @@
+# Debian 12 (bookworm) lacks these; the tools step installs starship, fastfetch, glow, eza and delta.
+@include debian/base
+-tree-sitter-cli
+-fastfetch
+-starship
+-glow
+-eza
+-git-delta

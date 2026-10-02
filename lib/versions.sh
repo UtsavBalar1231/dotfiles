@@ -55,6 +55,14 @@ EZA_SHA256_x86_64=e06eebab74b73d6b7d51a796a353824b001bea82df077706382e100815d289
 EZA_URL_aarch64="https://github.com/eza-community/eza/releases/download/v${EZA_VERSION}/eza_aarch64-unknown-linux-gnu.tar.gz"
 EZA_SHA256_aarch64=40b87ae8628aa2ff0f0d2dc24ab52f689631366385c3da630bae745671fd71ec
 
+# Published hash: GitHub release asset digest. The user's .gitconfig pages through delta, so
+# releases that do not package git-delta (Debian 12) get this build.
+DELTA_VERSION=0.19.2
+DELTA_URL_x86_64="https://github.com/dandavison/delta/releases/download/${DELTA_VERSION}/delta-${DELTA_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+DELTA_SHA256_x86_64=f1ea01ca7728ce3462debc359f39dfc7cbbc1a63224b71fefabf92042864aa1b
+DELTA_URL_aarch64="https://github.com/dandavison/delta/releases/download/${DELTA_VERSION}/delta-${DELTA_VERSION}-aarch64-unknown-linux-gnu.tar.gz"
+DELTA_SHA256_aarch64=0bfce159a5cddd5feb3d6db4a616d883ff51253ce08ac7ec11cb1d208cfaab9e
+
 # Published hash: GitHub release asset digest.
 ZOXIDE_VERSION=0.10.0
 ZOXIDE_URL_x86_64="https://github.com/ajeetdsouza/zoxide/releases/download/v${ZOXIDE_VERSION}/zoxide-${ZOXIDE_VERSION}-x86_64-unknown-linux-musl.tar.gz"
