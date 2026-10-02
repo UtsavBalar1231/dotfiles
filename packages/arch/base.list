@@ -91,3 +91,4 @@ pacman-contrib
 reflector
 logrotate
 kernel-modules-hook
+age  # decrypts the secrets backup (bin/dotfiles secrets restore)

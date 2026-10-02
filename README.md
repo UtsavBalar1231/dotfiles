@@ -103,17 +103,52 @@ password hashes, host keys, tokens, and any file the secret scan flags. `private
 owner-only (700/600), and only exists on the machine that made it. Copy it to your own encrypted
 backup if you want it elsewhere.
 
-## Keeping secrets out of git
+## Secrets
 
-This repo is public. Secrets live in owner-only files the manifest never captures (for example
-`~/.config/zsh/secrets.zsh`, sourced by `~/.zshenv`). Two hooks in `.githooks/` guard commits:
-`pre-commit` refuses anything under `private/` and any staged line that looks like a private key or
-an access token, and `commit-msg` hands over to your global commit-msg hook if you have one. Enable
-them once per clone:
+This repo is public, so secrets reach it only encrypted.
+
+**Kept out of git, in four layers:**
+
+1. **Never captured.** Secrets live in owner-only files the manifest skips (for example
+   `~/.config/zsh/secrets.zsh`, sourced by `~/.zshenv`), and the snapshot routes anything
+   secret-looking to `private/`, which `.gitignore` excludes.
+2. **pre-commit** (`.githooks/`) refuses files under `private/`, anything in `secrets/` that is not
+   an age-encrypted archive, and staged lines that look like a private key or access token.
+3. **pre-push** re-checks every commit being pushed, so commits made with `--no-verify` are caught:
+   `private/` paths, non-age files in `secrets/`, and secrets found by gitleaks (with
+   `.gitleaks.toml`), or by the same patterns when gitleaks is not installed.
+4. **GitHub** secret scanning and push protection are enabled on the repository, so GitHub itself
+   rejects pushes that contain known token formats, even if the hooks were bypassed.
+
+`bin/dotfiles` (and so `install.sh`) points each clone at these hooks
+(`core.hooksPath = .githooks`) the first time it runs.
+
+**Backing up.** `secrets/<hostname>.tar.age` holds `private/machines/<hostname>/` encrypted with
+age and a passphrase (scrypt). It is committed and pushed with everything else, and it is exactly as
+safe as the passphrase: use six or more random words, keep them in a password manager, and never
+reuse them.
 
 ```sh
-git config core.hooksPath .githooks
+bin/dotfiles snapshot            # refresh machines/ and private/
+bin/dotfiles secrets backup      # asks for the passphrase twice, writes secrets/<hostname>.tar.age
+git add secrets machines && git commit -m "secrets: Update $(uname -n)"
 ```
+
+**Restoring on a new machine:**
+
+```sh
+./install.sh --role desktop      # also installs age
+bin/dotfiles secrets restore --dry-run    # asks for the passphrase, lists what it would do
+bin/dotfiles secrets restore --system     # puts the secrets back
+```
+
+`restore` writes everything that belongs under `$HOME` (SSH and GPG keys, tokens, app logins)
+with owner-only permissions and saves any file it replaces under
+`~/.local/state/dotfiles/backups/`. `--system` adds the Wi-Fi profiles and the SSH host keys, with
+sudo. It never restores `/etc/shadow` (it would overwrite the new system's accounts) or `/etc`
+files whose original permissions were not recorded; for those, and for the desktop settings
+(`dconf load`), decrypt everything with `bin/dotfiles secrets extract <dir>` and copy what you need.
+On a machine with another hostname, add `--host <name>`.
 
 ## Layout
 
@@ -124,4 +159,6 @@ git config core.hooksPath .githooks
 | `bin/dotfiles`, `manifest/home.list` | config capture and deploy |
 | `home/` | the captured configs |
 | `scripts/snapshot.sh`, `machines/` | machine configuration backups |
+| `scripts/secrets.sh`, `secrets/` | the age-encrypted secrets archives (`bin/dotfiles secrets`) |
+| `.githooks/`, `.gitleaks.toml` | the commit and push guards against publishing secrets |
 | `private/` | secrets from the snapshot (git-ignored) |

@@ -7,6 +7,8 @@
 #                                          deletes files in $HOME
 #   dotfiles status                        what deploy and capture would each change
 #   dotfiles snapshot [args]               full machine backup (scripts/snapshot.sh)
+#   dotfiles secrets backup|restore|extract  encrypted backup of the snapshot's secrets
+#                                          (scripts/secrets.sh; run it with --help)
 #
 # Files are copied, not symlinked: the desktop theme rewrites some of them at runtime (wallpaper
 # colours), and symlinks would turn every wallpaper change into a dirty repo.
@@ -163,14 +165,24 @@ cmd_status() {
   [[ -n $to_repo ]] && printf 'capture would change:\n%s' "$to_repo"
 }
 
-usage() { sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,14p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+
+# The repo's hooks keep secrets out of commits and pushes; make sure this clone uses them.
+ensure_hooks() {
+  command -v git >/dev/null && git -C "$REPO" rev-parse --git-dir >/dev/null 2>&1 || return 0
+  [[ $(git -C "$REPO" config --get core.hooksPath || true) == .githooks ]] && return 0
+  git -C "$REPO" config core.hooksPath .githooks
+  warn "enabled the repo's git hooks (core.hooksPath = .githooks)"
+}
 
 command -v rsync >/dev/null || die "rsync is required"
+ensure_hooks
 case ${1:-} in
   capture) shift; cmd_capture "$@" ;;
   deploy) shift; cmd_deploy "$@" ;;
   status) shift; cmd_status "$@" ;;
   snapshot) shift; exec "$REPO/scripts/snapshot.sh" "$@" ;;
+  secrets) shift; exec "$REPO/scripts/secrets.sh" "$@" ;;
   -h | --help | help | "") usage ;;
   *) die "unknown command '$1' (try --help)" ;;
 esac

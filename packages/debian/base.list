@@ -85,3 +85,4 @@ xfsprogs
 ntfs-3g
 exfatprogs
 logrotate
+age  # decrypts the secrets backup (bin/dotfiles secrets restore)
