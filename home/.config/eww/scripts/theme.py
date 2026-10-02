@@ -25,8 +25,8 @@ colours (`th2-` to `th4-`, no CSS), which `apply` hands to the rest of the deskt
 variant) and libadwaita (the nearest named accent) through gsettings, Qt (a copy of the
 CosmicDark scheme with its accent swapped, read at app start), swaylock, Claude Code (the
 `custom:wallpaper` theme, a copy of `custom:gruvbox-amoled` with its accents swapped; reloaded
-live), the starship prompt (`[palettes.wallpaper]`, read at every prompt), lazygit and btop
-(read at start).
+live), the starship prompt (`[palettes.wallpaper]`, read at every prompt), btop (every colour,
+reloaded live with SIGUSR2) and lazygit (read at start).
 """
 import fcntl
 import json
@@ -468,15 +468,57 @@ def apply_lazygit(p: dict):
     write(LAZYGIT, text)
 
 
+def _shade(hexc: str, L: float, chroma: float = 1.0) -> str:
+    """The colour at OKLCH lightness L, with its chroma scaled by `chroma`."""
+    _, C, h = to_oklch(*_rgb(hexc))
+    return to_hex(L, C * chroma, h)
+
+
+def _btop_hot_reloads() -> bool:
+    """True when the installed btop hot-reloads on SIGUSR2 (1.3.2+); older ones die from it."""
+    out = subprocess.run(["btop", "--version"], capture_output=True, text=True).stdout
+    m = re.search(r"(\d+)\.(\d+)\.(\d+)", re.sub(r"\x1b\[[0-9;]*m", "", out))
+    return bool(m) and tuple(map(int, m.groups())) >= (1, 3, 2)
+
+
 def apply_btop(p: dict):
+    """btop: every colour from the palette. Graphs ramp from a dim shade up to their colour (or
+    to red for temperature and used memory, which keep their warning meaning); box outlines are
+    dimmed shades of the wallpaper's matched colours. Running btops reload it on SIGUSR2."""
     if not os.path.exists(BTOP_BASE):
         return
+    a = p["accent"]
+    a2 = p.get("accent2", a)
+    a3 = p.get("accent3", a2)
+    a4 = p.get("accent4", a3)
+    ramp = lambda c, end=None: (_shade(c, 0.42, 0.55), _shade(c, 0.58, 0.8), end or c)  # noqa: E731
+    colours = {
+        "main_bg": "#000000", "main_fg": p["fg-dim"], "title": p["fg"], "hi_fg": a,
+        "selected_bg": p["hover"], "selected_fg": a, "inactive_fg": p["fg-mute"], "graph_text": p["fg-dim"],
+        "proc_misc": a2, "div_line": _shade(p["fg-mute"], 0.42),
+        "cpu_box": _shade(a, 0.55, 0.8), "mem_box": _shade(a2, 0.55, 0.8),
+        "net_box": _shade(a3, 0.55, 0.8), "proc_box": _shade(a4, 0.55, 0.8),
+    }
+    for graph, (colour, end) in {"temp": (a, RED), "cpu": (a, None), "free": (a2, None), "cached": (a3, None),
+                                 "available": (a4, None), "used": (a, RED), "download": (a2, None),
+                                 "upload": (a3, None), "process": (a, None)}.items():
+        colours.update(zip((f"{graph}_start", f"{graph}_mid", f"{graph}_end"), ramp(colour, end)))
     with open(BTOP_BASE) as f:
         text = f.read()
-    for key, col in (("hi_fg", p["accent"]), ("selected_fg", p["accent"]),
-                     ("proc_misc", p.get("accent2", p["accent"])), ("title", p["fg"])):
-        text = re.sub(rf'^theme\[{key}\]=".*"$', f'theme[{key}]="{col}"', text, flags=re.M)
-    write(BTOP_OUT, "# Managed by ~/.config/eww/scripts/theme.py: gruvbox_dark with the wallpaper's accents.\n" + text)
+    for key, col in colours.items():
+        text, n = re.subn(rf'^theme\[{key}\]=".*"$', f'theme[{key}]="{col}"', text, flags=re.M)
+        if not n:
+            text += f'theme[{key}]="{col}"\n'
+    if write(BTOP_OUT, "# Managed by ~/.config/eww/scripts/theme.py: btop colours follow the wallpaper.\n" + text) \
+            and _btop_hot_reloads():
+        uid = os.getuid()
+        for pid in filter(str.isdigit, os.listdir("/proc")):
+            try:
+                with open(f"/proc/{pid}/comm") as f:
+                    if f.read().strip() == "btop" and os.stat(f"/proc/{pid}").st_uid == uid:
+                        os.kill(int(pid), signal.SIGUSR2)
+            except OSError:
+                pass
 
 
 TARGETS = {"niri": apply_niri, "kitty": apply_kitty, "gtk": apply_gtk, "qt": apply_qt, "swaylock": apply_swaylock,

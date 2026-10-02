@@ -156,7 +156,7 @@ The accent, the three text colours and the grey surfaces follow the current wall
 | GTK4 / libadwaita apps | `gsettings accent-color`: the nearest named accent, read through the portal | live |
 | Qt apps | `~/.local/share/color-schemes/EwwDynamic.colors` (CosmicDark with its accent swapped), set in qt5ct/qt6ct | next app start |
 | lazygit | `~/.config/lazygit/config.yml`: active border (accent) and options text (second colour) | next start |
-| btop | `~/.config/btop/themes/wallpaper.theme`: gruvbox_dark with highlights in the accent | next start |
+| btop | `~/.config/btop/themes/wallpaper.theme` (`color_theme = "wallpaper"`): every colour from the palette; box outlines in the matched colours, graphs ramping up to them (temperature and used memory still end in red), black background | live (SIGUSR2) |
 | swaylock | `~/.config/swaylock/config`: black screen, accent ring and key highlight | next lock |
 
 Browsers and Electron apps (Chrome, Slack, VS Code) have no outside hook and keep their own colours. Terminal programs keep kitty's ANSI palette. The GTK and libadwaita accents come from fixed sets, so they are the nearest match rather than the exact colour.

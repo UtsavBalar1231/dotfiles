@@ -1,1 +1,4 @@
 // Managed by ~/.config/eww/scripts/panel.sh: popup keys, bound only while an eww popup is open.
+binds {
+    Escape hotkey-overlay-title=null { spawn "~/.config/eww/scripts/panel.sh" "close"; }
+}

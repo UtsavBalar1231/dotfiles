@@ -2,17 +2,18 @@
 // Included last from config.kdl, so these colours override the ones set there.
 layout {
     focus-ring {
-        active-color "#89b4fadd"
+        active-color "#ebbcbadd"
+        active-gradient from="#ebbcbadd" to="#b6927bdd" angle=45 in="oklch shorter hue"
     }
     insert-hint {
-        color "#89b4fa80"
+        color "#ebbcba80"
     }
     tab-indicator {
-        active-color "#89b4fa"
+        active-color "#ebbcba"
     }
 }
 recent-windows {
     highlight {
-        active-color "#89b4faff"
+        active-color "#ebbcbaff"
     }
 }

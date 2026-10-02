@@ -3,7 +3,7 @@ source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc"
 
 
 # pnpm
-export PNPM_HOME="/home/utsav/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -11,11 +11,11 @@ esac
 # pnpm end
 
 # bun completions
-[ -s "/home/utsav/.bun/_bun" ] && source "/home/utsav/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
-[[ -f /home/utsav/.config/.dart-cli-completion/zsh-config.zsh ]] && . /home/utsav/.config/.dart-cli-completion/zsh-config.zsh || true
+[[ -f $HOME/.config/.dart-cli-completion/zsh-config.zsh ]] && . $HOME/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 #compdef opencode
 ###-begin-opencode-completions-###
@@ -48,16 +48,16 @@ fi
 export PATH="$HOME/.npm-global/bin:$PATH"
 
 # OpenClaw Completion
-source "/home/utsav/.openclaw/completions/openclaw.zsh"
+[[ -r "$HOME/.openclaw/completions/openclaw.zsh" ]] && source "$HOME/.openclaw/completions/openclaw.zsh"
 
-PATH="/home/utsav/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/utsav/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/utsav/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/utsav/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/utsav/perl5"; export PERL_MM_OPT;
+PATH="$HOME/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 
 # >>> Codex installer >>>
-export PATH="/home/utsav/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 # <<< Codex installer <<<
 
 # # Alacritty: auto-install the `alacritty` terminfo on remote hosts over ssh.
