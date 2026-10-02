@@ -2,6 +2,7 @@
 aarch64-linux-gnu-gcc
 acpi
 act
+age
 amd-ucode
 amdgpu_top
 android-udev

@@ -17,6 +17,7 @@ adwaita-cursors 51.0-1
 adwaita-fonts 51.0-2
 adwaita-icon-theme 51.0-1
 adwaita-icon-theme-legacy 46.2-3
+age 1.3.2-1
 alacritty-dev 0.18.0.dev.r2518.gc08e6b6-1
 alacritty-dev-debug 0.18.0.dev.r2507.g90e8907.local-1
 alsa-card-profiles 1:1.6.9-1

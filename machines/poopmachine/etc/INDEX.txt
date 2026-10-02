@@ -10,8 +10,6 @@
 /etc/default/dnsmasq	unowned
 /etc/default/grub	modified:grub
 /etc/dhcpcd.conf	unowned
-/etc/distiller/config.json	private
-/etc/distiller/device-config.json	private
 /etc/dnsmasq.conf	modified:dnsmasq
 /etc/environment	private
 /etc/fan2go/fan2go.yaml	unowned

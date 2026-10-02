@@ -76,8 +76,6 @@ Routed by file name or by the secret scan (relative to this directory). `desktop
 
 - `desktop/dconf.ini`
 - `etc/comitup.conf`
-- `etc/distiller/config.json`
-- `etc/distiller/device-config.json`
 - `etc/environment`
 - `etc/profile.d/gemini.sh`
 - `etc/teamviewer/global.conf`

@@ -1,4 +1,4 @@
-org.gnome.desktop.interface accent-color 'yellow'
+org.gnome.desktop.interface accent-color 'red'
 org.gnome.desktop.interface avatar-directories @as []
 org.gnome.desktop.interface can-change-accels false
 org.gnome.desktop.interface clock-format '24h'
@@ -26,7 +26,7 @@ org.gnome.desktop.interface gtk-im-module ''
 org.gnome.desktop.interface gtk-im-preedit-style 'callback'
 org.gnome.desktop.interface gtk-im-status-style 'callback'
 org.gnome.desktop.interface gtk-key-theme ''
-org.gnome.desktop.interface gtk-theme 'Orchis-Yellow-Dark'
+org.gnome.desktop.interface gtk-theme 'Orchis-Red-Dark'
 org.gnome.desktop.interface gtk-timeout-initial 200
 org.gnome.desktop.interface gtk-timeout-repeat 20
 org.gnome.desktop.interface icon-theme 'Tela-circle-dark'

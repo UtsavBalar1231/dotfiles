@@ -111,3 +111,4 @@
 .wget-hsts	noise (log, backup, lock, history or database)
 .zsh_history	noise (log, backup, lock, history or database)
 .zshrc.backup.20250930_031323	noise (log, backup, lock, history or database)
+.zshrc.bak-pre-portable	noise (log, backup, lock, history or database)
