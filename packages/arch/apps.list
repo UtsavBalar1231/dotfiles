@@ -1,0 +1,83 @@
+# apps: personal GUI apps and heavyweight document tooling (opt-in with --with apps).
+
+# browsers and chat
+firefox
+telegram-desktop
+bitwarden
+secrets
+seahorse
+
+# terminals, editors, viewers
+ghostty
+neovide  # default text editor in mimeapps.list
+papers
+zathura
+zathura-pdf-mupdf
+imv
+xournalpp
+gnome-calculator
+gnome-font-viewer
+gnome-disk-utility
+gnome-system-monitor
+baobab
+bleachbit
+
+# media
+vlc
+vlc-plugin-archive
+vlc-plugin-dvd
+vlc-plugin-ffmpeg
+vlc-plugin-matroska
+vlc-plugin-ogg
+vlc-plugin-x264
+vlc-plugin-x265
+mpv
+mpv-mpris
+mpd
+mpc
+mpd-mpris
+inkscape
+libresprite
+kicad
+
+# office, printing, downloads, remote
+libreoffice-fresh
+hunspell-en_us
+cups
+simple-scan
+qbittorrent
+uget
+wayvnc
+
+# documents and diagrams
+pandoc-cli
+mkdocs
+mkdocs-autorefs
+mkdocs-material
+mkdocstrings
+plantuml
+d2
+mermaid-cli
+gnuplot
+texlive-basic
+texlive-bibtexextra
+texlive-binextra
+texlive-context
+texlive-fontsextra
+texlive-fontsrecommended
+texlive-fontutils
+texlive-formatsextra
+texlive-games
+texlive-humanities
+texlive-latex
+texlive-latexextra
+texlive-latexrecommended
+texlive-luatex
+texlive-mathscience
+texlive-metapost
+texlive-music
+texlive-pictures
+texlive-plaingeneric
+texlive-pstricks
+texlive-publishers
+texlive-xetex

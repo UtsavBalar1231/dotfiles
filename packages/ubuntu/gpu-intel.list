@@ -1,0 +1,2 @@
+@include debian/gpu-intel
+-mesa-va-drivers  # 26.04 folded VA-API into mesa-libgallium

@@ -1,0 +1,7 @@
+# gpu-nvidia: NVIDIA open-kernel driver branch 580 from Ubuntu's own archive (supports RTX 50 / Blackwell).
+# Uses DKMS unless a prebuilt linux-modules-nvidia-580-open-<flavour> exists. x86-64 only.
+# The installer never touches initramfs or the kernel command line.
+nvidia-driver-580-open
+libnvidia-egl-wayland1
+dkms
+linux-headers-generic

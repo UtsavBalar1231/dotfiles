@@ -1,0 +1,12 @@
+# AUR tools for embedded/Android/Debian-packaging work (installed with yay).
+android-sdk-cmdline-tools-latest
+android-sdk-platform-tools
+coccinelle-bin
+gf2-git  # GDB frontend
+debhelper
+dh-autoreconf
+dh-exec
+dh-make
+debtap
+git-buildpackage
+lintian

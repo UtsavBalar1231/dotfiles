@@ -1,0 +1,13 @@
+# gpu-nvidia: NVIDIA open kernel modules via DKMS (Blackwell / RTX 50 need the open modules).
+# DKMS needs headers for every installed kernel: linux-headers matches the stock `linux` kernel,
+# install the matching *-headers package yourself when running another kernel.
+# The installer never touches mkinitcpio/initramfs or the kernel command line.
+# lib32 packages need [multilib].
+nvidia-open-dkms
+nvidia-utils
+nvidia-settings
+dkms
+linux-headers
+egl-wayland
+libva-nvidia-driver
+lib32-nvidia-utils

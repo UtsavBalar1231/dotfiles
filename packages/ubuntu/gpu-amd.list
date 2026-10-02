@@ -1,0 +1,4 @@
+@include debian/gpu-amd
+-firmware-amd-graphics  # firmware ships in linux-firmware on Ubuntu
+-mesa-va-drivers  # 26.04 folded VA-API/VDPAU into mesa-libgallium
+-mesa-vdpau-drivers

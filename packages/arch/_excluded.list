@@ -1,0 +1,148 @@
+# Explicitly installed packages on the reference machine (pacman -Qqen, pacman -Qqem) that are
+# deliberately not in any group. Files starting with _ are ignored by the installer.
+# Every installed explicit package is in exactly one arch list or in this file.
+
+adduser  # niche tool, not needed by the roles
+alacritty-dev  # local debug/dev build with no AUR package; alacritty is not used by the niri config
+alacritty-dev-debug  # local debug/dev build with no AUR package; alacritty is not used by the niri config
+amd-ucode  # installed by the OS installer; the package installer never touches kernel, bootloader or microcode
+asar  # niche tool, not needed by the roles
+aurutils  # niche tool, not needed by the roles
+aws-cli  # niche tool, not needed by the roles
+base  # installed by the OS installer; the package installer never touches kernel, bootloader or microcode
+btop-git  # replaced by repo btop
+ccze  # niche tool, not needed by the roles
+criu  # niche tool, not needed by the roles
+dart  # niche Dart/Flutter SDK, not packaged on Debian/Ubuntu; install per project
+debhelper-python  # local build, not in the AUR (no installable source)
+decibels  # GNOME group install leftover (default app, not used by the niri session)
+dh-dkms  # local build, not in the AUR (no installable source)
+downgrade  # niche tool, not needed by the roles
+drata-agent-bin  # employer compliance agent, machine-specific
+efibootmgr  # installed by the OS installer; the package installer never touches kernel, bootloader or microcode
+epiphany  # GNOME group install leftover (default app, not used by the niri session)
+evince  # replaced by papers (default PDF viewer)
+feh  # obsolete X11 stack; X apps run through xwayland-satellite
+flite  # GNOME group install leftover (default app, not used by the niri session)
+fuzzel  # replaced by the eww launcher/notification daemon
+gdm  # GNOME session and display manager; the session is niri started from ly
+getnf  # fonts are installed from the ttf-*-nerd packages, getnf is not needed
+glade  # niche graphics/GUI developer tooling
+gnome-backgrounds  # GNOME group install leftover (default app, not used by the niri session)
+gnome-calendar  # GNOME group install leftover (default app, not used by the niri session)
+gnome-characters  # GNOME group install leftover (default app, not used by the niri session)
+gnome-clocks  # GNOME group install leftover (default app, not used by the niri session)
+gnome-color-manager  # GNOME session and display manager; the session is niri started from ly
+gnome-connections  # GNOME group install leftover (default app, not used by the niri session)
+gnome-console  # GNOME group install leftover (default app, not used by the niri session)
+gnome-contacts  # GNOME group install leftover (default app, not used by the niri session)
+gnome-control-center  # GNOME session and display manager; the session is niri started from ly
+gnome-logs  # GNOME group install leftover (default app, not used by the niri session)
+gnome-maps  # GNOME group install leftover (default app, not used by the niri session)
+gnome-menus  # GNOME session and display manager; the session is niri started from ly
+gnome-multi-writer  # GNOME group install leftover (default app, not used by the niri session)
+gnome-music  # GNOME group install leftover (default app, not used by the niri session)
+gnome-notes  # GNOME group install leftover (default app, not used by the niri session)
+gnome-photos  # GNOME group install leftover (default app, not used by the niri session)
+gnome-remote-desktop  # GNOME session and display manager; the session is niri started from ly
+gnome-session  # GNOME session and display manager; the session is niri started from ly
+gnome-shell  # GNOME session and display manager; the session is niri started from ly
+gnome-shell-extensions  # GNOME session and display manager; the session is niri started from ly
+gnome-software  # GNOME session and display manager; the session is niri started from ly
+gnome-sound-recorder  # GNOME group install leftover (default app, not used by the niri session)
+gnome-text-editor  # GNOME group install leftover (default app, not used by the niri session)
+gnome-tour  # GNOME group install leftover (default app, not used by the niri session)
+gnome-tweaks  # GNOME session and display manager; the session is niri started from ly
+gnome-user-docs  # GNOME group install leftover (default app, not used by the niri session)
+gnome-user-share  # GNOME group install leftover (default app, not used by the niri session)
+gnome-weather  # GNOME group install leftover (default app, not used by the niri session)
+grilo-plugins  # GNOME group install leftover (default app, not used by the niri session)
+grub  # installed by the OS installer; the package installer never touches kernel, bootloader or microcode
+grub2-theme-fallout-git  # bootloader theme; bootloader changes are out of scope for the installer
+gruvbox-gtk-theme-git  # GTK theme/icons not in the chosen look (Orchis + Tela circle)
+gruvbox-plus-icon-theme-git  # GTK theme/icons not in the chosen look (Orchis + Tela circle)
+gvfs-afc  # GNOME-group gvfs backend (online accounts, cameras, Apple, OneDrive, DNS-SD); gvfs, gvfs-mtp, gvfs-smb and gvfs-nfs are in desktop
+gvfs-dnssd  # GNOME-group gvfs backend (online accounts, cameras, Apple, OneDrive, DNS-SD); gvfs, gvfs-mtp, gvfs-smb and gvfs-nfs are in desktop
+gvfs-goa  # GNOME-group gvfs backend (online accounts, cameras, Apple, OneDrive, DNS-SD); gvfs, gvfs-mtp, gvfs-smb and gvfs-nfs are in desktop
+gvfs-gphoto2  # GNOME-group gvfs backend (online accounts, cameras, Apple, OneDrive, DNS-SD); gvfs, gvfs-mtp, gvfs-smb and gvfs-nfs are in desktop
+gvfs-onedrive  # GNOME-group gvfs backend (online accounts, cameras, Apple, OneDrive, DNS-SD); gvfs, gvfs-mtp, gvfs-smb and gvfs-nfs are in desktop
+gvfs-wsdd  # GNOME-group gvfs backend (online accounts, cameras, Apple, OneDrive, DNS-SD); gvfs, gvfs-mtp, gvfs-smb and gvfs-nfs are in desktop
+hitori  # GNOME games installed with the GNOME group
+iagno  # GNOME games installed with the GNOME group
+kitty-git  # replaced by the repo package kitty
+kitty-git-debug  # replaced by the repo package kitty
+kitty-terminfo-git  # replaced by the repo package kitty
+linux  # installed by the OS installer; the package installer never touches kernel, bootloader or microcode
+linux-firmware  # installed by the OS installer; the package installer never touches kernel, bootloader or microcode
+linux-firmware-qcom  # hardware-specific firmware for Qualcomm SoCs, not needed on a generic machine
+linux-lts-headers  # headers for the LTS kernel, which is not installed; gpu-nvidia lists linux-headers for the running kernel
+lxappearance  # replaced by nwg-look
+lxrandr  # obsolete X11 stack; X apps run through xwayland-satellite
+malcontent  # GNOME session and display manager; the session is niri started from ly
+miniupnpc  # dependency marked explicit (library for ad-hoc scripts or a build)
+mpvpaper-git  # replaced by awww (wallpapers)
+ndrop-git  # not referenced by the current niri/eww config
+notcurses  # dependency marked explicit (library for ad-hoc scripts or a build)
+nss-mdns  # needs a manual nsswitch.conf edit, not automated
+oculante  # niche image viewer, imv covers it
+ollama  # heavy GPU-specific LLM runtime, install per machine
+openai-codex  # vendor-distributed AI CLI that installs into ~/.codex or ~/.local
+orca  # GNOME group install leftover (default app, not used by the niri session)
+os-prober  # installed by the OS installer; the package installer never touches kernel, bootloader or microcode
+pandoc-bin  # replaced by repo pandoc-cli
+perl-html-html5-entities  # dependency marked explicit (library for ad-hoc scripts or a build)
+perl-ipc-run3  # dependency marked explicit (library for ad-hoc scripts or a build)
+perl-module-install  # dependency marked explicit (library for ad-hoc scripts or a build)
+perl-sort-versions  # dependency marked explicit (library for ad-hoc scripts or a build)
+perl-text-csv  # dependency marked explicit (library for ad-hoc scripts or a build)
+perl-text-diff  # dependency marked explicit (library for ad-hoc scripts or a build)
+perl-text-template  # dependency marked explicit (library for ad-hoc scripts or a build)
+picom  # obsolete X11 stack; X apps run through xwayland-satellite
+polari  # GNOME group install leftover (default app, not used by the niri session)
+postgresql  # server daemon for project work; run it in a container or install per project
+python-cachetools  # dependency marked explicit (library for ad-hoc scripts or a build)
+python-flask  # dependency marked explicit (library for ad-hoc scripts or a build)
+python-qrcode  # dependency marked explicit (library for ad-hoc scripts or a build)
+python-xlsx2csv  # dependency marked explicit (library for ad-hoc scripts or a build)
+quadrapassel  # GNOME games installed with the GNOME group
+quota-tools  # niche tool, not needed by the roles
+rofi  # replaced by the eww launcher/notification daemon
+ruff-lsp  # deprecated upstream (ruff has a built-in language server) and no longer in the AUR
+rygel  # GNOME group install leftover (default app, not used by the niri session)
+scrot  # obsolete X11 stack; X apps run through xwayland-satellite
+scx-scheds  # machine-specific boot/kernel tuning (needs /etc config or a specific kernel); see machines/ snapshot
+scx-tools  # machine-specific boot/kernel tuning (needs /etc config or a specific kernel); see machines/ snapshot
+shader-slang  # niche graphics/GUI developer tooling
+shader-slang-debug  # local build, not in the AUR (no installable source)
+showtime  # GNOME group install leftover (default app, not used by the niri session)
+skia-sharp  # dependency marked explicit (library for ad-hoc scripts or a build)
+slack-desktop-wayland  # local build, not in the AUR (no installable source)
+snapshot  # GNOME group install leftover (default app, not used by the niri session)
+speech-dispatcher  # GNOME group install leftover (default app, not used by the niri session)
+swaybg  # replaced by awww (wallpapers)
+swaync  # replaced by the eww launcher/notification daemon
+swayosd-git  # replaced by the eww launcher/notification daemon
+sysprof  # niche graphics/GUI developer tooling
+tali  # GNOME games installed with the GNOME group
+tecla  # GNOME group install leftover (default app, not used by the niri session)
+telegram-desktop-dev-bin  # replaced by repo telegram-desktop
+ttf-martian-mono-nerd  # Nerd Font outside the chosen set (JetBrainsMono, Iosevka, Maple Mono)
+ttf-terminus-nerd  # Nerd Font outside the chosen set (JetBrainsMono, Iosevka, Maple Mono)
+valkey  # server daemon for project work; run it in a container or install per project
+waybar-git  # replaced by the eww launcher/notification daemon
+wmctrl  # obsolete X11 stack; X apps run through xwayland-satellite
+wofi  # replaced by the eww launcher/notification daemon
+x11-ssh-askpass  # obsolete X11 stack; X apps run through xwayland-satellite
+xf86-video-amdgpu  # obsolete X11 stack; X apps run through xwayland-satellite
+xf86-video-vesa  # obsolete X11 stack; X apps run through xwayland-satellite
+xorg-server  # obsolete X11 stack; X apps run through xwayland-satellite
+xorg-server-devel  # obsolete X11 stack; X apps run through xwayland-satellite
+xorg-server-xvfb  # obsolete X11 stack; X apps run through xwayland-satellite
+xorg-xauth  # obsolete X11 stack; X apps run through xwayland-satellite
+xorg-xhost  # obsolete X11 stack; X apps run through xwayland-satellite
+xorg-xinput  # obsolete X11 stack; X apps run through xwayland-satellite
+xpra  # obsolete X11 stack; X apps run through xwayland-satellite
+yaru-sound-theme  # GTK theme/icons not in the chosen look (Orchis + Tela circle)
+yay  # installer bootstraps yay-bin instead of building yay
+yelp  # GNOME group install leftover (default app, not used by the niri session)
+zram-generator  # machine-specific boot/kernel tuning (needs /etc config or a specific kernel); see machines/ snapshot

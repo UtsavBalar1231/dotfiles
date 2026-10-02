@@ -1,0 +1,93 @@
+# base: headless-safe shell + CLI toolbox (no GUI packages).
+# Arch: AUR bootstrap needs base-devel + git, so both live here.
+
+# build + fetch essentials
+base-devel
+git
+curl
+wget
+rsync
+openssh
+sudo
+python
+unzip
+zip
+7zip
+pigz
+pbzip2
+cpio
+jq
+bc
+
+# shell and terminal workflow
+zsh
+bash-completion
+tmux
+zellij
+neovim
+nano
+tree-sitter-cli  # nvim-treesitter parser builds
+starship
+zoxide
+fzf
+yazi
+fastfetch
+glow
+cowsay
+cowfortune
+
+# modern coreutils replacements
+ripgrep
+fd
+bat
+eza
+ncdu
+plocate
+trash-cli
+
+# git quality of life
+git-delta
+diff-so-fancy
+
+# yazi preview helpers
+chafa
+mediainfo
+perl-image-exiftool
+
+# process / pipe / file utilities
+btop
+pv
+progress
+time
+tinyxxd
+socat
+inotify-tools
+aria2
+
+# network
+mosh
+sshfs
+sshpass
+tailscale
+iperf
+iw
+speedtest-cli
+wireless-regdb
+wireless_tools
+
+# hardware and filesystem tools
+lshw
+dmidecode
+smartmontools
+fwupd
+btrfs-progs
+xfsprogs
+ntfs-3g
+ntfsprogs
+exfat-utils
+
+# Arch housekeeping
+pacman-contrib
+reflector
+logrotate
+kernel-modules-hook

@@ -1,0 +1,6 @@
+# gpu-amd: AMD open-source stack (Mesa RADV/radeonsi). lib32 packages need [multilib].
+mesa
+vulkan-radeon
+lib32-vulkan-radeon
+amdgpu_top
+rocm-smi-lib

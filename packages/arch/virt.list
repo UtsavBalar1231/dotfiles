@@ -1,0 +1,13 @@
+# virt: QEMU/KVM virtual machines (libvirt) and QEMU user-mode emulation for foreign-arch work.
+qemu-desktop
+qemu-system-aarch64
+qemu-system-arm
+qemu-user-static
+qemu-user-static-binfmt
+edk2-ovmf
+edk2-aarch64
+libvirt
+dnsmasq
+virt-manager
+gnome-boxes
+spice-vdagent

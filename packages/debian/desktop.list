@@ -1,0 +1,113 @@
+# desktop: runtime for the niri + eww Wayland shell, theming, audio/bluetooth/network UI.
+# Not packaged, provided by the installer's tools step (see packages/README.md): niri, eww, awww,
+# xwayland-satellite, ly, yazi, bluetui, ueberzugpp, ydotool (Debian 13), the Tela circle icons, the Nerd Fonts,
+# pwvucontrol, the termfilechooser portal and the Orchis colour variants.
+
+# session, idle/lock, portals
+swayidle
+swaylock
+mate-polkit  # closest packaged polkit agent; polkit-gnome is gone from Debian 13 (see packages/README.md)
+gnome-keyring
+xdg-desktop-portal
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
+xdg-utils
+xdg-user-dirs
+xwayland
+
+# eww runtime: clipboard, screenshots, input, monitors
+cliphist
+wl-clipboard
+grim
+slurp
+wf-recorder
+wlr-randr
+wtype
+ddcutil  # eww brightness.sh (DDC/CI); needs the i2c-dev module
+read-edid
+xclip
+xsel
+libinput-tools
+evtest
+
+# eww runtime: Python modules and helpers
+python3-gi
+gir1.2-gtk-3.0
+gir1.2-gdkpixbuf-2.0
+gir1.2-playerctl-2.0
+python3-dbus
+python3-pil
+libglib2.0-bin  # gsettings (theme.py applies the GTK theme)
+dconf-cli
+dconf-editor
+libnotify-bin  # notify-send
+ffmpeg
+udisks2
+udiskie
+playerctl
+libayatana-appindicator3-1
+
+# audio
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wireplumber
+pulseaudio-utils  # pactl
+pamixer
+pavucontrol
+helvum
+gstreamer1.0-pipewire
+
+# bluetooth
+bluez
+bluez-tools
+blueman
+
+# network
+network-manager
+network-manager-gnome  # nm-applet + nm-connection-editor
+power-profiles-daemon  # eww bar profile switch (powerprofilesctl); also wanted on laptops
+
+# files, thumbnails, media codecs
+nautilus
+file-roller
+loupe
+gnome-sushi
+gvfs
+gvfs-backends
+ffmpegthumbnailer
+gstreamer1.0-libav
+gstreamer1.0-plugins-ugly
+gstreamer1.0-vaapi
+libvips-tools
+webp
+resvg
+
+# terminals
+kitty
+zenity
+nwg-displays
+nwg-look
+
+# theming
+gnome-themes-extra
+adwaita-icon-theme
+qt5ct
+qt6ct
+qtwayland5
+qt6-wayland
+orchis-gtk-theme  # default Orchis colours only; the other colour variants come from the tools step
+bibata-cursor-theme
+
+# fonts (JetBrainsMono + Iosevka Nerd Fonts come from the tools step)
+fonts-noto-core
+fonts-noto-color-emoji
+fonts-font-awesome
+
+# GPU diagnostics (vendor-neutral; drivers are in gpu-* groups)
+mesa-utils
+vulkan-tools
+vainfo
+vdpauinfo
+nvtop

@@ -1,0 +1,5 @@
+# gpu-intel: Intel Mesa stack plus VA-API media driver.
+mesa-vulkan-drivers
+mesa-va-drivers
+libgl1-mesa-dri
+intel-media-va-driver

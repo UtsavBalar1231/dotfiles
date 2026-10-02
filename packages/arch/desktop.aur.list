@@ -1,0 +1,7 @@
+# AUR packages for the desktop role (installed with yay).
+eww-git  # the eww widget daemon; the shell's bar, launcher, notifications (no repo package)
+orchis-theme-git  # GTK theme; theme.py picks Orchis-<colour>-Dark variants, which the repo build lacks
+bibata-cursor-theme-bin  # niri cursor theme Bibata-Modern-Ice
+maplemono-nf  # monospace font used by kitty/ghostty/fontconfig
+pwvucontrol  # PipeWire volume control (niri floating rule exists)
+xdg-desktop-portal-termfilechooser-hunkyburrito-git  # yazi as file chooser portal

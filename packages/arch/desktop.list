@@ -1,0 +1,129 @@
+# desktop: niri + eww Wayland shell, theming, audio/bluetooth/network UI, desktop utilities.
+# Everything ~/.config/niri/config.kdl and ~/.config/eww/scripts/* call at runtime is covered here
+# (or in base/dev): wpctl/pactl, nmcli, bluetoothctl, playerctl, udisksctl, powerprofilesctl,
+# notify-send, busctl, gtk-launch, xdg-open, gsettings, ddcutil, lsblk, ffmpeg, jq, plus the Python
+# modules gi (Gio/GLib/Gtk/GdkPixbuf/Playerctl), dbus and PIL.
+# The eww bar itself (eww-git), theming and fonts from the AUR are in desktop.aur.list.
+
+# compositor, session, idle/lock
+niri
+xwayland-satellite
+swayidle
+swaylock
+ly  # display manager, enabled by the services step
+polkit-gnome  # started by niri (spawn-at-startup)
+gnome-keyring
+xdg-desktop-portal
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
+xdg-utils
+xdg-user-dirs
+
+# eww runtime: wallpaper, clipboard, screenshots, input, monitors
+awww
+cliphist
+wl-clipboard
+grim
+slurp
+wf-recorder
+wlr-randr
+nwg-displays
+wtype
+ydotool
+ddcutil  # eww brightness.sh (DDC/CI); needs the i2c-dev module
+read-edid
+xclip
+xsel
+libinput-tools
+evtest
+
+# eww runtime: Python modules and helpers
+python-gobject
+python-dbus
+python-pillow
+gtk3
+qt5-wayland
+qt6-wayland  # QT_QPA_PLATFORM=wayland;xcb in niri's environment block
+glib2  # gsettings (theme.py applies the GTK theme)
+dconf
+dconf-editor
+libnotify  # notify-send
+ffmpeg  # wall.py animated-wallpaper transitions, media thumbnails
+udisks2
+udiskie
+playerctl
+libappindicator
+
+# audio
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wireplumber
+libpulse  # pactl
+pamixer
+pavucontrol
+helvum
+gst-plugin-pipewire
+
+# bluetooth
+bluez
+bluez-utils
+bluez-tools
+blueman
+bluetui
+
+# network
+networkmanager
+network-manager-applet  # nm-applet + nm-connection-editor
+power-profiles-daemon  # eww bar profile switch (powerprofilesctl); also wanted on laptops
+
+# files, thumbnails, media codecs
+nautilus
+file-roller
+loupe
+sushi
+gvfs
+gvfs-mtp
+gvfs-smb
+gvfs-nfs
+ffmpegthumbnailer
+gst-thumbnailers
+gnome-epub-thumbnailer
+gst-libav
+gst-plugins-ugly
+gst-plugin-va
+libvips
+libwebp-utils
+resvg
+ueberzugpp
+viu
+
+# terminals
+kitty
+zenity
+
+# theming: GTK Orchis (AUR), icons Tela circle, cursor Bibata (AUR), Qt via qt5ct/qt6ct
+tela-circle-icon-theme-standard
+gnome-themes-extra
+adwaita-icon-theme  # fallback icon theme
+nwg-look
+qt5ct
+qt6ct
+
+# fonts: JetBrainsMono + Iosevka Nerd Fonts, symbols, emoji (Maple Mono NF is in desktop.aur.list)
+ttf-jetbrains-mono-nerd
+ttf-iosevka-nerd
+ttf-nerd-fonts-symbols
+ttf-nerd-fonts-symbols-mono
+noto-fonts
+noto-fonts-emoji
+otf-font-awesome
+
+# GPU diagnostics (vendor-neutral; drivers are in gpu-* groups)
+mesa-utils
+vulkan-tools
+vulkan-mesa-layers
+libva-utils
+vdpauinfo
+nvtop

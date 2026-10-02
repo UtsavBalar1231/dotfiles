@@ -1,0 +1,73 @@
+# dev: toolchains, containers, linters, git tooling.
+# Not packaged (or too old), provided by the installer's tools step: rustup/cargo tools, bun, uv, nvm, ruff, stylua,
+# act, ast-grep, eslint, markdownlint-cli2 (see packages/README.md).
+
+# C/C++ toolchain and build systems (kernel/BSP build dependencies included)
+clang
+clang-format
+llvm
+cmake
+meson
+ninja-build
+make
+autoconf
+bison
+flex
+pkg-config
+ccache
+bear
+gdb
+cppcheck
+astyle
+cbindgen
+gperf
+swig
+help2man
+scdoc
+unifdef
+quilt
+strace
+dwarves
+libelf-dev
+libncurses-dev
+libssl-dev
+libxml2-utils
+xsltproc
+zlib1g-dev
+libsimde-dev
+libvulkan-dev
+wayland-protocols  # headers needed to build niri/eww-class Wayland tools from source
+# x86-only, not installable on arm64: g++-multilib gcc-multilib lib32ncurses-dev
+
+# Go, Node, Python
+golang-go
+nodejs
+npm
+python3-pip
+python3-venv
+python3-dev
+pipx
+pipenv
+pyenv
+python3-ply
+mypy
+luarocks
+
+# containers
+docker.io
+docker-buildx
+docker-compose
+
+# git and CI tooling
+git-lfs  # ~/.gitconfig requires the lfs filter
+gh
+gitleaks
+lazygit
+pre-commit
+just
+
+# linters and formatters
+shellcheck
+shfmt
+yamllint
+mdformat

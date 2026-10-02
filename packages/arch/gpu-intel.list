@@ -1,0 +1,5 @@
+# gpu-intel: Intel Mesa stack plus VA-API media driver. lib32 packages need [multilib].
+mesa
+vulkan-intel
+lib32-vulkan-intel
+intel-media-driver

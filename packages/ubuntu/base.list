@@ -1,0 +1,6 @@
+@include debian/base
+# names missing on Ubuntu 24.04 or 26.04 (the tools step covers them)
+-fastfetch  # 24.04 lacks it
+-glow  # 24.04 lacks it
+-starship  # 24.04 lacks it
+-wireless-tools  # 26.04 dropped it, iw covers the need

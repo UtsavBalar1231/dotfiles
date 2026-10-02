@@ -1,0 +1,28 @@
+# embedded: cross-compiling, kernel/BSP and OS-image tooling, Android, Debian packaging, serial consoles.
+# x86-only multilib bits (g++-multilib gcc-multilib lib32ncurses-dev) are not listed: they do not exist on arm64.
+gcc-aarch64-linux-gnu
+g++-aarch64-linux-gnu
+musl-tools
+device-tree-compiler
+debootstrap
+debian-archive-keyring
+dpkg-dev
+schroot
+mkosi
+rauc
+repo
+squashfs-tools
+xdelta3
+minicom
+python3-serial
+adb
+fastboot
+openjdk-21-jdk
+debhelper
+dh-autoreconf
+dh-exec
+dh-make
+devscripts
+git-buildpackage
+lintian
+coccinelle

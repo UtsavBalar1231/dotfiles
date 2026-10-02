@@ -1,0 +1,70 @@
+# apps: personal GUI apps and heavyweight document tooling (opt-in with --with apps).
+# Not packaged on Debian 13: ghostty, neovide, bitwarden, libresprite, d2, mermaid-cli, mpd-mpris, telegram-desktop
+# and the Arch AUR apps (see packages/README.md). ubuntu/apps.list swaps firefox-esr for firefox.
+
+# browsers and chat
+firefox-esr
+secrets
+seahorse
+
+# viewers, editors, system tools
+papers
+zathura
+zathura-pdf-poppler
+imv
+xournalpp
+gnome-calculator
+gnome-font-viewer
+gnome-disk-utility
+gnome-system-monitor
+baobab
+bleachbit
+
+# media
+vlc
+vlc-plugin-access-extra
+mpv
+mpv-mpris
+mpd
+mpc
+inkscape
+kicad
+
+# office, printing, downloads, remote
+libreoffice
+hunspell-en-us
+cups
+simple-scan
+qbittorrent
+uget
+wayvnc
+
+# documents and diagrams
+pandoc
+mkdocs
+mkdocs-material
+mkdocstrings
+plantuml
+gnuplot
+texlive-base
+texlive-bibtex-extra
+context
+texlive-extra-utils
+texlive-fonts-extra
+texlive-fonts-recommended
+texlive-font-utils
+texlive-formats-extra
+texlive-games
+texlive-humanities
+texlive-latex-base
+texlive-latex-extra
+texlive-latex-recommended
+texlive-luatex
+texlive-science
+texlive-metapost
+texlive-music
+texlive-pictures
+texlive-plain-generic
+texlive-pstricks
+texlive-publishers
+texlive-xetex

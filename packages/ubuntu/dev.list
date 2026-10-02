@@ -1,0 +1,6 @@
+@include debian/dev
+-lazygit  # 24.04 lacks it
+-mdformat  # 24.04 lacks it
+-pyenv  # 24.04 lacks it
+-docker-compose  # 24.04: v1, 26.04: absent
+docker-compose-v2

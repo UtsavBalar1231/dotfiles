@@ -1,0 +1,6 @@
+# laptop: battery, backlight and CPU power tuning only.
+# power-profiles-daemon is in desktop (the eww bar uses it); enable it on laptops too.
+acpi
+brightnessctl
+upower
+linux-cpupower

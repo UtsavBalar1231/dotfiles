@@ -1,0 +1,2 @@
+@include debian/embedded
+openjdk-17-jdk  # Debian 13 only packages 21/25

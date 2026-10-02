@@ -1,0 +1,87 @@
+# base: headless-safe shell + CLI toolbox (no GUI packages).
+# Not packaged (or too old), provided by the installer's tools step: neovim, yazi, zellij, tailscale,
+# diff-so-fancy (see packages/README.md).
+
+# build + fetch essentials
+build-essential
+git
+curl
+wget
+rsync
+openssh-client
+sudo
+ca-certificates
+gnupg
+python3
+python-is-python3
+unzip
+zip
+bzip2
+7zip
+pigz
+pbzip2
+cpio
+jq
+bc
+
+# shell and terminal workflow
+zsh
+bash-completion
+tmux
+tree-sitter-cli  # nvim-treesitter parser builds
+zoxide
+fzf
+fastfetch
+starship
+glow
+cowsay
+fortune-mod
+nano
+
+# modern coreutils replacements (bat installs as batcat, fd-find as fdfind)
+ripgrep
+fd-find
+bat
+eza
+ncdu
+plocate
+trash-cli
+
+# git quality of life
+git-delta
+
+# yazi preview helpers
+chafa
+mediainfo
+libimage-exiftool-perl
+
+# process / pipe / file utilities
+btop
+pv
+progress
+time
+xxd
+socat
+inotify-tools
+aria2
+
+# network
+mosh
+sshfs
+sshpass
+iperf
+iw
+speedtest-cli
+wireless-regdb
+wireless-tools
+
+# hardware and filesystem tools
+lshw
+dmidecode
+smartmontools
+fwupd
+btrfs-progs
+xfsprogs
+ntfs-3g
+exfatprogs
+logrotate

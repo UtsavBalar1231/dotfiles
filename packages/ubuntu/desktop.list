@@ -1,0 +1,9 @@
+@include debian/desktop
+# names missing on Ubuntu 24.04 or 26.04 (the tools step covers them)
+-nwg-displays  # 24.04 lacks it
+-nwg-look  # 24.04 lacks it
+-resvg  # 24.04 lacks it
+# Ubuntu still packages the GNOME polkit agent niri spawns
+-mate-polkit
+policykit-1-gnome
+ydotool

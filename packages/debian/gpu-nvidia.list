@@ -1,0 +1,11 @@
+# gpu-nvidia: NVIDIA proprietary userspace with the open kernel modules via DKMS (needs contrib/non-free).
+# WARNING: Debian 13 ships the 550 branch, which does not support RTX 50 (Blackwell) cards; those need
+# driver 570+ from NVIDIA's own apt repository (see packages/README.md). x86-64 only.
+# The installer never touches initramfs or the kernel command line.
+nvidia-driver
+nvidia-open-kernel-dkms
+nvidia-settings
+nvidia-vaapi-driver
+libnvidia-egl-wayland1
+dkms
+linux-headers-amd64

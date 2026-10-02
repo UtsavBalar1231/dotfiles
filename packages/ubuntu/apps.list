@@ -1,0 +1,4 @@
+@include debian/apps
+-firefox-esr
+firefox  # transitional package that installs the Firefox snap
+-papers  # 24.04 lacks it

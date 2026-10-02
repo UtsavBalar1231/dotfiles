@@ -1,0 +1,8 @@
+# gpu-amd: AMD open-source stack (Mesa RADV/radeonsi) and firmware.
+# amdgpu_top and rocm-smi are not packaged; see packages/README.md.
+mesa-vulkan-drivers
+mesa-va-drivers
+mesa-vdpau-drivers
+libgl1-mesa-dri
+firmware-amd-graphics
+rocm-smi

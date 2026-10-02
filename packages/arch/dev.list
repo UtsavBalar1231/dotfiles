@@ -1,0 +1,65 @@
+# dev: toolchains, containers, linters, git tooling. Rust (rustup) and bun come from the installer's tools step.
+
+# C/C++ toolchain and build systems
+clang  # includes clang-format
+llvm
+cmake
+meson
+ninja
+ccache
+bear
+gdb
+cppcheck
+astyle
+cbindgen
+gperf
+swig
+help2man
+scdoc
+unifdef
+quilt
+strace
+simde
+vulkan-headers
+wayland-protocols  # headers needed to build niri/eww-class Wayland tools from source
+
+# Go, Node, Python
+go
+nodejs
+npm
+corepack
+nvm
+pyenv
+python-pip
+python-pipx
+python-pipenv
+python-ply
+uv
+ruff
+mypy
+luarocks
+lua-jsregexp  # nvim plugin rock dependency
+
+# containers
+docker
+docker-buildx
+docker-compose
+
+# git and CI tooling
+git-lfs  # ~/.gitconfig requires the lfs filter
+github-cli
+gitleaks
+act
+lazygit
+pre-commit
+ast-grep
+just
+
+# linters and formatters
+shellcheck
+shfmt
+stylua
+yamllint
+eslint
+markdownlint-cli2
+mdformat

@@ -1,0 +1,18 @@
+# embedded: cross-compiling, kernel/BSP and OS-image tooling, Android, Debian packaging, serial consoles.
+aarch64-linux-gnu-gcc
+musl
+dtc
+debootstrap
+debian-archive-keyring
+dpkg
+schroot
+mkosi
+rauc
+repo
+squashfs-tools
+xdelta3
+minicom
+python-pyserial
+android-udev
+jdk17-openjdk
+jdk21-openjdk

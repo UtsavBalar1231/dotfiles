@@ -1,0 +1,4 @@
+@include debian/laptop
+-linux-cpupower  # Debian-only name; Ubuntu ships cpupower in linux-tools
+linux-tools-common
+linux-tools-generic

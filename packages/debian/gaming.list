@@ -1,0 +1,12 @@
+# gaming: Steam, Wine, overlays and peripheral configurators. Needs the i386 architecture (x86-64 only).
+steam-installer
+wine
+wine32
+gamemode
+mangohud
+goverlay
+libgl1-mesa-dri:i386
+mesa-vulkan-drivers:i386
+libvulkan1:i386
+piper
+ratbagd
