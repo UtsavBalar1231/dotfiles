@@ -1,0 +1,11 @@
+# Secret scanning for this repo (the pre-push hook, or `gitleaks git`): gitleaks' default rules,
+# minus files known not to hold secrets.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "age-encrypted secrets archives; stock TPM2 FAPI profiles (authPolicy is a policy digest)"
+paths = [
+  '''^secrets/[^/]+\.tar\.age$''',
+  '''^machines/[^/]+/etc/tpm2-tss/fapi-profiles/[^/]+\.json$''',
+]

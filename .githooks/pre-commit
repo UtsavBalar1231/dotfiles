@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
-# Refuse commits that would publish secrets: anything under private/, or staged content that looks
-# like a private key or an access token. The repo has a public remote.
+# Refuse commits that would publish secrets: files under private/, files under secrets/ that are
+# not age-encrypted archives, and staged lines that look like a private key or an access token.
 set -euo pipefail
+# shellcheck source=.githooks/checks.sh
+source "$(dirname "$0")/checks.sh"
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
 [[ -z $staged ]] && exit 0
-if grep -q '^private/' <<<"$staged"; then
-  echo "pre-commit: refusing to commit files under private/ (secrets live there)" >&2
-  exit 1
-fi
-pattern='-----BEGIN [A-Z ]*PRIVATE KEY|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|xox[abpr]-[A-Za-z0-9-]{10,}|sk-(ant-)?[A-Za-z0-9_-]{20,}|AIza[0-9A-Za-z_-]{30,}'
-# --text and grep -a: a binary-looking file must not make grep stop printing lines and skip the scan.
-hits=$(git diff --cached --text -U0 --diff-filter=ACMR | grep -a -E '^\+' | grep -a -E -c -e "$pattern" || true)
-if (( hits > 0 )); then
+check_paths pre-commit "$staged" ":" || exit 1
+hits=$(git diff --cached --text -U0 --diff-filter=ACMR -- "${NOT_ARCHIVES[@]}" | count_secret_lines)
+if ((hits > 0)); then
   echo "pre-commit: staged changes contain $hits line(s) that look like a private key or token:" >&2
-  git diff --cached --text --name-only -G "$pattern" --diff-filter=ACMR | sed 's/^/  /' >&2
+  git diff --cached --text --name-only -G "$SECRET_PATTERN" --diff-filter=ACMR -- "${NOT_ARCHIVES[@]}" | sed 's/^/  /' >&2
   exit 1
 fi
